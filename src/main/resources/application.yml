@@ -17,5 +17,3 @@ main:
 #  client:
 #    service-url:
 #      defaultZone: http://${EUREKA_SERVER:localhost:8080}/eureka/
-server:
-  port: 8081
