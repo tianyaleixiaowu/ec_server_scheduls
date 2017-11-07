@@ -2,7 +2,7 @@ spring:
   application:
     name: ec_server_schedels
   profiles:
-    active: ${ENV:local}
+    active: ${ENV:dev}
   jpa:
     database: mysql
     show-sql: true
