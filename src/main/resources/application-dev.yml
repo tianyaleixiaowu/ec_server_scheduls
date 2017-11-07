@@ -8,12 +8,3 @@ spring:
       url: jdbc:mysql://5996933a901a7.bj.cdb.myqcloud.com:5326/ec_server?autoReconnect=true&useUnicode=true
       username: root
       password: Wu@0396110
-  redis:
-    host: localhost
-    port: 6379
-    password:
-    pool:
-      max-active: 8
-      max-idle: 8
-      min-idle: 0
-      max-wait: 10000

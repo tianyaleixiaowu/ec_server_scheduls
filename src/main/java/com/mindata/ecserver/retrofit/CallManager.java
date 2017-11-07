@@ -1,6 +1,7 @@
 package com.mindata.ecserver.retrofit;
 
 
+import com.mindata.ecserver.global.exception.EcException;
 import com.mindata.ecserver.main.BaseData;
 import org.springframework.stereotype.Component;
 import retrofit2.Call;
@@ -13,10 +14,6 @@ import java.io.IOException;
 @Component
 public class CallManager {
     private final static int SUCCESS = 200;
-    /**
-     * 没有token
-     */
-    private final static int NO_AUTH = 2002;
 
     public <T extends BaseData> BaseData execute(Call<T> call) throws IOException {
         return doExecute(call);
@@ -29,7 +26,7 @@ public class CallManager {
 
         //网络请求失败直接抛异常
         if (SUCCESS != code) {
-            throw new Exception(response.message());
+            throw new EcException(response.message());
         }
 
         BaseData baseEcData = (BaseData) response.body();
@@ -38,6 +35,6 @@ public class CallManager {
             return (T) response.body();
         }
 
-        throw new Exception("EC异常信息：" + baseEcData.getMessage());
+        throw new EcException("异常信息：" + baseEcData.getMessage());
     }
 }

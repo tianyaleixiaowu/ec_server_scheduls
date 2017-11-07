@@ -2,7 +2,7 @@ spring:
   application:
     name: ec_server_schedels
   profiles:
-    active: ${ENV:dev}
+    active: ${ENV:local}
   jpa:
     database: mysql
     show-sql: true
@@ -12,8 +12,10 @@ spring:
         strategy: org.hibernate.cfg.ImprovedNamingStrategy #命名策略，加分隔线"_"
 
 main:
-  server-url: ${SERVER-URL:localhost:8080}  #要访问后台的地址
-eureka:
-  client:
-    service-url:
-      defaultZone: http://${EUREKA_SERVER:localhost:8080}/eureka/
+  server-url: ${SERVER-URL:http://localhost:8080}  #要访问后台的地址
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://${EUREKA_SERVER:localhost:8080}/eureka/
+server:
+  port: 8081

@@ -1,10 +1,10 @@
 package com.mindata.ecserver;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.cloud.client.SpringCloudApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-@SpringCloudApplication
+@SpringBootApplication
 @EnableScheduling
 public class SchedelsApplication {
 

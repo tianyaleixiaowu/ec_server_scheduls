@@ -22,4 +22,12 @@ public class BaseData {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    @Override
+    public String toString() {
+        return "BaseData{" +
+                "code=" + code +
+                ", message='" + message + '\'' +
+                '}';
+    }
 }
