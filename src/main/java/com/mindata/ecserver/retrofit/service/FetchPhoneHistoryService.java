@@ -12,6 +12,6 @@ public interface FetchPhoneHistoryService {
     /**
      * 获取公司历史通话统计
      */
-    @GET("historyStatis/company")
+    @GET("historyStatis/fetch")
     Call<BaseData> fetchHistory(@Query("begin") String begin, @Query("end") String end);
 }
