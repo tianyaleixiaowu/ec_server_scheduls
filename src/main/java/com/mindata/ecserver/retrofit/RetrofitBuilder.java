@@ -35,7 +35,7 @@ public class RetrofitBuilder {
                 .addInterceptor(chain -> {
                     Request request = chain.request()
                             .newBuilder()
-                            .addHeader("Content-Type", "application/json; charset=UTF-8")
+                            .addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
                             //.addHeader("Accept-Encoding", "gzip, deflate")
                             .addHeader("Connection", "keep-alive")
                             .addHeader("Accept", "*/*")
