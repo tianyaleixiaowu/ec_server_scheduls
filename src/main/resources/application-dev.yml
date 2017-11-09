@@ -8,3 +8,7 @@ spring:
       url: jdbc:mysql://5996933a901a7.bj.cdb.myqcloud.com:5326/ec_server?autoReconnect=true&useUnicode=true
       username: root
       password: Wu@0396110
+    thirdly:
+      url: jdbc:mysql://5996933a901a7.bj.cdb.myqcloud.com:5326/scrapy?autoReconnect=true&useUnicode=true
+      username: root
+      password: Wu@0396110

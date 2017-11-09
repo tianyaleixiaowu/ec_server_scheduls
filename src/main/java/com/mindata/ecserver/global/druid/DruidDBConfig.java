@@ -40,6 +40,15 @@ public class DruidDBConfig {
     @Value("${spring.datasource.secondary.url}")
     private String dbUrl2;
 
+    @Value("${spring.datasource.thirdly.username}")
+    private String username3;
+
+    @Value("${spring.datasource.thirdly.password}")
+    private String password3;
+
+    @Value("${spring.datasource.thirdly.url}")
+    private String dbUrl3;
+
     @Value("com.mysql.jdbc.Driver")
     private String driverClassName;
 
@@ -107,7 +116,13 @@ public class DruidDBConfig {
     @Qualifier("secondaryDataSource")
     @Primary
     public DataSource secondaryDataSource() {
-        return getDruidDataSource(username1, password1, dbUrl2);
+        return getDruidDataSource(username2, password2, dbUrl2);
+    }
+
+    @Bean(name = "thirdlyDataSource")
+    @Qualifier("thirdlyDataSource")
+    public DataSource thirdlyDataSource() {
+        return getDruidDataSource(username3, password3, dbUrl3);
     }
 
     private DruidDataSource getDruidDataSource(String username, String password, String url) {

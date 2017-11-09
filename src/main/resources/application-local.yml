@@ -8,6 +8,10 @@ spring:
       url: jdbc:mysql://localhost:3306/ec_server?autoReconnect=true&useUnicode=true
       username: root
       password: root
+    thirdly:
+      url: jdbc:mysql://localhost:3306/scrapy?autoReconnect=true&useUnicode=true
+      username: root
+      password: root
   redis:
     host: localhost
     port: 6379

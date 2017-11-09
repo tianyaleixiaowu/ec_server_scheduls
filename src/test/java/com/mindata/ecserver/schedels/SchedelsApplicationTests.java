@@ -1,5 +1,6 @@
 package com.mindata.ecserver.schedels;
 
+import com.mindata.ecserver.main.service.EsContactService;
 import com.mindata.ecserver.main.service.FetchCompanyPhoneHistoryService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,10 +15,13 @@ import java.io.IOException;
 public class SchedelsApplicationTests {
 	@Resource
 	private FetchCompanyPhoneHistoryService fetchCompanyPhoneHistoryService;
+	@Resource
+	private EsContactService esContactService;
 
 	@Test
 	public void contextLoads() throws IOException {
-		System.out.println(fetchCompanyPhoneHistoryService.fetch());
+		//System.out.println(fetchCompanyPhoneHistoryService.fetch());
+		esContactService.dbToEs();
 	}
 
 }

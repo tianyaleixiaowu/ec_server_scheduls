@@ -37,6 +37,7 @@ public class EcContactEntity {
     private String qq;
     private String wechat;
     private String address;
+
     /**
      * 行业编码
      */
@@ -72,7 +73,15 @@ public class EcContactEntity {
     /**
      * 对应爬虫的公司id
      */
-    private Integer compId;
+    private Long compId;
+    /**
+     * ipc备案
+     */
+    private String ipcFlag;
+    /**
+     * 主要招聘岗位
+     */
+    private String mainJob;
 
     private Date createTime;
 
@@ -88,12 +97,32 @@ public class EcContactEntity {
     }
 
     @Basic
+    @Column(name = "ipc_flag")
+    public String getIpcFlag() {
+        return ipcFlag;
+    }
+
+    public void setIpcFlag(String ipcFlag) {
+        this.ipcFlag = ipcFlag;
+    }
+
+    @Basic
+    @Column(name = "main_job")
+    public String getMainJob() {
+        return mainJob;
+    }
+
+    public void setMainJob(String mainJob) {
+        this.mainJob = mainJob;
+    }
+
+    @Basic
     @Column(name = "comp_id")
-    public Integer getCompId() {
+    public Long getCompId() {
         return compId;
     }
 
-    public void setCompId(Integer compId) {
+    public void setCompId(Long compId) {
         this.compId = compId;
     }
 
