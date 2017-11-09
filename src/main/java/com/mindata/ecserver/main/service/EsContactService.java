@@ -96,6 +96,11 @@ public class EsContactService {
         esContact.setPhone(ecContactEntity.getPhone());
         esContact.setAddress(ecContactEntity.getAddress());
         esContact.setMemo(ecContactEntity.getMemo());
+        esContact.setProvince(ecContactEntity.getProvince());
+        esContact.setCity(ecContactEntity.getCity());
+        esContact.setWebsiteId(ecContactEntity.getWebsiteId());
+        esContact.setVocation(ecContactEntity.getVocation());
+        esContact.setMemberSizeTag(ecContactEntity.getMemberSizeTag());
         String ipc = "未备案";
         if (StrUtil.equals("Y", ecContactEntity.getIpcFlag())) {
             ipc = "已备案";

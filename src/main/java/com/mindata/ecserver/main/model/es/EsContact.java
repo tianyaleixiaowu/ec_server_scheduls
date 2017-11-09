@@ -71,6 +71,26 @@ public class EsContact {
      */
     private String comintro;
     /**
+     * 省
+     */
+    private String province;
+    /**
+     * 市
+     */
+    private String city;
+    /**
+     * 来源（58、桔子）
+     */
+    private Integer websiteId;
+    /**
+     * 人员数量
+     */
+    private Integer memberSizeTag;
+    /**
+     * 行业编码
+     */
+    private Integer vocation;
+    /**
      * 该记录在数据库的创建日期
      */
     //@Field(type = FieldType.Date)
@@ -129,6 +149,45 @@ public class EsContact {
         this.company = company;
     }
 
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public Integer getWebsiteId() {
+        return websiteId;
+    }
+
+    public void setWebsiteId(Integer websiteId) {
+        this.websiteId = websiteId;
+    }
+
+    public Integer getMemberSizeTag() {
+        return memberSizeTag;
+    }
+
+    public void setMemberSizeTag(Integer memberSizeTag) {
+        this.memberSizeTag = memberSizeTag;
+    }
+
+    public Integer getVocation() {
+        return vocation;
+    }
+
+    public void setVocation(Integer vocation) {
+        this.vocation = vocation;
+    }
 
     public String getMobile() {
         return mobile;
