@@ -73,13 +73,13 @@ public class EsContact {
     /**
      * 该记录在数据库的创建日期
      */
-    @Field(type = FieldType.Date)
+    //@Field(type = FieldType.Date)
     private Date createTime;
     /**
      * 插入ES库的日期
      */
     @Field(type = FieldType.Date)
-    private Date insertTime;
+    private Long insertTime;
 
     public String getMainJob() {
         return mainJob;
@@ -138,11 +138,11 @@ public class EsContact {
         this.mobile = mobile;
     }
 
-    public Date getInsertTime() {
+    public Long getInsertTime() {
         return insertTime;
     }
 
-    public void setInsertTime(Date insertTime) {
+    public void setInsertTime(Long insertTime) {
         this.insertTime = insertTime;
     }
 

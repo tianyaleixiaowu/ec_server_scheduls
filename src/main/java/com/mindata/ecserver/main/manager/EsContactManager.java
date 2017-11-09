@@ -40,7 +40,12 @@ public class EsContactManager {
      * 从es中找到最新的一条，然后对比数据库看看是不是最新
      */
     public EsContact findTheLastEsContact() {
-        Pageable pageable = new PageRequest(0, 1, Sort.Direction.DESC, "createTime");
+        //如果ES还未初始化
+        if (!elasticsearchTemplate.indexExists(ES_INDEX_NAME)) {
+            elasticsearchTemplate.createIndex(ES_INDEX_NAME);
+            return null;
+        }
+        Pageable pageable = new PageRequest(0, 1, Sort.Direction.DESC, "id");
         List<EsContact> esContactList = find(pageable);
         if (esContactList.size() == 0) {
             return null;
@@ -51,9 +56,6 @@ public class EsContactManager {
     public void bulkIndex(List<EsContact> contacts) {
         int counter = 1;
         try {
-            if (!elasticsearchTemplate.indexExists(ES_INDEX_NAME)) {
-                elasticsearchTemplate.createIndex(ES_INDEX_NAME);
-            }
             List<IndexQuery> queries = new ArrayList<>();
             for (EsContact contact : contacts) {
                 IndexQuery indexQuery = new IndexQuery();
