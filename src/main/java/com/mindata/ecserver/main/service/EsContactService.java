@@ -41,32 +41,53 @@ public class EsContactService {
             totalInsert();
             return;
         }
+
         //该记录在数据库的创建时间
         Date createTime = esContact.getCreateTime();
-        //去数据库判断比该记录晚的，增量插入ES
-
-
-
-
-        Pageable pageable = new PageRequest(0, 500, Sort.Direction.DESC, "createTime");
-        //查询数据里按时间倒序
-        Page<EcContactEntity> entities = contactManager.findContact(pageable);
+        partInsertAfter(createTime);
     }
 
     private void totalInsert() {
-        Pageable pageable = new PageRequest(0, 1, Sort.Direction.ASC, "id");
+        Sort sort = new Sort(Sort.Direction.ASC, "id");
+        Pageable pageable = new PageRequest(0, 1, sort);
         Page<EcContactEntity> page = contactManager.findContact(pageable);
         //判断要查多少页
         for (int i = 0; i < page.getTotalElements() / PAGE_SIZE + 1; i++) {
-            pageable = new PageRequest(0, PAGE_SIZE, Sort.Direction.ASC, "id");
+            System.out.println("当前是第几页" + i);
+            pageable = new PageRequest(i, PAGE_SIZE, sort);
             List<EcContactEntity> contactEntities = contactManager.findContact(pageable).getContent();
             esContactManager.bulkIndex(contactEntities.stream().map(this::convert).collect(Collectors.toList()));
         }
-
     }
 
+    private void partInsertAfter(Date createTime) {
+        Sort sort = new Sort(Sort.Direction.ASC, "id");
+        //去数据库判断比该记录晚的，增量插入ES
+        Pageable pageable = new PageRequest(0, 1, sort);
+        Page<EcContactEntity> page = contactManager.findContactByCreateTimeAfter(createTime, pageable);
+        //没有新数据
+        if (page.getTotalElements() == 0) {
+            return;
+        }
+        //判断要查多少页
+        for (int i = 0; i < page.getTotalElements() / PAGE_SIZE + 1; i++) {
+            pageable = new PageRequest(i, PAGE_SIZE, sort);
+            List<EcContactEntity> contactEntities = contactManager.findContactByCreateTimeAfter(createTime, pageable)
+                    .getContent();
+            esContactManager.bulkIndex(contactEntities.stream().map(this::convert).collect(Collectors.toList()));
+        }
+    }
+
+    /**
+     * 将DB读取的entity转为ES的对象
+     * @param ecContactEntity
+     * ecContactEntity
+     * @return
+     * ESContact
+     */
     private EsContact convert(EcContactEntity ecContactEntity) {
         EsContact esContact = new EsContact();
+        esContact.setId(ecContactEntity.getId());
         esContact.setAddress(ecContactEntity.getAddress());
         esContact.setCompId(ecContactEntity.getCompId());
         esContact.setName(ecContactEntity.getName());
@@ -90,7 +111,7 @@ public class EsContactService {
         esContact.setPosDes(extroInfo.get(2));
         esContact.setComintro(extroInfo.get(3));
 
-        esContact.setInsertTime(CommonUtil.getNow());
+        esContact.setInsertTime(CommonUtil.getTimeStamp());
         return esContact;
     }
 

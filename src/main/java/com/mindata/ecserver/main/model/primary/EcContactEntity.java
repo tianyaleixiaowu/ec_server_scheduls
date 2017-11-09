@@ -10,7 +10,7 @@ import java.util.Date;
 @Entity
 @Table(name = "ec_contact_no_push")
 public class EcContactEntity {
-    private int id;
+    private Long id;
     /**
      * 人名
      */
@@ -88,11 +88,11 @@ public class EcContactEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
