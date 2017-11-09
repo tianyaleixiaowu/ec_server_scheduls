@@ -14,7 +14,7 @@ import java.util.Date;
 import static com.xiaoleilu.hutool.date.DatePattern.NORM_DATETIME_FORMAT;
 
 /**
- * 每天晚上1点获取昨天的通话历史
+ * 每天晚上3点读取db数据导入到ES
  * @author wuweifeng wrote on 2017/11/5.
  */
 @Component
