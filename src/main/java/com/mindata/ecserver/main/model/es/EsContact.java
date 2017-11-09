@@ -1,9 +1,7 @@
 package com.mindata.ecserver.main.model.es;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.*;
 
 import java.util.Date;
 
@@ -73,18 +71,22 @@ public class EsContact {
     /**
      * 省
      */
+    @Field(index = FieldIndex.not_analyzed)
     private String province;
     /**
      * 市
      */
+    @Field(index = FieldIndex.not_analyzed)
     private String city;
     /**
      * 来源（58、桔子）
      */
+    @Field(index = FieldIndex.not_analyzed)
     private Integer websiteId;
     /**
      * 人员数量
      */
+    @Field(index = FieldIndex.not_analyzed)
     private Integer memberSizeTag;
     /**
      * 行业编码
@@ -98,7 +100,12 @@ public class EsContact {
     /**
      * 插入ES库的日期
      */
-    @Field(type = FieldType.Date)
+    @Field(
+            type = FieldType.Date,
+            index = FieldIndex.not_analyzed,
+            store = true,
+            format = DateFormat.custom, pattern = "dd-MM-yyyy hh:mm:ss"
+    )
     private Long insertTime;
 
     public String getMainJob() {
