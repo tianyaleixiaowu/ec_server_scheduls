@@ -57,12 +57,12 @@ public class EsContactManager {
         int counter = 1;
         try {
             List<IndexQuery> queries = new ArrayList<>();
-            for (EsContact contact : contacts) {
-                IndexQuery indexQuery = new IndexQuery();
-                indexQuery.setId(contact.getId() + "");
-                indexQuery.setObject(contact);
-                indexQuery.setIndexName(ES_INDEX_NAME);
-                indexQuery.setType(ES_TYPE_NAME);
+                for (EsContact contact : contacts) {
+                    IndexQuery indexQuery = new IndexQuery();
+                    indexQuery.setId(contact.getId() + "");
+                    indexQuery.setObject(contact);
+                    indexQuery.setIndexName(ES_INDEX_NAME);
+                    indexQuery.setType(ES_TYPE_NAME);
 
                 //上面的那几步也可以使用IndexQueryBuilder来构建
                 //IndexQuery index = new IndexQueryBuilder().withId(person.getId() + "").withObject(person).build();
