@@ -27,7 +27,7 @@ public class PushContactToEsSchedul {
      * 注意分布式锁的问题
      */
     @Scheduled(cron = "0 0 3 * * ?")
-    public void executeFetchPhoneHistoryTask() throws IOException {
+    public void executePushDbToEsTask() throws IOException {
         //检查分布式锁
         System.out.println("定时任务开始");
         logger.info("现在时间：" + DateUtil.format(new Date(), NORM_DATETIME_FORMAT));
