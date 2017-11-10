@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * @author wuweifeng wrote on 2017/10/20.
  * 通过retrofit访问后台服务器
@@ -43,7 +45,9 @@ public class RetrofitBuilder {
                             .addHeader("token", token)
                             .build();
                     return chain.proceed(request);
-                }).build();
+                }).connectTimeout(5, TimeUnit.MINUTES)
+                .readTimeout(5, TimeUnit.MINUTES)
+                .writeTimeout(5, TimeUnit.MINUTES).build();
     }
 
 }
