@@ -26,7 +26,7 @@ public class PushContactToEsSchedul {
     /**
      * 注意分布式锁的问题
      */
-    @Scheduled(cron = "0 0 3 * * ?")
+    @Scheduled(cron = "0 0/20 3 * * ?")
     public void executePushDbToEsTask() throws IOException {
         //检查分布式锁
         System.out.println("定时任务开始");
