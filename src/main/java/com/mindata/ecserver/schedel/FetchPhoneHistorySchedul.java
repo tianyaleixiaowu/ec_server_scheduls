@@ -14,7 +14,7 @@ import java.util.Date;
 import static com.xiaoleilu.hutool.date.DatePattern.NORM_DATETIME_FORMAT;
 
 /**
- * 每天晚上1点获取昨天的通话历史
+ * 每天晚上2点获取昨天的通话历史
  * @author wuweifeng wrote on 2017/11/5.
  */
 @Component
@@ -26,7 +26,7 @@ public class FetchPhoneHistorySchedul {
     /**
      * 注意分布式锁的问题
      */
-    @Scheduled(cron = "0 0 2 * * ?")
+    @Scheduled(cron = "0 0/20 2 * * ?")
     public void executeFetchPhoneHistoryTask() throws IOException {
         //检查分布式锁
         System.out.println("定时任务开始");
