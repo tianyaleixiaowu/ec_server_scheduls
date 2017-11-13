@@ -10,10 +10,10 @@ spring:
   application:
     name: ec_server_schedels
   profiles:
-    active: ${ENV:dev}
+    active: ${ENV:local}
   jpa:
     database: mysql
-    show-sql: false
+    show-sql: true
     hibernate:
       ddl-auto: update
       naming:
