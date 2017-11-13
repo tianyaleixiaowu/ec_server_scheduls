@@ -1,6 +1,7 @@
 package com.mindata.ecserver.schedels;
 
 import com.mindata.ecserver.main.service.EsContactService;
+import com.mindata.ecserver.main.service.EsVocationCodeService;
 import com.mindata.ecserver.main.service.FetchCompanyPhoneHistoryService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +21,8 @@ public class SchedelsApplicationTests {
 	private EsContactService esContactService;
 	@Resource
 	private ElasticsearchTemplate elasticsearchTemplate;
+	@Resource
+	private EsVocationCodeService esVocationCodeService;
 
 	@Test
 	public void contextLoads() throws IOException {
@@ -29,5 +32,10 @@ public class SchedelsApplicationTests {
 		//System.out.println(fetchCompanyPhoneHistoryService.fetch());
 		esContactService.dbToEs();
 	}
+	@Test
+	public void totalInsert(){
+		esVocationCodeService.totalInsert();
+	}
+
 
 }

@@ -13,7 +13,7 @@ spring:
     active: ${ENV:dev}
   jpa:
     database: mysql
-    show-sql: false
+    show-sql: true
     hibernate:
       ddl-auto: update
       naming:
