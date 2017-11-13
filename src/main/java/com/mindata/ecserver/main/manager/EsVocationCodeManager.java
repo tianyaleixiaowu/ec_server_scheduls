@@ -22,15 +22,12 @@ import java.util.List;
 
 import static com.mindata.ecserver.global.Constant.ES_INDEX_NAME;
 import static com.mindata.ecserver.global.Constant.ES_VOCATION_TYPE_NAME;
-import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 
 @Service
 public class EsVocationCodeManager {
     @Resource
     private ElasticsearchTemplate elasticsearchTemplate;
-//    @Resource
-//    private EsVovcationCodeRepository esVovcationCodeRepository;
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -54,17 +51,17 @@ public class EsVocationCodeManager {
             throw e;
         }
     }
-    public VocationCodeVo findByVocationName(String vocationName){
+
+    public VocationCodeVo findByVocationName(String vocationName) {
         NativeSearchQueryBuilder builder = new NativeSearchQueryBuilder().withQuery(matchQuery("vocationName", vocationName));
         SearchQuery searchQuery = builder.build();
         List<EsVocationCode> esVocationCodes = elasticsearchTemplate.queryForList(searchQuery, EsVocationCode.class);
-        VocationCodeVo vo = null;
-        if(esVocationCodes.size()>0){
+        VocationCodeVo vo = new VocationCodeVo();
+        ;
+        if (esVocationCodes.size() > 0) {
             EsVocationCode esVocationCode = esVocationCodes.get(0);
-            vo = new VocationCodeVo();
             vo.setVocationCode(esVocationCode.getVocationCode());
-        }else{
-            vo = new VocationCodeVo();
+        } else {
             vo.setVocationCode(18);
         }
         return vo;
