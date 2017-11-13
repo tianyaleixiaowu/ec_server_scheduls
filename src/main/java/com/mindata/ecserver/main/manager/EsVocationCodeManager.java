@@ -55,32 +55,18 @@ public class EsVocationCodeManager {
         }
     }
     public VocationCodeVo findByVocationName(String vocationName){
-        BoolQueryBuilder boolQuery = boolQuery();
-        if (!StrUtil.isEmpty(vocationName)) {
-            boolQuery.must(matchQuery("vocationName", vocationName));
-        }
-        NativeSearchQueryBuilder builder = new NativeSearchQueryBuilder().withQuery(boolQuery);
-
-        int page = Constant.PAGE_NUM;
-        int size = Constant.PAGE_SIZE;
-        Sort.Direction direction = Constant.DIRECTION;
-        String orderBy = "id";
-        Pageable pageable = new PageRequest(page, size, direction, orderBy);
-        SearchQuery searchQuery = builder.withPageable(pageable).build();
+        NativeSearchQueryBuilder builder = new NativeSearchQueryBuilder().withQuery(matchQuery("vocationName", vocationName));
+        SearchQuery searchQuery = builder.build();
         List<EsVocationCode> esVocationCodes = elasticsearchTemplate.queryForList(searchQuery, EsVocationCode.class);
-
-        List<VocationCodeVo> vocationCodeVos = new ArrayList<>();
+        VocationCodeVo vo = null;
         if(esVocationCodes.size()>0){
-            for(EsVocationCode esVocationCode : esVocationCodes){
-                VocationCodeVo vo = new VocationCodeVo();
-                vo.setVocationCode(esVocationCode.getVocationCode());
-                vocationCodeVos.add(vo);
-            }
+            EsVocationCode esVocationCode = esVocationCodes.get(0);
+            vo = new VocationCodeVo();
+            vo.setVocationCode(esVocationCode.getVocationCode());
         }else{
-            VocationCodeVo vo = new VocationCodeVo();
+            vo = new VocationCodeVo();
             vo.setVocationCode(18);
-            vocationCodeVos.add(vo);
         }
-        return vocationCodeVos.get(0);
+        return vo;
     }
 }
