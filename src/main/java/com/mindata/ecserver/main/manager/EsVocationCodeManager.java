@@ -54,7 +54,7 @@ public class EsVocationCodeManager {
             throw e;
         }
     }
-    public VocationCodeVo findByRequestBody(String vocationName){
+    public VocationCodeVo findByVocationName(String vocationName){
         BoolQueryBuilder boolQuery = boolQuery();
         if (!StrUtil.isEmpty(vocationName)) {
             boolQuery.must(matchQuery("vocationName", vocationName));

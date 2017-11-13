@@ -17,6 +17,6 @@ public class VocationCodeController {
 
     @GetMapping({""})
     public BaseData queryContactData(String vocationName) {
-        return ResultGenerator.genSuccessResult(esVocationCodeManager.findByRequestBody(vocationName));
+        return ResultGenerator.genSuccessResult(esVocationCodeManager.findByVocationName(vocationName));
     }
 }
