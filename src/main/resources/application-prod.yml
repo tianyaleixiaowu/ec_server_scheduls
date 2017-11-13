@@ -1,4 +1,12 @@
 spring:
+  data:
+    elasticsearch:
+      cluster-name: elasticsearch
+      cluster-nodes: ${ES_IP_PORT}
+      properties:
+        path:
+          logs: ./elasticsearch/log #elasticsearch日志存储目录
+          data: ./elasticsearch/data #elasticsearch数据存储目录
   datasource:
     primary:
       url: jdbc:mysql://${MYSQL_URL:172.26.249.246:3306}/company?autoReconnect=true&useUnicode=true

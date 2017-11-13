@@ -1,9 +1,7 @@
 package com.mindata.ecserver.main.model.es;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.*;
 
 import java.util.Date;
 
@@ -71,6 +69,30 @@ public class EsContact {
      */
     private String comintro;
     /**
+     * 省
+     */
+    @Field(index = FieldIndex.not_analyzed)
+    private String province;
+    /**
+     * 市
+     */
+    @Field(index = FieldIndex.not_analyzed)
+    private String city;
+    /**
+     * 来源（58、桔子）
+     */
+    @Field(index = FieldIndex.not_analyzed)
+    private Integer websiteId;
+    /**
+     * 人员数量
+     */
+    @Field(index = FieldIndex.not_analyzed)
+    private Integer memberSizeTag;
+    /**
+     * 行业编码
+     */
+    private Integer vocation;
+    /**
      * 该记录在数据库的创建日期
      */
     //@Field(type = FieldType.Date)
@@ -78,7 +100,12 @@ public class EsContact {
     /**
      * 插入ES库的日期
      */
-    @Field(type = FieldType.Date)
+    @Field(
+            type = FieldType.Date,
+            index = FieldIndex.not_analyzed,
+            store = true,
+            format = DateFormat.custom, pattern = "dd-MM-yyyy hh:mm:ss"
+    )
     private Long insertTime;
 
     public String getMainJob() {
@@ -129,6 +156,45 @@ public class EsContact {
         this.company = company;
     }
 
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public Integer getWebsiteId() {
+        return websiteId;
+    }
+
+    public void setWebsiteId(Integer websiteId) {
+        this.websiteId = websiteId;
+    }
+
+    public Integer getMemberSizeTag() {
+        return memberSizeTag;
+    }
+
+    public void setMemberSizeTag(Integer memberSizeTag) {
+        this.memberSizeTag = memberSizeTag;
+    }
+
+    public Integer getVocation() {
+        return vocation;
+    }
+
+    public void setVocation(Integer vocation) {
+        this.vocation = vocation;
+    }
 
     public String getMobile() {
         return mobile;

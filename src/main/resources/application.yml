@@ -2,7 +2,7 @@ spring:
   data:
     elasticsearch:
       cluster-name: elasticsearch
-      cluster-nodes: ${ES_IP_PORT:47.92.107.76:10022}
+      cluster-nodes: 47.92.107.76:10022
       properties:
         path:
           logs: ./elasticsearch/log #elasticsearch日志存储目录
@@ -13,7 +13,7 @@ spring:
     active: ${ENV:dev}
   jpa:
     database: mysql
-    show-sql: true
+    show-sql: false
     hibernate:
       ddl-auto: update
       naming:

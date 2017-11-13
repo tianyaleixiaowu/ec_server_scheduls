@@ -2,6 +2,8 @@ package com.mindata.ecserver.main.manager;
 
 import com.mindata.ecserver.main.model.es.EsContact;
 import com.mindata.ecserver.main.repository.es.EsContactRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +30,8 @@ public class EsContactManager {
     @Resource
     private EsContactRepository esContactRepository;
 
+    private Logger logger = LoggerFactory.getLogger(getClass());
+
     /**
      * 分页查询es中的数据
      */
@@ -40,6 +44,7 @@ public class EsContactManager {
      * 从es中找到最新的一条，然后对比数据库看看是不是最新
      */
     public EsContact findTheLastEsContact() {
+        logger.info("查询ES中最新的一条数据");
         //如果ES还未初始化
         if (!elasticsearchTemplate.indexExists(ES_INDEX_NAME)) {
             elasticsearchTemplate.createIndex(ES_INDEX_NAME);
@@ -48,8 +53,10 @@ public class EsContactManager {
         Pageable pageable = new PageRequest(0, 1, Sort.Direction.DESC, "id");
         List<EsContact> esContactList = find(pageable);
         if (esContactList.size() == 0) {
+            logger.info("ES中没有数据");
             return null;
         }
+        logger.info("ES中最新的一条数据为:" + esContactList.get(0));
         return esContactList.get(0);
     }
 
