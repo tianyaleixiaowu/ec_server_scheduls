@@ -9,7 +9,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.HashMap;
@@ -43,9 +42,10 @@ public class ContactManager {
     }
 
     /**
+     * 该方法是更新老数据的行业和省市信息的
      * 补齐省市县code表
      */
-    @PostConstruct
+    //@PostConstruct
     public void completeAreaCode() {
         LOGGER.info("开始补齐省市县");
         Pageable pageable = new PageRequest(0, 100);
@@ -73,7 +73,7 @@ public class ContactManager {
      *
      * @param compId 公司Id
      */
-    public void updateVocationCode(Long compId) {
+    private void updateVocationCode(Long compId) {
         List<String> industryList = companyIndustryInfoManager.getIndustryInfoForDb(compId);
         HashMap<String, Integer> map = esVocationCodeManager.findByVocationName(industryList.get(0));
         Integer vocationCode = map.get("vocationCode").intValue();
