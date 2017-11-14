@@ -1,6 +1,7 @@
 package com.mindata.ecserver.main.service;
 
 import com.mindata.ecserver.global.util.CommonUtil;
+import com.mindata.ecserver.main.manager.CompanyIndustryInfoManager;
 import com.mindata.ecserver.main.manager.CompanyJobInfoManager;
 import com.mindata.ecserver.main.manager.ContactManager;
 import com.mindata.ecserver.main.manager.EsContactManager;
@@ -32,7 +33,8 @@ public class EsContactService {
     private ContactManager contactManager;
     @Resource
     private EsContactManager esContactManager;
-
+    @Resource
+    private CompanyIndustryInfoManager industryInfoManager;
     public void dbToEs() {
         EsContact esContact = esContactManager.findTheLastEsContact();
         //ES一条数据都没有，说明是新库
@@ -115,7 +117,9 @@ public class EsContactService {
         esContact.setWelfare(extroInfo.get(1));
         esContact.setPosDes(extroInfo.get(2));
         esContact.setComintro(extroInfo.get(3));
-
+        //将行业名称添加到es
+        List<String> industryList =  industryInfoManager.getIndustryInfoForEs(ecContactEntity.getCompId());
+        esContact.setIndustry(industryList.get(0));
         esContact.setInsertTime(CommonUtil.getTimeStamp());
         return esContact;
     }
