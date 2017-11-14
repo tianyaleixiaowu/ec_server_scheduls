@@ -1,15 +1,7 @@
 package com.mindata.ecserver.main.manager;
 
-import com.mindata.ecserver.global.Constant;
 import com.mindata.ecserver.main.model.es.EsVocationCode;
 import com.mindata.ecserver.main.vo.VocationCodeVo;
-import com.xiaoleilu.hutool.util.StrUtil;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.IndexQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
@@ -24,12 +16,13 @@ import static com.mindata.ecserver.global.Constant.ES_INDEX_NAME;
 import static com.mindata.ecserver.global.Constant.ES_VOCATION_TYPE_NAME;
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 
+/**
+ * @author HanLiqiang wrote on 2017/11/14.
+ */
 @Service
 public class EsVocationCodeManager {
     @Resource
     private ElasticsearchTemplate elasticsearchTemplate;
-
-    private Logger logger = LoggerFactory.getLogger(getClass());
 
     public void bulkIndex(List<EsVocationCode> vocationCodes) {
         try {
@@ -52,16 +45,22 @@ public class EsVocationCodeManager {
         }
     }
 
+    /**
+     * 根据名字返回匹配的行业code值
+     *
+     * @param vocationName
+     * @return
+     */
     public VocationCodeVo findByVocationName(String vocationName) {
         NativeSearchQueryBuilder builder = new NativeSearchQueryBuilder().withQuery(matchQuery("vocationName", vocationName));
         SearchQuery searchQuery = builder.build();
         List<EsVocationCode> esVocationCodes = elasticsearchTemplate.queryForList(searchQuery, EsVocationCode.class);
         VocationCodeVo vo = new VocationCodeVo();
-        ;
         if (esVocationCodes.size() > 0) {
             EsVocationCode esVocationCode = esVocationCodes.get(0);
             vo.setVocationCode(esVocationCode.getVocationCode());
         } else {
+//            如果没有匹配到 则返回其他(code值为18)
             vo.setVocationCode(18);
         }
         return vo;

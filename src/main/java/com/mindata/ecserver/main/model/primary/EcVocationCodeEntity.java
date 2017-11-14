@@ -1,10 +1,12 @@
 package com.mindata.ecserver.main.model.primary;
 
 import javax.persistence.*;
-
+/**
+ * @author HanLiqiang wrote on 2017/11/14.
+ */
 @Entity
 @Table(name = "vocation_code")
-public class EcVoccationCodeEntity {
+public class EcVocationCodeEntity {
     private Integer vocationCode;
 
     private int parentCode;
