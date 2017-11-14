@@ -28,6 +28,8 @@ public interface EcContactRepository extends JpaRepository<EcContactEntity, Inte
      * 查询创建时间比目标时间晚的，用于增量插入ES
      * @param date
      * 目标时间
+     * @param pageable
+     * 分页
      * @return
      * 结果
      */
