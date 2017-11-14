@@ -62,7 +62,7 @@ public class CompanyJobInfoManager {
             }
         }
         for (CompanyJobInfo51 jobInfo : companyJobInfos1) {
-            if (!jobName.toString().contains(jobInfo.getJobName()) && StrUtil.isNotEmpty(jobInfo.getJobName())) {
+            if (StrUtil.isNotEmpty(jobInfo.getJobName()) && !jobName.toString().contains(jobInfo.getJobName()) ) {
                 jobName.append(jobInfo.getJobName());
             }
 
@@ -72,7 +72,7 @@ public class CompanyJobInfoManager {
             if (StrUtil.isNotEmpty(jobInfo.getPosDes())) {
                 posDes.append(jobInfo.getPosDes());
             }
-            if (!comintro.toString().contains(jobInfo.getComintro()) && StrUtil.isNotEmpty(jobInfo.getComintro())) {
+            if (StrUtil.isNotEmpty(jobInfo.getComintro()) && !comintro.toString().contains(jobInfo.getComintro()) ) {
                 comintro.append(jobInfo.getComintro());
             }
         }
@@ -87,7 +87,7 @@ public class CompanyJobInfoManager {
             if (StrUtil.isNotEmpty(jobInfo.getPosDes())) {
                 posDes.append(jobInfo.getPosDes());
             }
-            if (!comintro.toString().contains(jobInfo.getComintro()) && StrUtil.isNotEmpty(jobInfo.getComintro())) {
+            if (StrUtil.isNotEmpty(jobInfo.getComintro()) && !comintro.toString().contains(jobInfo.getComintro()) ) {
                 comintro.append(jobInfo.getComintro());
             }
         }
@@ -101,7 +101,7 @@ public class CompanyJobInfoManager {
             if (StrUtil.isNotEmpty(jobInfo.getPosDes())) {
                 posDes.append(jobInfo.getPosDes());
             }
-            if (!comintro.toString().contains(jobInfo.getComintro()) && StrUtil.isNotEmpty(jobInfo.getComintro())) {
+            if (StrUtil.isNotEmpty(jobInfo.getComintro()) && !comintro.toString().contains(jobInfo.getComintro())) {
                 comintro.append(jobInfo.getComintro());
             }
         }
