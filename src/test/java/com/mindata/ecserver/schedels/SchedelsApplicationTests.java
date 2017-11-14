@@ -30,17 +30,7 @@ public class SchedelsApplicationTests {
 		//	elasticsearchTemplate.deleteIndex(ES_INDEX_NAME);
 		//}
 		//System.out.println(fetchCompanyPhoneHistoryService.fetch());
-		esContactService.dbToEs();
-	}
-	@Test
-	public void totalInsert(){
-		esVocationCodeService.totalInsert();
-	}
-	@Test
-	public void test(){
-		StringBuilder industry = new StringBuilder();
-		industry.append("a");
-		System.out.println(industry.toString().contains(null));
+		//esContactService.dbToEs();
 	}
 
 }
