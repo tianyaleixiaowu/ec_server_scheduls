@@ -1,7 +1,13 @@
 package com.mindata.ecserver.main.manager;
 
-import com.mindata.ecserver.main.model.thirdly.*;
-import com.mindata.ecserver.main.repository.thirdly.*;
+import com.mindata.ecserver.main.model.thirdly.CompanyJobInfo;
+import com.mindata.ecserver.main.model.thirdly.CompanyJobInfo51;
+import com.mindata.ecserver.main.model.thirdly.CompanyJobInfoGanji;
+import com.mindata.ecserver.main.model.thirdly.CompanyJobInfoZl;
+import com.mindata.ecserver.main.repository.thirdly.CompanyJobInfo51Repository;
+import com.mindata.ecserver.main.repository.thirdly.CompanyJobInfoGanjiRepository;
+import com.mindata.ecserver.main.repository.thirdly.CompanyJobInfoRepository;
+import com.mindata.ecserver.main.repository.thirdly.CompanyJobInfoZlRepository;
 import com.xiaoleilu.hutool.util.StrUtil;
 import org.springframework.stereotype.Service;
 
@@ -60,10 +66,11 @@ public class CompanyJobInfoManager {
             if (!jobName.toString().contains(jobInfo.getJobName())) {
                 jobName.append(jobInfo.getJobName());
             }
-            if (jobInfo.getWelfare() != null) {
+
+            if (StrUtil.isNotEmpty(jobInfo.getWelfare())) {
                 welfare.append(jobInfo.getWelfare());
             }
-            if (jobInfo.getPosDes() != null) {
+            if (StrUtil.isNotEmpty(jobInfo.getPosDes())) {
                 posDes.append(jobInfo.getPosDes());
             }
             if (!comintro.toString().contains(jobInfo.getComintro())) {
@@ -71,13 +78,14 @@ public class CompanyJobInfoManager {
             }
         }
         for (CompanyJobInfoGanji jobInfo : companyJobInfos2) {
-            if (jobInfo.getJobName() != null) {
+            if (StrUtil.isNotEmpty(jobInfo.getJobName())) {
                 jobName.append(jobInfo.getJobName());
             }
-            if (jobInfo.getWelfare() != null) {
+            if (StrUtil.isNotEmpty(jobInfo.getWelfare())) {
                 welfare.append(jobInfo.getWelfare());
             }
-            if (jobInfo.getPosDes() != null) {
+
+            if (StrUtil.isNotEmpty(jobInfo.getPosDes())) {
                 posDes.append(jobInfo.getPosDes());
             }
             if (!comintro.toString().contains(jobInfo.getComintro())) {
@@ -85,13 +93,13 @@ public class CompanyJobInfoManager {
             }
         }
         for (CompanyJobInfoZl jobInfo : companyJobInfos3) {
-            if (jobInfo.getJobName() != null) {
+            if (StrUtil.isNotEmpty(jobInfo.getJobName())) {
                 jobName.append(jobInfo.getJobName());
             }
-            if (jobInfo.getWelfare() != null) {
+            if (StrUtil.isNotEmpty(jobInfo.getWelfare())) {
                 welfare.append(jobInfo.getWelfare());
             }
-            if (jobInfo.getPosDes() != null) {
+            if (StrUtil.isNotEmpty(jobInfo.getPosDes())) {
                 posDes.append(jobInfo.getPosDes());
             }
             if (!comintro.toString().contains(jobInfo.getComintro())) {

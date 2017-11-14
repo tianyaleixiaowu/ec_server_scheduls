@@ -5,6 +5,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -18,20 +21,29 @@ public interface EcContactRepository extends JpaRepository<EcContactEntity, Inte
     /**
      * 根据id集合查询线索集合
      *
-     * @param ids
-     *         id集合
+     * @param ids id集合
      * @return 线索集合
      */
     List<EcContactEntity> findByIdIn(List<Integer> ids);
 
     /**
      * 查询创建时间比目标时间晚的，用于增量插入ES
-     * @param date
-     * 目标时间
-     * @param pageable
-     * 分页
-     * @return
-     * 结果
+     *
+     * @param date     目标时间
+     * @param pageable 分页
+     * @return 结果
      */
     Page<EcContactEntity> findByCreateTimeAfter(Date date, Pageable pageable);
+
+    /**
+     * 根据行业名称修改行业code
+     *
+     * @param compId       公司Id
+     * @param vocationCode 行业code值
+     * @return 成功的个数
+     */
+    @Query(value = "update ec_contact_no_push p set p.vocation=?1 where p.comp_id=?2 ", nativeQuery = true)
+    @Modifying
+    @Transactional
+    Integer updateCodeByVocationName(Integer vocationCode, Long compId);
 }
