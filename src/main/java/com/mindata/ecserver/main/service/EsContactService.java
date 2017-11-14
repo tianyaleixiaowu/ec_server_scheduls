@@ -37,7 +37,7 @@ public class EsContactService {
         EsContact esContact = esContactManager.findTheLastEsContact();
         //ES一条数据都没有，说明是新库
         if (esContact == null) {
-            //TODO 全量插入
+            //全量插入
             totalInsert();
             return;
         }

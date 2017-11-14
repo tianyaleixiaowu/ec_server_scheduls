@@ -11,7 +11,7 @@ public interface Constant {
     String ES_TYPE_NAME = "contact";
     String ES_VOCATION_TYPE_NAME = "vocation";
 
-
+    String ES_TYPE_AREA = "code-area";
     int PAGE_SIZE = 10;
     int PAGE_NUM = 0;
 

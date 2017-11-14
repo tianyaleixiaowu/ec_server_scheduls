@@ -30,10 +30,10 @@ public class CompanyJobInfoManager {
 
     /**
      * 获取招聘工作名称、福利、职位描述、公司简介
+     *
      * @param companyId
-     * compId
-     * @return
-     * 所有的工作名称
+     *         compId
+     * @return 所有的工作名称
      */
     public List<String> getExtraInfo(Long companyId) {
         String jobName = "";
@@ -51,7 +51,10 @@ public class CompanyJobInfoManager {
                 jobName += jobInfo.getJobName();
             }
             if (jobInfo.getWelfare() != null) {
-                welfare += jobInfo.getWelfare();
+                //避免重复
+                if (!welfare.contains(jobInfo.getWelfare())) {
+                    welfare += jobInfo.getWelfare();
+                }
             }
             if (jobInfo.getPosDes() != null) {
                 posDes += jobInfo.getPosDes();
@@ -70,7 +73,7 @@ public class CompanyJobInfoManager {
             if (jobInfo.getPosDes() != null) {
                 posDes += jobInfo.getPosDes();
             }
-            if (jobInfo.getComintro() != null) {
+            if (!comintro.contains(jobInfo.getComintro())) {
                 comintro += jobInfo.getComintro();
             }
         }
@@ -84,7 +87,7 @@ public class CompanyJobInfoManager {
             if (jobInfo.getPosDes() != null) {
                 posDes += jobInfo.getPosDes();
             }
-            if (jobInfo.getComintro() != null) {
+            if (!comintro.contains(jobInfo.getComintro())) {
                 comintro += jobInfo.getComintro();
             }
         }
@@ -98,7 +101,7 @@ public class CompanyJobInfoManager {
             if (jobInfo.getPosDes() != null) {
                 posDes += jobInfo.getPosDes();
             }
-            if (jobInfo.getComintro() != null) {
+            if (!comintro.contains(jobInfo.getComintro())) {
                 comintro += jobInfo.getComintro();
             }
         }

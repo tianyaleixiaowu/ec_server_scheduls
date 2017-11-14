@@ -1,5 +1,6 @@
 package com.mindata.ecserver.main.model.es;
 
+import com.mindata.ecserver.global.Constant;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.*;
 
@@ -10,7 +11,7 @@ import static com.mindata.ecserver.global.Constant.ES_INDEX_NAME;
 /**
  * @author wuweifeng wrote on 2017/11/8.
  */
-@Document(indexName = ES_INDEX_NAME, type = "contact", indexStoreType = "fs", shards = 5, replicas = 1,
+@Document(indexName = ES_INDEX_NAME, type = Constant.ES_TYPE_NAME, indexStoreType = "fs", shards = 5, replicas = 1,
         refreshInterval = "-1")
 public class EsContact {
     @Id
