@@ -4,7 +4,6 @@ import com.mindata.ecserver.main.manager.EsVocationCodeManager;
 import com.mindata.ecserver.main.manager.VocationCodeManager;
 import com.mindata.ecserver.main.model.es.EsVocationCode;
 import com.mindata.ecserver.main.model.primary.EcVocationCodeEntity;
-import com.mindata.ecserver.main.vo.VocationCodeVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
