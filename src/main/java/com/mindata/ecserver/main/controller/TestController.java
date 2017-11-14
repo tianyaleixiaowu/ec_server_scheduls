@@ -30,9 +30,9 @@ public class TestController {
         return "dbToEs";
     }
 
-    @GetMapping("/forse")
-    public Object forseDbToEs() {
+    @GetMapping("/force")
+    public Object forceDbToEs() {
         esContactService.forseTotal();
-        return "forse dbToEs";
+        return "force dbToEs";
     }
 }
