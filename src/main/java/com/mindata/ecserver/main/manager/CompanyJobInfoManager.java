@@ -32,8 +32,7 @@ public class CompanyJobInfoManager {
     /**
      * 获取招聘工作名称、福利、职位描述、公司简介
      *
-     * @param companyId
-     *         compId
+     * @param companyId compId
      * @return 所有的工作名称
      */
     public List<String> getExtraInfo(Long companyId) {
@@ -63,7 +62,7 @@ public class CompanyJobInfoManager {
             }
         }
         for (CompanyJobInfo51 jobInfo : companyJobInfos1) {
-            if (!jobName.toString().contains(jobInfo.getJobName())) {
+            if (!jobName.toString().contains(jobInfo.getJobName()) && StrUtil.isNotEmpty(jobInfo.getJobName())) {
                 jobName.append(jobInfo.getJobName());
             }
 
@@ -73,7 +72,7 @@ public class CompanyJobInfoManager {
             if (StrUtil.isNotEmpty(jobInfo.getPosDes())) {
                 posDes.append(jobInfo.getPosDes());
             }
-            if (!comintro.toString().contains(jobInfo.getComintro())) {
+            if (!comintro.toString().contains(jobInfo.getComintro()) && StrUtil.isNotEmpty(jobInfo.getComintro())) {
                 comintro.append(jobInfo.getComintro());
             }
         }
@@ -88,7 +87,7 @@ public class CompanyJobInfoManager {
             if (StrUtil.isNotEmpty(jobInfo.getPosDes())) {
                 posDes.append(jobInfo.getPosDes());
             }
-            if (!comintro.toString().contains(jobInfo.getComintro())) {
+            if (!comintro.toString().contains(jobInfo.getComintro()) && StrUtil.isNotEmpty(jobInfo.getComintro())) {
                 comintro.append(jobInfo.getComintro());
             }
         }
@@ -102,7 +101,7 @@ public class CompanyJobInfoManager {
             if (StrUtil.isNotEmpty(jobInfo.getPosDes())) {
                 posDes.append(jobInfo.getPosDes());
             }
-            if (!comintro.toString().contains(jobInfo.getComintro())) {
+            if (!comintro.toString().contains(jobInfo.getComintro()) && StrUtil.isNotEmpty(jobInfo.getComintro())) {
                 comintro.append(jobInfo.getComintro());
             }
         }
