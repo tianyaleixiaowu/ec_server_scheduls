@@ -18,8 +18,8 @@ public class VocationCodeController {
     @Resource
     private EsVocationCodeService esVocationCodeService;
 
-    @GetMapping({""})
-    public BaseData queryVocationCode(String vocationName) {
-        return ResultGenerator.genSuccessResult(esVocationCodeService.queryVocationName(vocationName));
+    @GetMapping("")
+    public BaseData queryCodeByVocationName(String vocationName) {
+        return ResultGenerator.genSuccessResult(esVocationCodeService.queryCodeByVocationName(vocationName));
     }
 }
