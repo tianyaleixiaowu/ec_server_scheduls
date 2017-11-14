@@ -35,6 +35,7 @@ public class EsContactService {
     private EsContactManager esContactManager;
     @Resource
     private CompanyIndustryInfoManager industryInfoManager;
+
     public void dbToEs() {
         EsContact esContact = esContactManager.findTheLastEsContact();
         //ES一条数据都没有，说明是新库
@@ -47,6 +48,13 @@ public class EsContactService {
         //该记录在数据库的创建时间
         Date createTime = esContact.getCreateTime();
         partInsertAfter(createTime);
+    }
+
+    /**
+     * 导入全部数据到es
+     */
+    public void forseTotal() {
+        totalInsert();
     }
 
     private void totalInsert() {

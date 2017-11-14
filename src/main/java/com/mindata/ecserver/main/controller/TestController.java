@@ -29,4 +29,10 @@ public class TestController {
         esContactService.dbToEs();
         return "dbToEs";
     }
+
+    @GetMapping("/forse")
+    public Object forseDbToEs() {
+        esContactService.forseTotal();
+        return "forse dbToEs";
+    }
 }
