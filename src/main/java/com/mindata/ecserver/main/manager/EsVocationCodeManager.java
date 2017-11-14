@@ -47,9 +47,6 @@ public class EsVocationCodeManager {
 
     /**
      * 根据名字返回匹配的行业code值
-     *
-     * @param vocationName
-     * @return
      */
     public VocationCodeVo findByVocationName(String vocationName) {
         NativeSearchQueryBuilder builder = new NativeSearchQueryBuilder().withQuery(matchQuery("vocationName", vocationName));
@@ -60,7 +57,7 @@ public class EsVocationCodeManager {
             EsVocationCode esVocationCode = esVocationCodes.get(0);
             vo.setVocationCode(esVocationCode.getVocationCode());
         } else {
-//            如果没有匹配到 则返回其他(code值为18)
+            //如果没有匹配到 则返回其他(code值为18)
             vo.setVocationCode(18);
         }
         return vo;
