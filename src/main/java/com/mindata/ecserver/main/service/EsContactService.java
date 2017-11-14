@@ -111,6 +111,7 @@ public class EsContactService {
         esContact.setWebsiteId(ecContactEntity.getWebsiteId());
         esContact.setVocation(ecContactEntity.getVocation());
         esContact.setMemberSizeTag(ecContactEntity.getMemberSizeTag());
+        esContact.setNeedSale(ecContactEntity.getNeedSale());
         String ipc = "未备案";
         if (StrUtil.equals("Y", ecContactEntity.getIpcFlag())) {
             ipc = "已备案";

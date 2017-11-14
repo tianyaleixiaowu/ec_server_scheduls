@@ -98,6 +98,10 @@ public class EsContact {
      */
     private String industry;
     /**
+     * 需要招聘销售
+     */
+    private Boolean needSale;
+    /**
      * 该记录在数据库的创建日期
      */
     //@Field(type = FieldType.Date)
@@ -127,6 +131,14 @@ public class EsContact {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Boolean getNeedSale() {
+        return needSale;
+    }
+
+    public void setNeedSale(Boolean needSale) {
+        this.needSale = needSale;
     }
 
     public Long getCompId() {
