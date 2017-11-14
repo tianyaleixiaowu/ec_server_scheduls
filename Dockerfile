@@ -1,4 +1,4 @@
-FROM hub.c.163.com/wuxukun/maven-aliyun:3-jdk-8
+FROM daocloud.io/brave8/maven-jdk8
 
 ADD pom.xml /tmp/build/
 
