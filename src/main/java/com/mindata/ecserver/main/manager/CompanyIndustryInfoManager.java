@@ -47,22 +47,22 @@ public class CompanyIndustryInfoManager {
             }
         }
         for (CompanyIndustryInfo88 companyIndustryInfo88 : industryInfo88s) {
-            if (!industry.toString().contains(companyIndustryInfo88.getIndustry()) && StrUtil.isNotEmpty(companyIndustryInfo88.getIndustry())) {
+            if (StrUtil.isNotEmpty(companyIndustryInfo88.getIndustry()) && !industry.toString().contains(companyIndustryInfo88.getIndustry()) ) {
                 industry.append(companyIndustryInfo88.getIndustry());
             }
         }
         for (CompanyIndustryInfoGanji companyIndustryInfoGanji : industryInfoGanjis) {
-            if (!industry.toString().contains(companyIndustryInfoGanji.getIndustry()) && StrUtil.isNotEmpty(companyIndustryInfoGanji.getIndustry())) {
+            if (StrUtil.isNotEmpty(companyIndustryInfoGanji.getIndustry()) && !industry.toString().contains(companyIndustryInfoGanji.getIndustry()) ) {
                 industry.append(companyIndustryInfoGanji.getIndustry());
             }
         }
         for (CompanyIndustryInfo companyIndustryInfo : industryInfos) {
-            if (!industry.toString().contains(companyIndustryInfo.getIndustry()) && StrUtil.isNotEmpty(companyIndustryInfo.getIndustry())) {
+            if (StrUtil.isNotEmpty(companyIndustryInfo.getIndustry()) && !industry.toString().contains(companyIndustryInfo.getIndustry()) ) {
                 industry.append(companyIndustryInfo.getIndustry());
             }
         }
         for (CompanyIndustryInfoZl companyIndustryInfoZl : industryInfoZls) {
-            if (!industry.toString().contains(companyIndustryInfoZl.getIndustry()) && StrUtil.isNotEmpty(companyIndustryInfoZl.getIndustry())) {
+            if (StrUtil.isNotEmpty(companyIndustryInfoZl.getIndustry()) && !industry.toString().contains(companyIndustryInfoZl.getIndustry()) ) {
                 industry.append(companyIndustryInfoZl.getIndustry());
             }
         }
@@ -90,7 +90,7 @@ public class CompanyIndustryInfoManager {
         StringBuilder industry = new StringBuilder();
         List<String> list = getIndustryInfoForDb(compId);
         String vocationName = get3158IndustryInfo(compId);
-        if (!list.contains(vocationName) && StrUtil.isNotEmpty(vocationName)) {
+        if (StrUtil.isNotEmpty(vocationName) && !list.contains(vocationName) ) {
             industry.append(list.get(0));
         }
         return Arrays.asList(industry.toString());
