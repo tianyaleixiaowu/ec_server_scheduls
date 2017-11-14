@@ -9,6 +9,4 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "xs_company_jobinfo")
 public class CompanyJobInfo extends BaseCompanyJobInfo {
-
-
 }

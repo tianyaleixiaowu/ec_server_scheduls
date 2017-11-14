@@ -1,6 +1,7 @@
 package com.mindata.ecserver.main.controller;
 
 import com.mindata.ecserver.main.manager.EcCodeAreaManager;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,7 +18,7 @@ public class AreaController {
     @Resource
     private EcCodeAreaManager ecCodeAreaManager;
 
-    @RequestMapping("")
+    @GetMapping("")
     public Object getArea(String area) {
         return ecCodeAreaManager.findAreaCode(area);
     }

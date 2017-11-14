@@ -10,5 +10,4 @@ import javax.persistence.Table;
 @Table(name = "xs_company_jobinfo_zl")
 public class CompanyJobInfoZl extends BaseCompanyJobInfo {
 
-
 }

@@ -94,6 +94,10 @@ public class EsContact {
      */
     private Integer vocation;
     /**
+     * 行业信息
+     */
+    private String industry;
+    /**
      * 该记录在数据库的创建日期
      */
     //@Field(type = FieldType.Date)
@@ -139,6 +143,14 @@ public class EsContact {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getIndustry() {
+        return industry;
+    }
+
+    public void setIndustry(String industry) {
+        this.industry = industry;
     }
 
     public String getIpcFlag() {

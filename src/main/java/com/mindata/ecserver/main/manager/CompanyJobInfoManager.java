@@ -1,13 +1,8 @@
 package com.mindata.ecserver.main.manager;
 
-import com.mindata.ecserver.main.model.thirdly.CompanyJobInfo;
-import com.mindata.ecserver.main.model.thirdly.CompanyJobInfo51;
-import com.mindata.ecserver.main.model.thirdly.CompanyJobInfoGanji;
-import com.mindata.ecserver.main.model.thirdly.CompanyJobInfoZl;
-import com.mindata.ecserver.main.repository.thirdly.CompanyJobInfo51Repository;
-import com.mindata.ecserver.main.repository.thirdly.CompanyJobInfoGanjiRepository;
-import com.mindata.ecserver.main.repository.thirdly.CompanyJobInfoRepository;
-import com.mindata.ecserver.main.repository.thirdly.CompanyJobInfoZlRepository;
+import com.mindata.ecserver.main.model.thirdly.*;
+import com.mindata.ecserver.main.repository.thirdly.*;
+import com.xiaoleilu.hutool.util.StrUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -36,10 +31,10 @@ public class CompanyJobInfoManager {
      * @return 所有的工作名称
      */
     public List<String> getExtraInfo(Long companyId) {
-        String jobName = "";
-        String welfare = "";
-        String posDes = "";
-        String comintro = "";
+        StringBuilder jobName = new StringBuilder();
+        StringBuilder welfare = new StringBuilder();
+        StringBuilder posDes = new StringBuilder();
+        StringBuilder comintro = new StringBuilder();
 
         List<CompanyJobInfo> companyJobInfos = companyJobInfoRepository.findByCompId(companyId);
         List<CompanyJobInfo51> companyJobInfos1 = companyJobInfo51Repository.findByCompId(companyId);
@@ -47,65 +42,63 @@ public class CompanyJobInfoManager {
         List<CompanyJobInfoZl> companyJobInfos3 = companyJobInfoZlRepository.findByCompId(companyId);
 
         for (CompanyJobInfo jobInfo : companyJobInfos) {
-            if (jobInfo.getJobName() != null) {
-                jobName += jobInfo.getJobName();
+            if (StrUtil.isNotEmpty(jobInfo.getJobName())) {
+                jobName.append(jobInfo.getJobName());
             }
-            if (jobInfo.getWelfare() != null) {
+            if (StrUtil.isNotEmpty(jobInfo.getWelfare())) {
                 //避免重复
-                if (!welfare.contains(jobInfo.getWelfare())) {
-                    welfare += jobInfo.getWelfare();
-                }
+                welfare.append(jobInfo.getWelfare());
             }
-            if (jobInfo.getPosDes() != null) {
-                posDes += jobInfo.getPosDes();
+            if (StrUtil.isNotEmpty(jobInfo.getPosDes())) {
+                posDes.append(jobInfo.getPosDes());
             }
-            if (jobInfo.getComintro() != null) {
-                comintro += jobInfo.getComintro();
+            if (StrUtil.isNotEmpty(jobInfo.getComintro())) {
+                comintro.append(jobInfo.getComintro());
             }
         }
         for (CompanyJobInfo51 jobInfo : companyJobInfos1) {
-            if (jobInfo.getJobName() != null) {
-                jobName += jobInfo.getJobName();
+            if (!jobName.toString().contains(jobInfo.getJobName())) {
+                jobName.append(jobInfo.getJobName());
             }
             if (jobInfo.getWelfare() != null) {
-                welfare += jobInfo.getWelfare();
+                welfare.append(jobInfo.getWelfare());
             }
             if (jobInfo.getPosDes() != null) {
-                posDes += jobInfo.getPosDes();
+                posDes.append(jobInfo.getPosDes());
             }
-            if (!comintro.contains(jobInfo.getComintro())) {
-                comintro += jobInfo.getComintro();
+            if (!comintro.toString().contains(jobInfo.getComintro())) {
+                comintro.append(jobInfo.getComintro());
             }
         }
         for (CompanyJobInfoGanji jobInfo : companyJobInfos2) {
             if (jobInfo.getJobName() != null) {
-                jobName += jobInfo.getJobName();
+                jobName.append(jobInfo.getJobName());
             }
             if (jobInfo.getWelfare() != null) {
-                welfare += jobInfo.getWelfare();
+                welfare.append(jobInfo.getWelfare());
             }
             if (jobInfo.getPosDes() != null) {
-                posDes += jobInfo.getPosDes();
+                posDes.append(jobInfo.getPosDes());
             }
-            if (!comintro.contains(jobInfo.getComintro())) {
-                comintro += jobInfo.getComintro();
+            if (!comintro.toString().contains(jobInfo.getComintro())) {
+                comintro.append(jobInfo.getComintro());
             }
         }
         for (CompanyJobInfoZl jobInfo : companyJobInfos3) {
             if (jobInfo.getJobName() != null) {
-                jobName += jobInfo.getJobName();
+                jobName.append(jobInfo.getJobName());
             }
             if (jobInfo.getWelfare() != null) {
-                welfare += jobInfo.getWelfare();
+                welfare.append(jobInfo.getWelfare());
             }
             if (jobInfo.getPosDes() != null) {
-                posDes += jobInfo.getPosDes();
+                posDes.append(jobInfo.getPosDes());
             }
-            if (!comintro.contains(jobInfo.getComintro())) {
-                comintro += jobInfo.getComintro();
+            if (!comintro.toString().contains(jobInfo.getComintro())) {
+                comintro.append(jobInfo.getComintro());
             }
         }
-        return Arrays.asList(jobName, welfare, posDes, comintro);
+        return Arrays.asList(jobName.toString(), welfare.toString(), posDes.toString(), comintro.toString());
     }
 
 }
