@@ -44,6 +44,6 @@ public interface EcContactRepository extends JpaRepository<EcContactEntity, Inte
      */
     @Query(value = "update ec_contact_no_push p set p.vocation=?1 where p.comp_id=?2 ", nativeQuery = true)
     @Modifying
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     Integer updateCodeByVocationName(Integer vocationCode, Long compId);
 }
