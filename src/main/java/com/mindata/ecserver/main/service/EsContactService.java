@@ -53,7 +53,7 @@ public class EsContactService {
     /**
      * 导入全部数据到es
      */
-    public void forseTotal() {
+    public void forceTotal() {
         totalInsert();
     }
 
@@ -121,11 +121,11 @@ public class EsContactService {
         esContact.setMainJob(ecContactEntity.getMainJob());
         esContact.setCreateTime(ecContactEntity.getCreateTime());
         //下面的都是别的表聚合来的数据
-        List<String> extroInfo = companyJobInfoManager.getExtraInfo(ecContactEntity.getCompId());
-        esContact.setJobName(extroInfo.get(0));
-        esContact.setWelfare(extroInfo.get(1));
-        esContact.setPosDes(extroInfo.get(2));
-        esContact.setComintro(extroInfo.get(3));
+        List<String> extraInfo = companyJobInfoManager.getExtraInfo(ecContactEntity.getCompId());
+        esContact.setJobName(extraInfo.get(0));
+        esContact.setWelfare(extraInfo.get(1));
+        esContact.setPosDes(extraInfo.get(2));
+        esContact.setComintro(extraInfo.get(3));
         //将行业名称添加到es
         List<String> industryList =  industryInfoManager.getIndustryInfoForEs(ecContactEntity.getCompId());
         esContact.setIndustry(industryList.get(0));

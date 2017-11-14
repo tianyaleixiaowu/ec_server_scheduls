@@ -32,7 +32,7 @@ public class TestController {
 
     @GetMapping("/force")
     public Object forceDbToEs() {
-        esContactService.forseTotal();
+        esContactService.forceTotal();
         return "force dbToEs";
     }
 }
