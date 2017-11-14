@@ -1,6 +1,5 @@
 package com.mindata.ecserver.main.service;
 
-import com.mindata.ecserver.global.exception.EcException;
 import com.mindata.ecserver.main.manager.EsVocationCodeManager;
 import com.mindata.ecserver.main.manager.VocationCodeManager;
 import com.mindata.ecserver.main.model.es.EsVocationCode;
@@ -45,6 +44,7 @@ public class EsVocationCodeService {
         List<EcVocationCodeEntity> codeEntityList = vocationCodeManager.findVocationCode();
         if (codeEntityList.size() == 0) {
             logger.error("没有数据");
+            return;
         }
         esVocationCodeManager.bulkIndex(codeEntityList.stream().map(this::convert).collect(Collectors.toList()));
     }
