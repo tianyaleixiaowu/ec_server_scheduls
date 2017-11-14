@@ -42,6 +42,9 @@ public class EcCodeAreaManager {
 
     @PostConstruct
     public void areaToEs() {
+        if (!elasticsearchTemplate.indexExists(ES_INDEX_NAME)) {
+            elasticsearchTemplate.createIndex(ES_INDEX_NAME);
+        }
         if (elasticsearchTemplate.typeExists(ES_INDEX_NAME, ES_TYPE_AREA)) {
             return;
         }

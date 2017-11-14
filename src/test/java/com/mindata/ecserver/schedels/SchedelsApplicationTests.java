@@ -26,11 +26,11 @@ public class SchedelsApplicationTests {
 
 	@Test
 	public void contextLoads() throws IOException {
-		//if (elasticsearchTemplate.indexExists(ES_INDEX_NAME)) {
-		//	elasticsearchTemplate.deleteIndex(ES_INDEX_NAME);
+		//if (!elasticsearchTemplate.indexExists(ES_INDEX_NAME)) {
+		//	elasticsearchTemplate.createIndex(ES_INDEX_NAME);
 		//}
 		//System.out.println(fetchCompanyPhoneHistoryService.fetch());
-		esContactService.dbToEs();
+		//esContactService.dbToEs();
 	}
 
 }
