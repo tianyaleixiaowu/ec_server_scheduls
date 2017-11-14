@@ -36,6 +36,11 @@ public class SchedelsApplicationTests {
 	public void totalInsert(){
 		esVocationCodeService.totalInsert();
 	}
-
+	@Test
+	public void test(){
+		StringBuilder industry = new StringBuilder();
+		industry.append("a");
+		System.out.println(industry.toString().contains(null));
+	}
 
 }
