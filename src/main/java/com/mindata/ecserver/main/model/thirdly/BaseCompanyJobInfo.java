@@ -49,10 +49,6 @@ public class BaseCompanyJobInfo {
      */
     private String welfare;
     /**
-     * 行业信息
-     */
-    private String industry;
-    /**
      * 职位描述
      */
     @Column(name = "posDes")
@@ -74,13 +70,6 @@ public class BaseCompanyJobInfo {
         this.id = id;
     }
 
-    public String getIndustry() {
-        return industry;
-    }
-
-    public void setIndustry(String industry) {
-        this.industry = industry;
-    }
     public Long getCompId() {
         return compId;
     }
