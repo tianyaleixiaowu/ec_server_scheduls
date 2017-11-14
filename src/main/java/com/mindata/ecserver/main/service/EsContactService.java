@@ -7,6 +7,7 @@ import com.mindata.ecserver.main.manager.ContactManager;
 import com.mindata.ecserver.main.manager.EsContactManager;
 import com.mindata.ecserver.main.model.es.EsContact;
 import com.mindata.ecserver.main.model.primary.EcContactEntity;
+import com.xiaoleilu.hutool.convert.Convert;
 import com.xiaoleilu.hutool.util.StrUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -106,12 +107,12 @@ public class EsContactService {
         esContact.setPhone(ecContactEntity.getPhone());
         esContact.setAddress(ecContactEntity.getAddress());
         esContact.setMemo(ecContactEntity.getMemo());
-        esContact.setProvince(ecContactEntity.getProvince());
-        esContact.setCity(ecContactEntity.getCity());
+        esContact.setProvince(Convert.toInt(ecContactEntity.getProvince()));
+        esContact.setCity(Convert.toInt(ecContactEntity.getCity()));
         esContact.setWebsiteId(ecContactEntity.getWebsiteId());
         esContact.setVocation(ecContactEntity.getVocation());
         esContact.setMemberSizeTag(ecContactEntity.getMemberSizeTag());
-        esContact.setNeedSale(ecContactEntity.getNeedSale());
+        esContact.setNeedSale(ecContactEntity.getNeedSale() ? 1 : 0);
         String ipc = "未备案";
         if (StrUtil.equals("Y", ecContactEntity.getIpcFlag())) {
             ipc = "已备案";

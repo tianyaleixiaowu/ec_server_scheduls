@@ -89,6 +89,7 @@ public class CompanyIndustryInfoManager {
     public List<String> getIndustryInfoForEs(Long compId) {
         StringBuilder industry = new StringBuilder();
         List<String> list = getIndustryInfoForDb(compId);
+        industry.append(list.get(0));
         String vocationName = get3158IndustryInfo(compId);
         if (StrUtil.isNotEmpty(vocationName) && !list.contains(vocationName) ) {
             industry.append(list.get(0));

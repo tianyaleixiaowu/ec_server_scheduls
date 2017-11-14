@@ -73,12 +73,12 @@ public class EsContact {
      * 省
      */
     @Field(index = FieldIndex.not_analyzed)
-    private String province;
+    private Integer province;
     /**
      * 市
      */
     @Field(index = FieldIndex.not_analyzed)
-    private String city;
+    private Integer city;
     /**
      * 来源（58、桔子）
      */
@@ -100,7 +100,7 @@ public class EsContact {
     /**
      * 需要招聘销售
      */
-    private Boolean needSale;
+    private Integer needSale;
     /**
      * 该记录在数据库的创建日期
      */
@@ -133,11 +133,11 @@ public class EsContact {
         this.id = id;
     }
 
-    public Boolean getNeedSale() {
+    public Integer getNeedSale() {
         return needSale;
     }
 
-    public void setNeedSale(Boolean needSale) {
+    public void setNeedSale(Integer needSale) {
         this.needSale = needSale;
     }
 
@@ -181,19 +181,19 @@ public class EsContact {
         this.company = company;
     }
 
-    public String getProvince() {
+    public Integer getProvince() {
         return province;
     }
 
-    public void setProvince(String province) {
+    public void setProvince(Integer province) {
         this.province = province;
     }
 
-    public String getCity() {
+    public Integer getCity() {
         return city;
     }
 
-    public void setCity(String city) {
+    public void setCity(Integer city) {
         this.city = city;
     }
 
