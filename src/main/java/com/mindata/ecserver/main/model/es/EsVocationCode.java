@@ -5,7 +5,9 @@ import org.springframework.data.elasticsearch.annotations.Document;
 
 import static com.mindata.ecserver.global.Constant.ES_INDEX_NAME;
 import static com.mindata.ecserver.global.Constant.ES_VOCATION_TYPE_NAME;
-
+/**
+ * @author HanLiqiang wrote on 2017/11/14.
+ */
 @Document(indexName = ES_INDEX_NAME, type = ES_VOCATION_TYPE_NAME, indexStoreType = "fs", shards = 5, replicas = 1,
         refreshInterval = "-1")
 public class EsVocationCode {

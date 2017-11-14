@@ -2,21 +2,24 @@ package com.mindata.ecserver.main.controller;
 
 import com.mindata.ecserver.global.bean.BaseData;
 import com.mindata.ecserver.global.bean.ResultGenerator;
-import com.mindata.ecserver.main.manager.EsVocationCodeManager;
+import com.mindata.ecserver.main.service.EsVocationCodeService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
+/**
+ * @author HanLiqiang wrote on 2017/11/14.
+ */
 @RestController
 @RequestMapping("/vocationCode")
 public class VocationCodeController {
     @Resource
-    private EsVocationCodeManager esVocationCodeManager;
+    private EsVocationCodeService esVocationCodeService;
 
     @GetMapping({""})
-    public BaseData queryContactData(String vocationName) {
-        return ResultGenerator.genSuccessResult(esVocationCodeManager.findByVocationName(vocationName));
+    public BaseData queryVocationCode(String vocationName) {
+        return ResultGenerator.genSuccessResult(esVocationCodeService.queryVocationName(vocationName));
     }
 }
