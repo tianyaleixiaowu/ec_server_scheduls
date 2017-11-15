@@ -8,6 +8,7 @@ import com.mindata.ecserver.main.manager.EsContactManager;
 import com.mindata.ecserver.main.model.es.EsContact;
 import com.mindata.ecserver.main.model.primary.EcContactEntity;
 import com.xiaoleilu.hutool.convert.Convert;
+import com.xiaoleilu.hutool.date.DateUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -75,7 +76,9 @@ public class EsContactService {
         Sort sort = new Sort(Sort.Direction.ASC, "id");
         //去数据库判断比该记录晚的，增量插入ES
         Pageable pageable = new PageRequest(0, 1, sort);
-        Page<EcContactEntity> page = contactManager.findContactByCreateTimeAfter(createTime, pageable);
+        //3点时取今天0点时间
+        Date beginOfDay = DateUtil.beginOfDay(CommonUtil.getNow());
+        Page<EcContactEntity> page = contactManager.findContactByCreateTimeBetween(createTime, beginOfDay, pageable);
         //没有新数据
         if (page.getTotalElements() == 0) {
             return;

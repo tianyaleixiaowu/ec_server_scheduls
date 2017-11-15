@@ -42,6 +42,13 @@ public class ContactManager {
     }
 
     /**
+     * 查询createTime晚于目标时间早于晚上12点前的
+     */
+    public Page<EcContactEntity> findContactByCreateTimeBetween(Date beginTime, Date endTime, Pageable pageable) {
+        return ecContactRepository.findByCreateTimeBetween(beginTime, endTime, pageable);
+    }
+
+    /**
      * 该方法是更新老数据的行业和省市信息的
      * 补齐省市县code表
      */

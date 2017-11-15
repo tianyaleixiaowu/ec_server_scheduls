@@ -36,6 +36,19 @@ public interface EcContactRepository extends JpaRepository<EcContactEntity, Inte
     Page<EcContactEntity> findByCreateTimeAfter(Date date, Pageable pageable);
 
     /**
+     * 查询创建时间比目标时间晚的，用于增量插入ES
+     *
+     * @param begin
+     *         开始时间
+     * @param end
+     *         结束时间
+     * @param pageable
+     *         分页
+     * @return 结果
+     */
+    Page<EcContactEntity> findByCreateTimeBetween(Date begin, Date end, Pageable pageable);
+
+    /**
      * 根据行业名称修改行业code
      *
      * @param compId       公司Id
