@@ -15,6 +15,8 @@ import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.mindata.ecserver.global.Constant.DOUHAO;
+
 /**
  * @author wuweifeng wrote on 2017/11/8.
  */
@@ -48,61 +50,61 @@ public class CompanyJobInfoManager {
 
         for (CompanyJobInfo jobInfo : companyJobInfos) {
             if (StrUtil.isNotEmpty(jobInfo.getJobName())) {
-                jobName.append(jobInfo.getJobName());
+                jobName.append(jobInfo.getJobName()).append(DOUHAO);
             }
             if (StrUtil.isNotEmpty(jobInfo.getWelfare())) {
                 //避免重复
-                welfare.append(jobInfo.getWelfare());
+                welfare.append(jobInfo.getWelfare()).append(DOUHAO);
             }
             if (StrUtil.isNotEmpty(jobInfo.getPosDes())) {
-                posDes.append(jobInfo.getPosDes());
+                posDes.append(jobInfo.getPosDes()).append(DOUHAO);
             }
             if (StrUtil.isNotEmpty(jobInfo.getComintro())) {
-                comintro.append(jobInfo.getComintro());
+                comintro.append(jobInfo.getComintro()).append(DOUHAO);
             }
         }
         for (CompanyJobInfo51 jobInfo : companyJobInfos1) {
             if (StrUtil.isNotEmpty(jobInfo.getJobName()) && !jobName.toString().contains(jobInfo.getJobName()) ) {
-                jobName.append(jobInfo.getJobName());
+                jobName.append(jobInfo.getJobName()).append(DOUHAO);
             }
 
             if (StrUtil.isNotEmpty(jobInfo.getWelfare())) {
-                welfare.append(jobInfo.getWelfare());
+                welfare.append(jobInfo.getWelfare()).append(DOUHAO);
             }
             if (StrUtil.isNotEmpty(jobInfo.getPosDes())) {
-                posDes.append(jobInfo.getPosDes());
+                posDes.append(jobInfo.getPosDes()).append(DOUHAO);
             }
             if (StrUtil.isNotEmpty(jobInfo.getComintro()) && !comintro.toString().contains(jobInfo.getComintro()) ) {
-                comintro.append(jobInfo.getComintro());
+                comintro.append(jobInfo.getComintro()).append(DOUHAO);
             }
         }
         for (CompanyJobInfoGanji jobInfo : companyJobInfos2) {
             if (StrUtil.isNotEmpty(jobInfo.getJobName())) {
-                jobName.append(jobInfo.getJobName());
+                jobName.append(jobInfo.getJobName()).append(DOUHAO);
             }
             if (StrUtil.isNotEmpty(jobInfo.getWelfare())) {
-                welfare.append(jobInfo.getWelfare());
+                welfare.append(jobInfo.getWelfare()).append(DOUHAO);
             }
 
             if (StrUtil.isNotEmpty(jobInfo.getPosDes())) {
-                posDes.append(jobInfo.getPosDes());
+                posDes.append(jobInfo.getPosDes()).append(DOUHAO);
             }
             if (StrUtil.isNotEmpty(jobInfo.getComintro()) && !comintro.toString().contains(jobInfo.getComintro()) ) {
-                comintro.append(jobInfo.getComintro());
+                comintro.append(jobInfo.getComintro()).append(DOUHAO);
             }
         }
         for (CompanyJobInfoZl jobInfo : companyJobInfos3) {
             if (StrUtil.isNotEmpty(jobInfo.getJobName())) {
-                jobName.append(jobInfo.getJobName());
+                jobName.append(jobInfo.getJobName()).append(DOUHAO);
             }
             if (StrUtil.isNotEmpty(jobInfo.getWelfare())) {
-                welfare.append(jobInfo.getWelfare());
+                welfare.append(jobInfo.getWelfare()).append(DOUHAO);
             }
             if (StrUtil.isNotEmpty(jobInfo.getPosDes())) {
-                posDes.append(jobInfo.getPosDes());
+                posDes.append(jobInfo.getPosDes()).append(DOUHAO);
             }
             if (StrUtil.isNotEmpty(jobInfo.getComintro()) && !comintro.toString().contains(jobInfo.getComintro())) {
-                comintro.append(jobInfo.getComintro());
+                comintro.append(jobInfo.getComintro()).append(DOUHAO);
             }
         }
         return Arrays.asList(jobName.toString(), welfare.toString(), posDes.toString(), comintro.toString());

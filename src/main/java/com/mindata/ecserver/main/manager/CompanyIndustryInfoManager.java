@@ -9,6 +9,8 @@ import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.mindata.ecserver.global.Constant.DOUHAO;
+
 /**
  * 获取行业名称  更新到ES
  *
@@ -43,27 +45,27 @@ public class CompanyIndustryInfoManager {
 
         for (CompanyIndustryInfo51 companyIndustryInfo51 : industryInfo51s) {
             if (StrUtil.isNotEmpty(companyIndustryInfo51.getIndustry())) {
-                industry.append(companyIndustryInfo51.getIndustry());
+                industry.append(companyIndustryInfo51.getIndustry()).append(DOUHAO);
             }
         }
         for (CompanyIndustryInfo88 companyIndustryInfo88 : industryInfo88s) {
             if (StrUtil.isNotEmpty(companyIndustryInfo88.getIndustry()) && !industry.toString().contains(companyIndustryInfo88.getIndustry()) ) {
-                industry.append(companyIndustryInfo88.getIndustry());
+                industry.append(companyIndustryInfo88.getIndustry()).append(DOUHAO);
             }
         }
         for (CompanyIndustryInfoGanji companyIndustryInfoGanji : industryInfoGanjis) {
             if (StrUtil.isNotEmpty(companyIndustryInfoGanji.getIndustry()) && !industry.toString().contains(companyIndustryInfoGanji.getIndustry()) ) {
-                industry.append(companyIndustryInfoGanji.getIndustry());
+                industry.append(companyIndustryInfoGanji.getIndustry()).append(DOUHAO);
             }
         }
         for (CompanyIndustryInfo companyIndustryInfo : industryInfos) {
             if (StrUtil.isNotEmpty(companyIndustryInfo.getIndustry()) && !industry.toString().contains(companyIndustryInfo.getIndustry()) ) {
-                industry.append(companyIndustryInfo.getIndustry());
+                industry.append(companyIndustryInfo.getIndustry()).append(DOUHAO);
             }
         }
         for (CompanyIndustryInfoZl companyIndustryInfoZl : industryInfoZls) {
             if (StrUtil.isNotEmpty(companyIndustryInfoZl.getIndustry()) && !industry.toString().contains(companyIndustryInfoZl.getIndustry()) ) {
-                industry.append(companyIndustryInfoZl.getIndustry());
+                industry.append(companyIndustryInfoZl.getIndustry()).append(DOUHAO);
             }
         }
         return Arrays.asList(industry.toString());
@@ -77,7 +79,7 @@ public class CompanyIndustryInfoManager {
         List<CompanyIndustryInfo3158> industryInfo3158s = companyIndustryInfo3158Repository.findByCompId(compId);
         for (CompanyIndustryInfo3158 companyIndustryInfo3158 : industryInfo3158s) {
             if (StrUtil.isNotEmpty(companyIndustryInfo3158.getIndustry())) {
-                industry.append(companyIndustryInfo3158.getIndustry());
+                industry.append(companyIndustryInfo3158.getIndustry()).append(DOUHAO);
             }
         }
         return industry.toString();
