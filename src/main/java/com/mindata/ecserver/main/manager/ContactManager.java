@@ -76,7 +76,7 @@ public class ContactManager {
     private void updateVocationCode(Long compId) {
         List<String> industryList = companyIndustryInfoManager.getIndustryInfoForDb(compId);
         HashMap<String, Integer> map = esVocationCodeManager.findByVocationName(industryList.get(0));
-        Integer vocationCode = map.get("vocationCode").intValue();
+        Integer vocationCode = map.get("vocationCode");
         Integer num = ecContactRepository.updateCodeByVocationName(vocationCode, compId);
         if (num > 0) {
             LOGGER.info("更新成功" + num + "条vocationCode");

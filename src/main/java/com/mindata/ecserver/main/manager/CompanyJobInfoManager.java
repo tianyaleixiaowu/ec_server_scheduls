@@ -41,7 +41,6 @@ public class CompanyJobInfoManager {
         StringBuilder jobName = new StringBuilder();
         StringBuilder welfare = new StringBuilder();
         StringBuilder posDes = new StringBuilder();
-        StringBuilder comintro = new StringBuilder();
 
         List<CompanyJobInfo> companyJobInfos = companyJobInfoRepository.findByCompId(companyId);
         List<CompanyJobInfo51> companyJobInfos1 = companyJobInfo51Repository.findByCompId(companyId);
@@ -59,9 +58,6 @@ public class CompanyJobInfoManager {
             if (StrUtil.isNotEmpty(jobInfo.getPosDes())) {
                 posDes.append(jobInfo.getPosDes()).append(DOUHAO);
             }
-            if (StrUtil.isNotEmpty(jobInfo.getComintro())) {
-                comintro.append(jobInfo.getComintro()).append(DOUHAO);
-            }
         }
         for (CompanyJobInfo51 jobInfo : companyJobInfos1) {
             if (StrUtil.isNotEmpty(jobInfo.getJobName()) && !jobName.toString().contains(jobInfo.getJobName()) ) {
@@ -73,9 +69,6 @@ public class CompanyJobInfoManager {
             }
             if (StrUtil.isNotEmpty(jobInfo.getPosDes())) {
                 posDes.append(jobInfo.getPosDes()).append(DOUHAO);
-            }
-            if (StrUtil.isNotEmpty(jobInfo.getComintro()) && !comintro.toString().contains(jobInfo.getComintro()) ) {
-                comintro.append(jobInfo.getComintro()).append(DOUHAO);
             }
         }
         for (CompanyJobInfoGanji jobInfo : companyJobInfos2) {
@@ -89,25 +82,19 @@ public class CompanyJobInfoManager {
             if (StrUtil.isNotEmpty(jobInfo.getPosDes())) {
                 posDes.append(jobInfo.getPosDes()).append(DOUHAO);
             }
-            if (StrUtil.isNotEmpty(jobInfo.getComintro()) && !comintro.toString().contains(jobInfo.getComintro()) ) {
-                comintro.append(jobInfo.getComintro()).append(DOUHAO);
-            }
         }
         for (CompanyJobInfoZl jobInfo : companyJobInfos3) {
             if (StrUtil.isNotEmpty(jobInfo.getJobName())) {
-                jobName.append(jobInfo.getJobName()).append(DOUHAO);
+                jobName.append(jobInfo.getJobName());
             }
             if (StrUtil.isNotEmpty(jobInfo.getWelfare())) {
-                welfare.append(jobInfo.getWelfare()).append(DOUHAO);
+                welfare.append(jobInfo.getWelfare());
             }
             if (StrUtil.isNotEmpty(jobInfo.getPosDes())) {
-                posDes.append(jobInfo.getPosDes()).append(DOUHAO);
-            }
-            if (StrUtil.isNotEmpty(jobInfo.getComintro()) && !comintro.toString().contains(jobInfo.getComintro())) {
-                comintro.append(jobInfo.getComintro()).append(DOUHAO);
+                posDes.append(jobInfo.getPosDes());
             }
         }
-        return Arrays.asList(jobName.toString(), welfare.toString(), posDes.toString(), comintro.toString());
+        return Arrays.asList(jobName.toString(), welfare.toString(), posDes.toString());
     }
 
 }

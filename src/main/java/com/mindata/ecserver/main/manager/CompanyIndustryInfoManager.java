@@ -36,6 +36,7 @@ public class CompanyIndustryInfoManager {
      */
     public List<String> getIndustryInfoForDb(Long compId) {
         StringBuilder industry = new StringBuilder();
+        StringBuilder comintro = new StringBuilder();
 
         List<CompanyIndustryInfo51> industryInfo51s = companyIndustryInfo51Repository.findByCompId(compId);
         List<CompanyIndustryInfo88> industryInfo88s = companyIndustryInfo88Repository.findByCompId(compId);
@@ -47,28 +48,51 @@ public class CompanyIndustryInfoManager {
             if (StrUtil.isNotEmpty(companyIndustryInfo51.getIndustry())) {
                 industry.append(companyIndustryInfo51.getIndustry()).append(DOUHAO);
             }
+            if (StrUtil.isNotEmpty(companyIndustryInfo51.getComintro())) {
+                comintro.append(companyIndustryInfo51.getComintro()).append(DOUHAO);
+            }
         }
         for (CompanyIndustryInfo88 companyIndustryInfo88 : industryInfo88s) {
             if (StrUtil.isNotEmpty(companyIndustryInfo88.getIndustry()) && !industry.toString().contains(companyIndustryInfo88.getIndustry()) ) {
                 industry.append(companyIndustryInfo88.getIndustry()).append(DOUHAO);
+            }
+            if (StrUtil.isNotEmpty(companyIndustryInfo88.getComintro()) && !comintro.toString().contains(companyIndustryInfo88.getComintro())) {
+                comintro.append(companyIndustryInfo88.getComintro()).append(DOUHAO);
             }
         }
         for (CompanyIndustryInfoGanji companyIndustryInfoGanji : industryInfoGanjis) {
             if (StrUtil.isNotEmpty(companyIndustryInfoGanji.getIndustry()) && !industry.toString().contains(companyIndustryInfoGanji.getIndustry()) ) {
                 industry.append(companyIndustryInfoGanji.getIndustry()).append(DOUHAO);
             }
+            if (StrUtil.isNotEmpty(companyIndustryInfoGanji.getComintro()) && !comintro.toString().contains(companyIndustryInfoGanji.getComintro())) {
+                comintro.append(companyIndustryInfoGanji.getComintro()).append(DOUHAO);
+            }
         }
         for (CompanyIndustryInfo companyIndustryInfo : industryInfos) {
             if (StrUtil.isNotEmpty(companyIndustryInfo.getIndustry()) && !industry.toString().contains(companyIndustryInfo.getIndustry()) ) {
                 industry.append(companyIndustryInfo.getIndustry()).append(DOUHAO);
+            }
+            if (StrUtil.isNotEmpty(companyIndustryInfo.getComintro()) && !comintro.toString().contains(companyIndustryInfo.getComintro())) {
+                comintro.append(companyIndustryInfo.getComintro()).append(DOUHAO);
             }
         }
         for (CompanyIndustryInfoZl companyIndustryInfoZl : industryInfoZls) {
             if (StrUtil.isNotEmpty(companyIndustryInfoZl.getIndustry()) && !industry.toString().contains(companyIndustryInfoZl.getIndustry()) ) {
                 industry.append(companyIndustryInfoZl.getIndustry()).append(DOUHAO);
             }
+            if (StrUtil.isNotEmpty(companyIndustryInfoZl.getComintro()) && !comintro.toString().contains
+                    (companyIndustryInfoZl.getComintro())) {
+                comintro.append(companyIndustryInfoZl.getComintro()).append(DOUHAO);
+            }
         }
-        return Arrays.asList(industry.toString());
+
+        List<CompanyIndustryInfo3158> industryInfo3158s = companyIndustryInfo3158Repository.findByCompId(compId);
+        for (CompanyIndustryInfo3158 companyIndustryInfo3158 : industryInfo3158s) {
+            if (StrUtil.isNotEmpty(companyIndustryInfo3158.getComintro())) {
+                comintro.append(companyIndustryInfo3158.getComintro());
+            }
+        }
+        return Arrays.asList(industry.toString(), comintro.toString());
     }
 
     /**
@@ -86,9 +110,9 @@ public class CompanyIndustryInfoManager {
     }
 
     /**
-     * 查所有表的行业名称
+     * 查所有表的行业和公司简介
      */
-    public List<String> getIndustryInfoForEs(Long compId) {
+    public List<String> getIndustryAndComintroInfoForEs(Long compId) {
         StringBuilder industry = new StringBuilder();
         List<String> list = getIndustryInfoForDb(compId);
         industry.append(list.get(0));
@@ -96,6 +120,7 @@ public class CompanyIndustryInfoManager {
         if (StrUtil.isNotEmpty(vocationName) && !list.contains(vocationName) ) {
             industry.append(list.get(0));
         }
-        return Arrays.asList(industry.toString());
+        return Arrays.asList(industry.toString(), list.get(1));
     }
+
 }

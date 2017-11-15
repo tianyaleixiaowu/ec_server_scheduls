@@ -17,6 +17,8 @@ public class BaseCompanyIndustryInfo {
 
     private String industry;
 
+    private String comintro;
+
     public Integer getId() {
         return id;
     }
@@ -31,6 +33,14 @@ public class BaseCompanyIndustryInfo {
 
     public void setCompId(Long compId) {
         this.compId = compId;
+    }
+
+    public String getComintro() {
+        return comintro;
+    }
+
+    public void setComintro(String comintro) {
+        this.comintro = comintro;
     }
 
     public String getIndustry() {

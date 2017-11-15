@@ -126,10 +126,10 @@ public class EsContactService {
         esContact.setJobName(extraInfo.get(0));
         esContact.setWelfare(extraInfo.get(1));
         esContact.setPosDes(extraInfo.get(2));
-        esContact.setComintro(extraInfo.get(3));
         //将行业名称添加到es
-        List<String> industryList =  industryInfoManager.getIndustryInfoForEs(ecContactEntity.getCompId());
+        List<String> industryList =  industryInfoManager.getIndustryAndComintroInfoForEs(ecContactEntity.getCompId());
         esContact.setIndustry(industryList.get(0));
+        esContact.setComintro(industryList.get(1));
         esContact.setInsertTime(CommonUtil.getTimeStamp());
         return esContact;
     }
