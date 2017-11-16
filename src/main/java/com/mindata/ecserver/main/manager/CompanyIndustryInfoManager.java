@@ -86,12 +86,6 @@ public class CompanyIndustryInfoManager {
             }
         }
 
-        List<CompanyIndustryInfo3158> industryInfo3158s = companyIndustryInfo3158Repository.findByCompId(compId);
-        for (CompanyIndustryInfo3158 companyIndustryInfo3158 : industryInfo3158s) {
-            if (StrUtil.isNotEmpty(companyIndustryInfo3158.getComintro())) {
-                comintro.append(companyIndustryInfo3158.getComintro());
-            }
-        }
         return Arrays.asList(industry.toString(), comintro.toString());
     }
 
