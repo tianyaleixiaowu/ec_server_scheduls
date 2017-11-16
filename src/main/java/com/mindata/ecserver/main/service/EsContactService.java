@@ -47,9 +47,9 @@ public class EsContactService {
             return;
         }
 
-        //该记录在数据库的创建时间
-        Date createTime = esContact.getCreateTime();
-        partInsertAfter(createTime);
+        //该记录在数据库的id
+        Long id = esContact.getId();
+        partInsertAfter(id);
     }
 
     /**
@@ -72,13 +72,13 @@ public class EsContactService {
         }
     }
 
-    private void partInsertAfter(Date createTime) {
+    private void partInsertAfter(Long id) {
         Sort sort = new Sort(Sort.Direction.ASC, "id");
         //去数据库判断比该记录晚的，增量插入ES
         Pageable pageable = new PageRequest(0, 1, sort);
         //3点时取今天0点时间
         Date beginOfDay = DateUtil.beginOfDay(CommonUtil.getNow());
-        Page<EcContactEntity> page = contactManager.findContactByCreateTimeBetween(createTime, beginOfDay, pageable);
+        Page<EcContactEntity> page = contactManager.findByIdGreaterThanAndCreateTimeLessThan(id, beginOfDay, pageable);
         //没有新数据
         if (page.getTotalElements() == 0) {
             return;
@@ -86,7 +86,8 @@ public class EsContactService {
         //判断要查多少页
         for (int i = 0; i < page.getTotalElements() / PAGE_SIZE + 1; i++) {
             pageable = new PageRequest(i, PAGE_SIZE, sort);
-            List<EcContactEntity> contactEntities = contactManager.findContactByCreateTimeAfter(createTime, pageable)
+            List<EcContactEntity> contactEntities = contactManager.findByIdGreaterThanAndCreateTimeLessThan
+                    (id, beginOfDay, pageable)
                     .getContent();
             esContactManager.bulkIndex(contactEntities.stream().map(this::convert).collect(Collectors.toList()));
         }
@@ -94,10 +95,10 @@ public class EsContactService {
 
     /**
      * 将DB读取的entity转为ES的对象
+     *
      * @param ecContactEntity
-     * ecContactEntity
-     * @return
-     * ESContact
+     *         ecContactEntity
+     * @return ESContact
      */
     private EsContact convert(EcContactEntity ecContactEntity) {
         EsContact esContact = new EsContact();
@@ -130,7 +131,7 @@ public class EsContactService {
         esContact.setWelfare(extraInfo.get(1));
         esContact.setPosDes(extraInfo.get(2));
         //将行业名称添加到es
-        List<String> industryList =  industryInfoManager.getIndustryAndComintroInfoForEs(ecContactEntity.getCompId());
+        List<String> industryList = industryInfoManager.getIndustryAndComintroInfoForEs(ecContactEntity.getCompId());
         esContact.setIndustry(industryList.get(0));
         esContact.setComintro(industryList.get(1));
         esContact.setInsertTime(CommonUtil.getTimeStamp());

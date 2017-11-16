@@ -49,6 +49,19 @@ public interface EcContactRepository extends JpaRepository<EcContactEntity, Inte
     Page<EcContactEntity> findByCreateTimeBetween(Date begin, Date end, Pageable pageable);
 
     /**
+     * 查询id大于某个id，且时间小于某个时间的
+     * @param id
+     * id
+     * @param end
+     * 结束时间
+     * @param pageable
+     * 分页
+     * @return
+     * 结果
+     */
+    Page<EcContactEntity> findByIdGreaterThanAndCreateTimeLessThan(Long id, Date end, Pageable pageable);
+
+    /**
      * 根据行业名称修改行业code
      *
      * @param compId       公司Id
