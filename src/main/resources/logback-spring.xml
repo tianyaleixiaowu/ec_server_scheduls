@@ -3,8 +3,8 @@
     <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
     <!--取yml里配置的logstash ip port-->
-    <springProperty scope="context" name="logstash_port" source="logstash.port" defaultValue="10024"/>
-    <springProperty scope="context" name="logstash_ip" source="logstash.ip" defaultValue="47.92.107.76"/>
+    <springProperty scope="context" name="logstash_port" source="logstash.port" />
+    <springProperty scope="context" name="logstash_ip" source="logstash.ip"/>
 
     <!-- 本地日志文件 -->
     <appender name="MY_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -27,7 +27,8 @@
     <!-- Logstash日志 -->
     <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
         <!-- 远程Logstash的IP：PORT -->
-        <destination>${logstash_ip}:${logstash_port}</destination>
+        <!--<destination>${logstash_ip}:${logstash_port}</destination>-->
+        <remoteHost>${logstash_ip}</remoteHost>
         <!-- encoder必须要有，是logback和logstash的纽带 -->
         <encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder">
             <!-- 用户自定义Json字符串，用于向logstash提交额外的自定义属性。可在logstash的input里接收该参数 -->

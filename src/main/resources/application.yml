@@ -20,8 +20,8 @@ spring:
         strategy: org.hibernate.cfg.ImprovedNamingStrategy #命名策略，加分隔线"_"
 
 logstash:
-  ip: ${logstashIp}
-  port: ${logstashPort}
+  ip: ${logstashIp:localhost}
+  port: ${logstashPort:4560}
 main:
   server-url: ${SERVER-URL:http://localhost:8080}  #要访问后台的地址
 #eureka:
