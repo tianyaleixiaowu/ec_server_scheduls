@@ -60,6 +60,21 @@ public class EsContactManager {
         return esContactList.get(0);
     }
 
+    /**
+     * 根据id查询
+     * @param id
+     * id
+     * @return
+     * 数据
+     */
+    public EsContact findById(Long id) {
+        return esContactRepository.findOne(id);
+    }
+
+    public EsContact save(EsContact esContact) {
+        return esContactRepository.save(esContact);
+    }
+
     public void bulkIndex(List<EsContact> contacts) {
         int counter = 1;
         try {

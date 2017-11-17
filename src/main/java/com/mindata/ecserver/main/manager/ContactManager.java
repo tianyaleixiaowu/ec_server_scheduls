@@ -1,5 +1,6 @@
 package com.mindata.ecserver.main.manager;
 
+import com.mindata.ecserver.main.model.es.EsContact;
 import com.mindata.ecserver.main.model.primary.EcContactEntity;
 import com.mindata.ecserver.main.repository.primary.EcContactRepository;
 import org.slf4j.Logger;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.HashMap;
@@ -27,11 +29,24 @@ public class ContactManager {
     private CompanyIndustryInfoManager companyIndustryInfoManager;
     @Resource
     private EsVocationCodeManager esVocationCodeManager;
+    @Resource
+    private EsContactManager esContactManager;
 
     private final Logger LOGGER = LoggerFactory.getLogger(getClass().getName());
 
     public Page<EcContactEntity> findContact(Pageable pageable) {
         return ecContactRepository.findAll(pageable);
+    }
+
+    /**
+     * 查询没有省市code的
+     *
+     * @param pageable
+     *         分页
+     * @return 结果
+     */
+    public Page<EcContactEntity> findContactByProvince(String province, Pageable pageable) {
+        return ecContactRepository.findByProvince(province, pageable);
     }
 
     /**
@@ -52,33 +67,39 @@ public class ContactManager {
      * 该方法是更新老数据的行业和省市信息的
      * 补齐省市县code表
      */
-    //@PostConstruct
+    @PostConstruct
     public void completeAreaCode() {
         LOGGER.info("开始补齐省市县");
         Pageable pageable = new PageRequest(0, 100);
-        Page<EcContactEntity> ecContactEntities = findContact(pageable);
+        Page<EcContactEntity> ecContactEntities = findContactByProvince("0", pageable);
         int total = ecContactEntities.getTotalPages();
         for (int i = 0; i < total; i++) {
             pageable = new PageRequest(i, 100);
-            Page<EcContactEntity> entities = findContact(pageable);
+            Page<EcContactEntity> entities = findContactByProvince("0", pageable);
             for (EcContactEntity ecContactEntity : entities.getContent()) {
-                if (ecContactEntity.getProvince().equals("0") || ecContactEntity.getCity().equals("0")) {
-                    HashMap<String, Integer> map = ecCodeAreaManager.findAreaCode(ecContactEntity.getAddress());
-                    ecContactEntity.setProvince(map.get("province") + "");
-                    ecContactEntity.setCity(map.get("city") + "");
-                    ecContactRepository.save(ecContactEntity);
+                HashMap<String, Integer> map = ecCodeAreaManager.findAreaCode(ecContactEntity.getAddress());
+                ecContactEntity.setProvince(map.get("province") + "");
+                ecContactEntity.setCity(map.get("city") + "");
+                ecContactRepository.save(ecContactEntity);
+                EsContact esContact = esContactManager.findById(ecContactEntity.getId());
+                if (esContact != null) {
+                    LOGGER.info("es在更新id为" + ecContactEntity.getId() + "的地址信息");
+                    esContact.setProvince(map.get("province"));
+                    esContact.setCity(map.get("city"));
+                    esContact.setAddress(ecContactEntity.getAddress());
+                    esContactManager.save(esContact);
                 }
-                LOGGER.info("开始补齐行业code");
-                updateVocationCode(ecContactEntity.getCompId());
             }
         }
         LOGGER.info("补齐完毕");
+
     }
 
     /**
      * 更新code值
      *
-     * @param compId 公司Id
+     * @param compId
+     *         公司Id
      */
     private void updateVocationCode(Long compId) {
         List<String> industryList = companyIndustryInfoManager.getIndustryInfoForDb(compId);

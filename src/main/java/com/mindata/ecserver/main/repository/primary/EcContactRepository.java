@@ -27,6 +27,15 @@ public interface EcContactRepository extends JpaRepository<EcContactEntity, Inte
     List<EcContactEntity> findByIdIn(List<Integer> ids);
 
     /**
+     * 查询省等于某个
+     * @param province
+     * 省
+     * @return
+     * 分页结果
+     */
+    Page<EcContactEntity> findByProvince(String province, Pageable pageable);
+
+    /**
      * 查询创建时间比目标时间晚的，用于增量插入ES
      *
      * @param date     目标时间
