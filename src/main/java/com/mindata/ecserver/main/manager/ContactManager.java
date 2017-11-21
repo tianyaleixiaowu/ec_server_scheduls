@@ -64,6 +64,13 @@ public class ContactManager {
     }
 
     /**
+     * 查询id大于某个id的
+     */
+    public Page<EcContactEntity> findByIdGreaterThan(Long id, Pageable pageable) {
+        return ecContactRepository.findByIdGreaterThan(id, pageable);
+    }
+
+    /**
      * 该方法是更新老数据的行业和省市信息的
      * 补齐省市县code表
      */

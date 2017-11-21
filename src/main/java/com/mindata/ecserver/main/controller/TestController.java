@@ -26,7 +26,7 @@ public class TestController {
 
     @GetMapping("/push")
     public Object pushDbToEs() {
-        esContactService.dbToEs();
+        esContactService.dbToEs(false);
         return "dbToEs";
     }
 

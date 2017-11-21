@@ -32,6 +32,6 @@ public class PushContactToEsSchedul {
         System.out.println("定时任务开始");
         logger.info("现在时间：" + DateUtil.format(new Date(), NORM_DATETIME_FORMAT));
         logger.info("开始去获取线索信息导入到elasticsearch");
-        esContactService.dbToEs();
+        esContactService.dbToEs(true);
     }
 }

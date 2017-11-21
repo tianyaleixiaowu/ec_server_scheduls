@@ -71,6 +71,17 @@ public interface EcContactRepository extends JpaRepository<EcContactEntity, Inte
     Page<EcContactEntity> findByIdGreaterThanAndCreateTimeLessThan(Long id, Date end, Pageable pageable);
 
     /**
+     * 查询id大于某个值的
+     * @param id
+     * id
+     * @param pageable
+     * 分页
+     * @return
+     * 结果
+     */
+    Page<EcContactEntity> findByIdGreaterThan(Long id, Pageable pageable);
+
+    /**
      * 根据行业名称修改行业code
      *
      * @param compId       公司Id

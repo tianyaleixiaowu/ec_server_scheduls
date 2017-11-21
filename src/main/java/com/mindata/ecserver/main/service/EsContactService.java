@@ -38,7 +38,12 @@ public class EsContactService {
     @Resource
     private CompanyIndustryInfoManager industryInfoManager;
 
-    public void dbToEs() {
+    /**
+     * 将EcContact信息导入ES
+     * @param limitTime
+     * 是否显示只导入昨天的
+     */
+    public void dbToEs(boolean limitTime) {
         EsContact esContact = esContactManager.findTheLastEsContact();
         //ES一条数据都没有，说明是新库
         if (esContact == null) {
@@ -49,7 +54,12 @@ public class EsContactService {
 
         //该记录在数据库的id
         Long id = esContact.getId();
-        partInsertAfter(id);
+        //如果只导入昨天的
+        if (limitTime) {
+            partInsertIdAfterAndTimeBefore(id);
+        } else {
+            partInsertAfter(id);
+        }
     }
 
     /**
@@ -72,7 +82,35 @@ public class EsContactService {
         }
     }
 
+    /**
+     * 导入id比当前ES的大的所有数据
+     * @param id
+     * ES最新的id
+     */
     private void partInsertAfter(Long id) {
+        Sort sort = new Sort(Sort.Direction.ASC, "id");
+        //去数据库判断比该记录晚的，增量插入ES
+        Pageable pageable = new PageRequest(0, 1, sort);
+        Page<EcContactEntity> page = contactManager.findByIdGreaterThan(id, pageable);
+        //没有新数据
+        if (page.getTotalElements() == 0) {
+            return;
+        }
+        //判断要查多少页
+        for (int i = 0; i < page.getTotalElements() / PAGE_SIZE + 1; i++) {
+            pageable = new PageRequest(i, PAGE_SIZE, sort);
+            List<EcContactEntity> contactEntities = contactManager.findByIdGreaterThan
+                    (id, pageable).getContent();
+            esContactManager.bulkIndex(contactEntities.stream().map(this::convert).collect(Collectors.toList()));
+        }
+    }
+
+    /**
+     * 导入id比当前id大，且时间为昨天的数据
+     * @param id
+     * ES中的id
+     */
+    private void partInsertIdAfterAndTimeBefore(Long id) {
         Sort sort = new Sort(Sort.Direction.ASC, "id");
         //去数据库判断比该记录晚的，增量插入ES
         Pageable pageable = new PageRequest(0, 1, sort);
