@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -68,11 +69,11 @@ public class ContactManager {
      */
     public void completeAreaCode() {
         LOGGER.info("开始补齐省市县");
-        Pageable pageable = new PageRequest(0, 100);
+        Pageable pageable = new PageRequest(0, 100, Sort.Direction.ASC, "id");
         Page<EcContactEntity> ecContactEntities = findContactByProvince("0", pageable);
         int total = ecContactEntities.getTotalPages();
         for (int i = 0; i < total; i++) {
-            pageable = new PageRequest(i, 100);
+            pageable = new PageRequest(i, 100, Sort.Direction.ASC, "id");
             Page<EcContactEntity> entities = findContactByProvince("0", pageable);
             for (EcContactEntity ecContactEntity : entities.getContent()) {
                 HashMap<String, Integer> map = ecCodeAreaManager.findAreaCode(ecContactEntity.getAddress());
