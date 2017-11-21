@@ -66,7 +66,6 @@ public class ContactManager {
      * 该方法是更新老数据的行业和省市信息的
      * 补齐省市县code表
      */
-    //@PostConstruct
     public void completeAreaCode() {
         LOGGER.info("开始补齐省市县");
         Pageable pageable = new PageRequest(0, 100);
@@ -91,7 +90,6 @@ public class ContactManager {
             }
         }
         LOGGER.info("补齐完毕");
-
     }
 
     /**

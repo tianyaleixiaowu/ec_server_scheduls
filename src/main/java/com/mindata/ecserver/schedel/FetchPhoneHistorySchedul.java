@@ -29,7 +29,7 @@ public class FetchPhoneHistorySchedul {
     @Scheduled(cron = "0 0/20 2 * * ?")
     public void executeFetchPhoneHistoryTask() throws IOException {
         //检查分布式锁
-        System.out.println("定时任务开始");
+        logger.info("定时任务开始");
         logger.info("现在时间：" + DateUtil.format(new Date(), NORM_DATETIME_FORMAT));
         logger.info("开始去获取昨天的通话统计信息");
         logger.info("结果是：" + fetchCompanyPhoneHistoryService.fetch());
