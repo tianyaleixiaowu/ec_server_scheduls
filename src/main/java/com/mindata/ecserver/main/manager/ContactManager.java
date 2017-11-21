@@ -73,7 +73,6 @@ public class ContactManager {
         Page<EcContactEntity> ecContactEntities = findContactByProvince("0", pageable);
         int total = ecContactEntities.getTotalPages();
         for (int i = 0; i < total; i++) {
-            pageable = new PageRequest(i, 100, Sort.Direction.ASC, "id");
             Page<EcContactEntity> entities = findContactByProvince("0", pageable);
             for (EcContactEntity ecContactEntity : entities.getContent()) {
                 HashMap<String, Integer> map = ecCodeAreaManager.findAreaCode(ecContactEntity.getAddress());
