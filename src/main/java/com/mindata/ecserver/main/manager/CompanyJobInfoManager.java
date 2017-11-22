@@ -85,13 +85,13 @@ public class CompanyJobInfoManager {
         }
         for (CompanyJobInfoZl jobInfo : companyJobInfos3) {
             if (StrUtil.isNotEmpty(jobInfo.getJobName())) {
-                jobName.append(jobInfo.getJobName());
+                jobName.append(jobInfo.getJobName()).append(DOUHAO);
             }
             if (StrUtil.isNotEmpty(jobInfo.getWelfare())) {
-                welfare.append(jobInfo.getWelfare());
+                welfare.append(jobInfo.getWelfare()).append(DOUHAO);
             }
             if (StrUtil.isNotEmpty(jobInfo.getPosDes())) {
-                posDes.append(jobInfo.getPosDes());
+                posDes.append(jobInfo.getPosDes()).append(DOUHAO);
             }
         }
         return Arrays.asList(jobName.toString(), welfare.toString(), posDes.toString());
