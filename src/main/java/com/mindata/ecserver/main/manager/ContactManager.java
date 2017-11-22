@@ -71,6 +71,13 @@ public class ContactManager {
     }
 
     /**
+     * 查询id在某个范围的
+     */
+    public Page<EcContactEntity> findByIdBetween(Long beginId, Long endId, Pageable pageable) {
+        return ecContactRepository.findByIdBetween(beginId, endId, pageable);
+    }
+
+    /**
      * 该方法是更新老数据的行业和省市信息的
      * 补齐省市县code表
      */

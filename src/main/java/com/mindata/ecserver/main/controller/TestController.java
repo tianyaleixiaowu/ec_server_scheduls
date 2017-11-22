@@ -30,6 +30,12 @@ public class TestController {
         return "dbToEs";
     }
 
+    @GetMapping("/push/between")
+    public Object pushIdBetweenDbToEs(Long beginId, Long endId) {
+        esContactService.partInsertBetween(beginId, endId);
+        return "between dbToEs";
+    }
+
     @GetMapping("/force")
     public Object forceDbToEs() {
         esContactService.forceTotal();

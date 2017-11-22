@@ -106,6 +106,31 @@ public class EsContactService {
     }
 
     /**
+     * 更新一部分id的值到ES
+     * @param beginId
+     * 开始id
+     * @param endId
+     * 结束id
+     */
+    public void partInsertBetween(Long beginId, Long endId) {
+        Sort sort = new Sort(Sort.Direction.ASC, "id");
+        //去数据库查询该范围的集合，插入到ES
+        Pageable pageable = new PageRequest(0, 1, sort);
+        Page<EcContactEntity> page = contactManager.findByIdBetween(beginId, endId, pageable);
+        //没有新数据
+        if (page.getTotalElements() == 0) {
+            return;
+        }
+        //判断要查多少页
+        for (int i = 0; i < page.getTotalElements() / PAGE_SIZE + 1; i++) {
+            pageable = new PageRequest(i, PAGE_SIZE, sort);
+            List<EcContactEntity> contactEntities = contactManager.findByIdBetween
+                    (beginId, endId, pageable).getContent();
+            esContactManager.bulkIndex(contactEntities.stream().map(this::convert).collect(Collectors.toList()));
+        }
+    }
+
+    /**
      * 导入id比当前id大，且时间为昨天的数据
      * @param id
      * ES中的id
