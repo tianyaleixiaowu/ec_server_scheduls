@@ -8,7 +8,7 @@ spring:
           logs: ./elasticsearch/log #elasticsearch日志存储目录
           data: ./elasticsearch/data #elasticsearch数据存储目录
   application:
-    name: ec_server_schedels
+    name: ec_server_scheduls
   profiles:
     active: ${ENV:dev}
   jpa:
@@ -24,7 +24,3 @@ logstash:
   port: ${logstashPort:4560}
 main:
   server-url: ${SERVER-URL:http://localhost:8080}  #要访问后台的地址
-#eureka:
-#  client:
-#    service-url:
-#      defaultZone: http://${EUREKA_SERVER:localhost:8080}/eureka/
