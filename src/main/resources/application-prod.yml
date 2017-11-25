@@ -25,6 +25,8 @@ spring:
     port: ${REDIS_PORT}
     password: ${REDIS_PASSWORD}
 eureka:
+  instance:
+    prefer-ip-address: true
   client:
     service-url:
       defaultZone: http://${EUREKA_SERVER}/eureka/
