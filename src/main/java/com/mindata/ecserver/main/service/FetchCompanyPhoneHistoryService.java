@@ -41,7 +41,7 @@ public class FetchCompanyPhoneHistoryService {
 
     public BaseData fetch() throws IOException {
         //先去redis校验该公司的manager缓存在不在，如果不在则去生成一个，完毕后清除掉
-        List<PtUserRole> userRoles = ptUserRoleManager.findByRoleId(2);
+        List<PtUserRole> userRoles = ptUserRoleManager.findByRoleId(2L);
 
         //查最新的一条
         Pageable pageable = new PageRequest(0, 1);
