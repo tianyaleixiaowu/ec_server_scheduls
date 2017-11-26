@@ -14,22 +14,22 @@ import javax.persistence.Table;
 @Table(name = "pt_user_role", indexes = {@Index(name = "user_id", columnList =
         "userId")})
 public class PtUserRole extends BaseEntity {
-    private int userId;
-    private int roleId;
+    private Long userId;
+    private Long roleId;
 
-    public int getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
-    public int getRoleId() {
+    public Long getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(int roleId) {
+    public void setRoleId(Long roleId) {
         this.roleId = roleId;
     }
 }

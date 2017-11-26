@@ -33,11 +33,11 @@ public class PtUser extends BaseEntity {
     /**
      * 公司ID
      */
-    private Integer companyId;
+    private Long companyId;
     /**
      * 部门ID
      */
-    private Integer departmentId;
+    private Long departmentId;
     /**
      * 称号
      */
@@ -99,11 +99,11 @@ public class PtUser extends BaseEntity {
         this.name = name;
     }
 
-    public Integer getCompanyId() {
+    public Long getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(Integer companyId) {
+    public void setCompanyId(Long companyId) {
         this.companyId = companyId;
     }
 
@@ -123,11 +123,11 @@ public class PtUser extends BaseEntity {
         this.password = password;
     }
 
-    public Integer getDepartmentId() {
+    public Long getDepartmentId() {
         return departmentId;
     }
 
-    public void setDepartmentId(Integer departmentId) {
+    public void setDepartmentId(Long departmentId) {
         this.departmentId = departmentId;
     }
 
