@@ -8,10 +8,10 @@ import java.util.List;
 /**
  * @author wuweifeng wrote on 2017/10/26.
  */
-public interface PtUserRoleRepository extends JpaRepository<PtUserRole, Integer> {
-    List<PtUserRole> findByUserId(Integer userId);
+public interface PtUserRoleRepository extends JpaRepository<PtUserRole, Long> {
+    List<PtUserRole> findByUserId(Long userId);
 
-    PtUserRole findByUserIdAndRoleId(Integer userId, Integer roleId);
+    PtUserRole findByUserIdAndRoleId(Long userId, Long roleId);
 
     /**
      * 查询所有公司管理员的id
@@ -20,5 +20,5 @@ public interface PtUserRoleRepository extends JpaRepository<PtUserRole, Integer>
      * @return
      * 公司管理员集合
      */
-    List<PtUserRole> findByRoleId(Integer roleId);
+    List<PtUserRole> findByRoleId(Long roleId);
 }

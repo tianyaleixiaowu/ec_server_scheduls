@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author wuweifeng wrote on 2017/10/26.
  */
-public interface PtPhoneHistoryCompanyRepository extends JpaRepository<PtPhoneHistoryCompany, Integer> {
+public interface PtPhoneHistoryCompanyRepository extends JpaRepository<PtPhoneHistoryCompany, Long> {
 
     /**
      * 倒序查询公司通话历史记录
