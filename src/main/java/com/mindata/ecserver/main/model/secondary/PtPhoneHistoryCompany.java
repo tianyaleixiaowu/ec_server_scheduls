@@ -1,5 +1,7 @@
 package com.mindata.ecserver.main.model.secondary;
 
+import com.mindata.ecserver.main.model.base.BaseEntity;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -11,10 +13,7 @@ import java.util.Date;
 @Table(name = "pt_phone_history_company", indexes = {@Index(name = "company_id", columnList =
         "companyId"), @Index(name = "start_time", columnList =
         "startTime")})
-public class PtPhoneHistoryCompany {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class PtPhoneHistoryCompany extends BaseEntity{
     /**
      * 公司id
      */
@@ -30,14 +29,6 @@ public class PtPhoneHistoryCompany {
 
     public void setStartTime(Date startTime) {
         this.startTime = startTime;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Long getCompanyId() {

@@ -14,7 +14,7 @@ import java.util.Date;
 public class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Long id;
 
     private Date createTime;
 
@@ -36,11 +36,11 @@ public class BaseEntity {
         this.updateTime = updateTime;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 }
