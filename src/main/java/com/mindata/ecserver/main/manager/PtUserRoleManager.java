@@ -18,7 +18,7 @@ public class PtUserRoleManager {
     /**
      * 查询某个role的集合
      */
-    public List<PtUserRole> findByRoleId(Integer roleId) {
+    public List<PtUserRole> findByRoleId(Long roleId) {
         return ptUserRoleRepository.findByRoleId(roleId);
     }
 }
