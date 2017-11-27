@@ -13,9 +13,20 @@ public interface Constant {
 
     String ES_TYPE_AREA = "code-area";
 
+    /**
+     * 正常态
+     */
+    int STATE_NORMAL = 0;
+
     String DOUHAO = ",";
-    int PAGE_SIZE = 10;
-    int PAGE_NUM = 0;
 
     Sort.Direction DIRECTION = Sort.Direction.DESC;
+
+    String BAIDU_MAP_AK = "uDWUhXo4WDUecxSGD97bE1ztHtZKn2sW";
+
+    String BAIDU_MAP_SK = "ksQopZsTHGGd6g6j6X8FQGRcxHYqvoQG";
+
+    String BAIDU_MAP_API_URL="/geocoder/v2/?";
+
+    String OUTPUT_TYPE = "json";
 }

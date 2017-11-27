@@ -105,4 +105,11 @@ public interface EcContactRepository extends JpaRepository<EcContactEntity, Inte
     @Modifying
     @Transactional(rollbackFor = Exception.class)
     Integer updateCodeByVocationName(Integer vocationCode, Long compId);
+
+    /**
+     * 根据状态查询
+     * @param state
+     * @return
+     */
+    Page<EcContactEntity> findByState(Integer state,Pageable pageable);
 }

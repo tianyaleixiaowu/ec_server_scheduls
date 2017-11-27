@@ -16,6 +16,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.mindata.ecserver.global.Constant.STATE_NORMAL;
+
 /**
  * @author wuweifeng wrote on 2017/11/9.
  */
@@ -107,6 +109,13 @@ public class ContactManager {
     }
 
     /**
+     * 根据状态查询所有正常状态的公司
+     * @return
+     */
+    public Page<EcContactEntity> findByState(Pageable pageable){
+        return ecContactRepository.findByState(STATE_NORMAL,pageable);
+    }
+    /**
      * 更新code值
      *
      * @param compId
@@ -121,5 +130,8 @@ public class ContactManager {
             LOGGER.info("更新成功" + num + "条vocationCode");
         }
     }
+
+
+
 
 }
