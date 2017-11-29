@@ -1,6 +1,6 @@
 package com.mindata.ecserver.retrofit.service;
 
-import com.mindata.ecserver.main.BaseData;
+import com.mindata.ecserver.global.http.response.BaseData;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;

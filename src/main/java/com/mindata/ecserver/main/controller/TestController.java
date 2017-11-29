@@ -1,6 +1,6 @@
 package com.mindata.ecserver.main.controller;
 
-import com.mindata.ecserver.main.BaseData;
+import com.mindata.ecserver.global.http.response.BaseData;
 import com.mindata.ecserver.main.service.EsContactService;
 import com.mindata.ecserver.main.service.FetchCompanyPhoneHistoryService;
 import org.springframework.web.bind.annotation.GetMapping;

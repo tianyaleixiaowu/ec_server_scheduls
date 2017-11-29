@@ -1,17 +1,19 @@
 package com.mindata.ecserver.main.service;
 
-import com.mindata.ecserver.main.BaseData;
+import com.mindata.ecserver.global.http.RetrofitServiceBuilder;
+import com.mindata.ecserver.global.http.RequestProperty;
+import com.mindata.ecserver.global.http.response.BaseData;
 import com.mindata.ecserver.main.manager.PtUserManager;
 import com.mindata.ecserver.main.manager.PtUserRoleManager;
 import com.mindata.ecserver.main.model.secondary.PtPhoneHistoryCompany;
 import com.mindata.ecserver.main.model.secondary.PtUserRole;
 import com.mindata.ecserver.main.repository.secondary.PtPhoneHistoryCompanyRepository;
 import com.mindata.ecserver.retrofit.CallManager;
-import com.mindata.ecserver.retrofit.RetrofitBuilder;
 import com.xiaoleilu.hutool.date.DateUtil;
 import com.xiaoleilu.hutool.util.CollectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -29,13 +32,16 @@ public class FetchCompanyPhoneHistoryService {
     @Resource
     private CallManager callManager;
     @Resource
-    private RetrofitBuilder retrofitBuilder;
-    @Resource
     private PtUserRoleManager ptUserRoleManager;
     @Resource
     private PtUserManager ptUserManager;
     @Resource
     private PtPhoneHistoryCompanyRepository ptPhoneHistoryCompanyRepository;
+
+    @Value("${main.server-url}")
+    private String serverUrl;
+    @Resource
+    private RetrofitServiceBuilder retrofitServiceBuilder;
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -67,15 +73,28 @@ public class FetchCompanyPhoneHistoryService {
             }
             String endTime = DateUtil.formatDate(DateUtil.yesterday());
 
+            RequestProperty requestProperty = new RequestProperty() {
+                @Override
+                public String baseUrl() {
+                    return serverUrl;
+                }
+
+                @Override
+                public HashMap<String, Object> headers() {
+                    HashMap<String, Object> map = new HashMap<>();
+                    map.put("token", token);
+                    return map;
+                }
+            };
+
             //得到返回值
             logger.info("公司id为" + companyId + "。开始获取通话历史，开始时间为" + beginTime + ",截止时间为" + endTime);
-            logger.info("结果是" + callManager.execute
-                    (retrofitBuilder
-                            .getFetchPhoneHistoryService
-                                    (token)
-                            .fetchHistory
-                                    (beginTime, endTime)));
+            BaseData baseData = (BaseData) callManager.execute(retrofitServiceBuilder.getFetchPhoneHistoryService(requestProperty).fetchHistory
+                    (beginTime,
+                    endTime));
+            logger.info("返回的code" + baseData.getStatus() + "----返回的message" + baseData.getMessage());
         }
         return null;
     }
+
 }
