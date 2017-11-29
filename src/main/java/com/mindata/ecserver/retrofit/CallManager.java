@@ -2,7 +2,7 @@ package com.mindata.ecserver.retrofit;
 
 
 import com.mindata.ecserver.global.exception.EcException;
-import com.mindata.ecserver.main.BaseData;
+import com.mindata.ecserver.global.http.response.ResponseValue;
 import org.springframework.stereotype.Component;
 import retrofit2.Call;
 
@@ -15,11 +15,11 @@ import java.io.IOException;
 public class CallManager {
     private final static int SUCCESS = 200;
 
-    public <T extends BaseData> BaseData execute(Call<T> call) throws IOException {
+    public <T extends ResponseValue> ResponseValue execute(Call<T> call) throws IOException {
         return doExecute(call);
     }
 
-    private <T extends BaseData> BaseData doExecute(Call<T> call) throws IOException {
+    private <T extends ResponseValue> ResponseValue doExecute(Call<T> call) throws IOException {
         retrofit2.Response response = call.execute();
         //返回值
         int code = response.code();
@@ -29,12 +29,7 @@ public class CallManager {
             throw new EcException(response.message());
         }
 
-        BaseData baseEcData = (BaseData) response.body();
-        int errCode = baseEcData.getCode();
-        if (SUCCESS == errCode) {
-            return (T) response.body();
-        }
-
-        throw new EcException("异常信息：" + baseEcData.getMessage());
+        return (T) response.body();
     }
+
 }
