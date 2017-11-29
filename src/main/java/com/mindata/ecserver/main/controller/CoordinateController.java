@@ -1,8 +1,10 @@
 package com.mindata.ecserver.main.controller;
 
+import com.mindata.ecserver.main.service.CompanyCoordinateService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 
 /**
@@ -10,9 +12,12 @@ import java.io.IOException;
  */
 @Controller
 public class CoordinateController {
+    @Resource
+    private CompanyCoordinateService coordinateService;
 
     @GetMapping("/baidu")
-    public String baidu(String address) throws IOException, InterruptedException {
+    public String baidu() throws IOException, InterruptedException {
+        coordinateService.saveCompanyCoordinate();
         return "baidu";
     }
 }

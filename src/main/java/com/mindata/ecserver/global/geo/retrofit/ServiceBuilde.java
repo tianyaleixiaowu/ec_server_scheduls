@@ -1,6 +1,7 @@
 package com.mindata.ecserver.global.geo.retrofit;
 
-import com.mindata.ecserver.global.geo.retrofit.Service.CoordinateService;
+import com.mindata.ecserver.global.geo.retrofit.service.BaiduCoordinateService;
+import com.mindata.ecserver.global.geo.retrofit.service.GaodeCoordinateService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -13,7 +14,12 @@ public class ServiceBuilde {
     @Resource
     private RetrofitBuilde retrofitBuilde;
 
-    public CoordinateService getCoordinateService() {
-        return retrofitBuilde.getRetrofit().create(CoordinateService.class);
+    public BaiduCoordinateService getCoordinateService() {
+        return retrofitBuilde.getBaiduRetrofit().create(BaiduCoordinateService.class);
     }
+
+    public GaodeCoordinateService getGaodeCoordinateService() {
+        return retrofitBuilde.getGaodeRetrofit().create(GaodeCoordinateService.class);
+    }
+
 }

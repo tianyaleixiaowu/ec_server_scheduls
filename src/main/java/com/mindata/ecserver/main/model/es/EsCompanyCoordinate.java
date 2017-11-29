@@ -1,22 +1,23 @@
-package com.mindata.ecserver.main.model.primary;
+package com.mindata.ecserver.main.model.es;
 
-import javax.persistence.*;
+import com.mindata.ecserver.global.Constant;
+import org.springframework.data.elasticsearch.annotations.Document;
+
+import javax.persistence.Id;
+
+import static com.mindata.ecserver.global.Constant.ES_INDEX_NAME;
 
 /**
- * 公司坐标
- * @author hanliqiang wrote on 2017/11/24
+ * @author hanliqiang wrote on 2017/11/28
  */
-@Entity
-@Table(name = "company_coordinate")
-public class CompanyCoordinate {
+@Document(indexName = ES_INDEX_NAME, type = Constant.ES_COORDINATE_TYPE_NAME, indexStoreType = "fs", shards = 5, replicas = 1,
+        refreshInterval = "-1")
+public class EsCompanyCoordinate {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
     private Long id;
     /**
      * 未推送表的id
      */
-    @Column(name="contact_id")
     private Long contactId;
     /**
      * 百度地图坐标 (经度在前，维度在后)
@@ -33,7 +34,7 @@ public class CompanyCoordinate {
      */
     private Integer status;
     /**
-     * 来源   1 百度map、 高德map
+     * 来源   1 百度map、 2 高德map
      */
     private Integer source;
     /**
@@ -52,7 +53,6 @@ public class CompanyCoordinate {
 
     private String level;
 
-
     public Long getId() {
         return id;
     }
@@ -69,16 +69,6 @@ public class CompanyCoordinate {
         this.contactId = contactId;
     }
 
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-
     public String getBaiduCoordinate() {
         return baiduCoordinate;
     }
@@ -93,6 +83,14 @@ public class CompanyCoordinate {
 
     public void setGaodeCoordinate(String gaodeCoordinate) {
         this.gaodeCoordinate = gaodeCoordinate;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public Integer getSource() {

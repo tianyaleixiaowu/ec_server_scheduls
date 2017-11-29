@@ -15,6 +15,8 @@ public class CoordinateResult extends BaseResult {
 
     private List<CoordinateResultBean> results;
 
+    private List<GaodeCoordinateResultBean> geocodes;
+
     public CoordinateResultBean getResult() {
         return result;
     }
@@ -29,5 +31,13 @@ public class CoordinateResult extends BaseResult {
 
     public void setResults(List<CoordinateResultBean> results) {
         this.results = results;
+    }
+
+    public List<GaodeCoordinateResultBean> getGeocodes() {
+        return geocodes;
+    }
+
+    public void setGeocodes(List<GaodeCoordinateResultBean> geocodes) {
+        this.geocodes = geocodes;
     }
 }

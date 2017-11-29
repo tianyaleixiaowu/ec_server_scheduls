@@ -14,6 +14,10 @@ public class BaseResult {
 
     private String queryConditionValue;
 
+    private Integer state;
+
+    private String coordinate;
+
     private String level;
 
     public BaseResult() {
@@ -57,6 +61,23 @@ public class BaseResult {
 
     public void setQueryConditionValue(String queryConditionValue) {
         this.queryConditionValue = queryConditionValue;
+    }
+
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
+    public String getCoordinate() {
+        return coordinate;
+    }
+
+    public void setCoordinate(String coordinate) {
+        this.coordinate = coordinate;
     }
 
     public String getLevel() {

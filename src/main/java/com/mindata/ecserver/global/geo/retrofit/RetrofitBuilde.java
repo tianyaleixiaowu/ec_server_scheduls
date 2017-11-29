@@ -14,14 +14,25 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Configuration
 public class RetrofitBuilde {
 
-    private String baiduUri="http://api.map.baidu.com/";
+    private String baiduUri = "http://api.map.baidu.com/";
 
-        Gson gson = new GsonBuilder()
+    private String gaodeUrl = "http://restapi.amap.com";
+
+    Gson gson = new GsonBuilder()
             .setLenient()
             .create();
-    public Retrofit getRetrofit() {
+
+    public Retrofit getBaiduRetrofit() {
         return new Retrofit.Builder()
                 .baseUrl(baiduUri)
+                .client(generClient())
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+    }
+
+    public Retrofit getGaodeRetrofit() {
+        return new Retrofit.Builder()
+                .baseUrl(gaodeUrl)
                 .client(generClient())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();

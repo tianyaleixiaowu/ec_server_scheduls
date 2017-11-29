@@ -200,4 +200,31 @@ public class EcCodeAreaManager {
         return null;
     }
 
+    /**
+     * 根据id查询
+     *
+     * @param id
+     *         id
+     * @return 城市名
+     */
+    public String findById(String id) {
+        CodeAreaEntity codeAreaEntity = codeAreaRepository.findOne(id);
+        if (codeAreaEntity == null) {
+            return "";
+        }
+        return codeAreaEntity.getName();
+    }
+
+    /**
+     * 获取直辖市名称
+     * @param id
+     * @return
+     */
+    public String findByParentId(String id){
+        CodeAreaEntity codeAreaEntity =  codeAreaRepository.findOne(codeAreaRepository.findOne(id).getParentId());
+        if (codeAreaEntity == null) {
+            return "";
+        }
+        return codeAreaEntity.getName();
+    }
 }
