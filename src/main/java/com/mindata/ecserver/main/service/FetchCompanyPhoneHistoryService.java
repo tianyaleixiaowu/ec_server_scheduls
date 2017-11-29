@@ -1,7 +1,8 @@
 package com.mindata.ecserver.main.service;
 
-import com.mindata.ecserver.global.http.RetrofitServiceBuilder;
+import com.mindata.ecserver.global.http.EcServerRequestProperty;
 import com.mindata.ecserver.global.http.RequestProperty;
+import com.mindata.ecserver.global.http.RetrofitServiceBuilder;
 import com.mindata.ecserver.global.http.response.BaseData;
 import com.mindata.ecserver.main.manager.PtUserManager;
 import com.mindata.ecserver.main.manager.PtUserRoleManager;
@@ -21,7 +22,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -73,19 +73,7 @@ public class FetchCompanyPhoneHistoryService {
             }
             String endTime = DateUtil.formatDate(DateUtil.yesterday());
 
-            RequestProperty requestProperty = new RequestProperty() {
-                @Override
-                public String baseUrl() {
-                    return serverUrl;
-                }
-
-                @Override
-                public HashMap<String, Object> headers() {
-                    HashMap<String, Object> map = new HashMap<>();
-                    map.put("token", token);
-                    return map;
-                }
-            };
+            RequestProperty requestProperty = new EcServerRequestProperty(serverUrl, token);
 
             //得到返回值
             logger.info("公司id为" + companyId + "。开始获取通话历史，开始时间为" + beginTime + ",截止时间为" + endTime);
