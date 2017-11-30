@@ -1,11 +1,15 @@
 package com.mindata.ecserver.global.geo;
 
-import com.mindata.ecserver.global.geo.retrofit.CallBackManager;
-import com.mindata.ecserver.global.geo.retrofit.ServiceBuilde;
-import com.mindata.ecserver.global.geo.retrofit.model.response.CoordinateResult;
-import com.mindata.ecserver.global.geo.retrofit.service.BaiduCoordinateService;
+import com.mindata.ecserver.global.geo.service.BaiduCoordinateService;
 import com.mindata.ecserver.global.geo.util.Sncal;
+import com.mindata.ecserver.global.http.MapBaiduRequestProperty;
+import com.mindata.ecserver.global.http.RequestProperty;
+import com.mindata.ecserver.global.http.RetrofitServiceBuilder;
+import com.mindata.ecserver.global.http.response.BaiduMutilResponseData;
+import com.mindata.ecserver.global.http.response.BaiduResponseData;
+import com.mindata.ecserver.retrofit.CallManager;
 import com.xiaoleilu.hutool.util.ObjectUtil;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
@@ -22,30 +26,33 @@ import static com.mindata.ecserver.global.Constant.OUTPUT_TYPE;
 @Service
 public class GeoBaiduCoordinate implements GeoCoordinate {
     @Resource
-    private ServiceBuilde serviceBuilde;
+    private RetrofitServiceBuilder retrofitServiceBuilder;
     @Resource
-    private CallBackManager callBackManager;
-
+    private CallManager callManager;
+    @Value("${main.baidu-url}")
+    private String baiduUrl;
     @Override
-    public CoordinateResult getCoordinateByAddress(String address) throws IOException {
+    public BaiduResponseData getCoordinateByAddress(String address) throws IOException {
         String snValue = Sncal.getSnValue(address);
-        BaiduCoordinateService baiduCoordinateService = serviceBuilde.getCoordinateService();
-        CoordinateResult coordinateResult = (CoordinateResult) callBackManager.execute(
+        RequestProperty requestProperty = new MapBaiduRequestProperty(baiduUrl);
+        BaiduCoordinateService baiduCoordinateService = retrofitServiceBuilder.getBaiduCoordinateService(requestProperty);
+        BaiduResponseData baiduResponseData = (BaiduResponseData) callManager.execute(
                 baiduCoordinateService.getCoordinateByAddress(address, OUTPUT_TYPE, BAIDU_MAP_AK, snValue));
-        if (ObjectUtil.isNull(coordinateResult)) {
+        if (ObjectUtil.isNull(baiduResponseData)) {
             return null;
         }
-        return coordinateResult;
+        return baiduResponseData;
     }
 
     @Override
-    public CoordinateResult getCoordinateByCompanyName(String companyName, String city) throws IOException {
-        BaiduCoordinateService baiduCoordinateService = serviceBuilde.getCoordinateService();
-        CoordinateResult coordinateResult = (CoordinateResult) callBackManager.execute(
+    public BaiduMutilResponseData getCoordinateByCompanyName(String companyName, String city) throws IOException {
+        RequestProperty requestProperty = new MapBaiduRequestProperty(baiduUrl);
+        BaiduCoordinateService baiduCoordinateService = retrofitServiceBuilder.getBaiduCoordinateService(requestProperty);
+        BaiduMutilResponseData mutilResponseData = (BaiduMutilResponseData) callManager.execute(
                 baiduCoordinateService.getCoordinateByCompany(companyName, city, OUTPUT_TYPE, BAIDU_MAP_AK));
-        if (ObjectUtil.isNull(coordinateResult)) {
+        if (ObjectUtil.isNull(mutilResponseData)) {
             return null;
         }
-        return coordinateResult;
+        return mutilResponseData;
     }
 }

@@ -112,4 +112,10 @@ public interface EcContactRepository extends JpaRepository<EcContactEntity, Inte
      * @return
      */
     Page<EcContactEntity> findByState(Integer state,Pageable pageable);
+
+
+    EcContactEntity findById(Long id);
+
+
+
 }

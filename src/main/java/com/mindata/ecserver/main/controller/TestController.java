@@ -1,6 +1,8 @@
 package com.mindata.ecserver.main.controller;
 
-import com.mindata.ecserver.main.BaseData;
+import com.mindata.ecserver.global.geo.ConvertBaiduCoordinate;
+import com.mindata.ecserver.global.http.response.BaseData;
+import com.mindata.ecserver.main.service.CompanyCoordinateService;
 import com.mindata.ecserver.main.service.EsContactService;
 import com.mindata.ecserver.main.service.FetchCompanyPhoneHistoryService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +20,10 @@ public class TestController {
     private FetchCompanyPhoneHistoryService fetchCompanyPhoneHistoryService;
     @Resource
     private EsContactService esContactService;
+    @Resource
+    private CompanyCoordinateService coordinateService;
+    @Resource
+    private ConvertBaiduCoordinate convertBaiduCoordinate;
 
     @GetMapping("/fetch")
     public BaseData fetchCompanyHistory() throws IOException {
@@ -40,5 +46,10 @@ public class TestController {
     public Object forceDbToEs() {
         esContactService.forceTotal();
         return "force dbToEs";
+    }
+    @GetMapping("/baidu")
+    public String baidu() throws IOException, InterruptedException {
+        coordinateService.timingUpdateCoordinate();
+        return "baidu";
     }
 }

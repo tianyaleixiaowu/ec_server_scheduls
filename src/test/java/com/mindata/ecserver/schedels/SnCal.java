@@ -11,18 +11,16 @@ import java.util.Map;
  */
 public class SnCal {
     public static void main(String[] args) throws UnsupportedEncodingException {
-        SnCal snCal = new SnCal();
-        // 计算sn跟参数对出现顺序有关，get请求请使用LinkedHashMap保存<key,value>，该方法根据key的插入顺序排序；
-        Map paramsMap = new LinkedHashMap<String, String>();
-        paramsMap.put("address", "北京市通州区永乐店镇永新路12040号");
-        paramsMap.put("output", "json");
-        paramsMap.put("ak", "uDWUhXo4WDUecxSGD97bE1ztHtZKn2sW");
-        // 调用下面的toQueryString方法，对LinkedHashMap内所有value作utf8编码，拼接返回结果address=%E7%99%BE%E5%BA%A6%E5%A4%A7%E5%8E%A6&output=json&ak=yourak
-        String paramsStr = snCal.toQueryString(paramsMap);
-        String wholeStr = new String("/geocoder/v2/?" + paramsStr + "ksQopZsTHGGd6g6j6X8FQGRcxHYqvoQG");
-        String tempStr = URLEncoder.encode(wholeStr, "UTF-8");
-        // 调用下面的MD5方法得到最后的sn签名
-        System.out.println(snCal.MD5(tempStr));
+        String num = 152201+"";
+        StringBuffer buffer = new StringBuffer();
+        for (int i = 0; i < num.length(); i++) {
+            if (i < 4 ) {
+                buffer.append(num.charAt(i));
+            } else {
+                buffer.append('0');
+            }
+        }
+        System.out.println(buffer.toString());
     }
     // 对Map内所有value作utf8编码，拼接返回结果
     public String toQueryString(Map<?, ?> data)

@@ -1,6 +1,6 @@
 package com.mindata.ecserver.global.geo;
 
-import com.mindata.ecserver.global.geo.retrofit.model.BaseResult;
+import com.mindata.ecserver.global.http.response.ResponseValue;
 
 import java.io.IOException;
 
@@ -12,18 +12,16 @@ public interface GeoCoordinate {
 
     /**
      * 根据地址获取经纬度
-     *
      * @param address
      * @return
      */
-    BaseResult getCoordinateByAddress(String address) throws IOException;
+    ResponseValue getCoordinateByAddress(String address) throws IOException;
 
     /**
      * 根据公司名称获取经纬度
-     *
      * @param companyName
      * @return
      */
-    BaseResult getCoordinateByCompanyName(String companyName, String city) throws IOException;
+    ResponseValue getCoordinateByCompanyName(String companyName, String city) throws IOException;
 
 }

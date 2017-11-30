@@ -43,8 +43,7 @@ public class ContactManager {
     /**
      * 查询没有省市code的
      *
-     * @param pageable
-     *         分页
+     * @param pageable 分页
      * @return 结果
      */
     private Page<EcContactEntity> findContactByProvince(String province, Pageable pageable) {
@@ -110,16 +109,17 @@ public class ContactManager {
 
     /**
      * 根据状态查询所有正常状态的公司
+     *
      * @return
      */
-    public Page<EcContactEntity> findByState(Pageable pageable){
-        return ecContactRepository.findByState(STATE_NORMAL,pageable);
+    public Page<EcContactEntity> findByState(Pageable pageable) {
+        return ecContactRepository.findByState(STATE_NORMAL, pageable);
     }
+
     /**
      * 更新code值
      *
-     * @param compId
-     *         公司Id
+     * @param compId 公司Id
      */
     private void updateVocationCode(Long compId) {
         List<String> industryList = companyIndustryInfoManager.getIndustryInfoForDb(compId);
@@ -131,7 +131,18 @@ public class ContactManager {
         }
     }
 
-
-
+    /**
+     * 查询某段时间内的数据
+     * @param begin
+     * @param end
+     * @param pageable
+     * @return
+     */
+    public Page<EcContactEntity> findByDateBetween(Date begin, Date end, Pageable pageable) {
+        return ecContactRepository.findByCreateTimeBetween(begin,end,pageable);
+    }
+    public EcContactEntity findOne(Long id) {
+        return ecContactRepository.findById(id);
+    }
 
 }

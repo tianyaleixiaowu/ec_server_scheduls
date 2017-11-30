@@ -78,6 +78,14 @@ public interface Constant {
      * 3 准确度 不太靠谱
      */
     int NORELIABLE_ACCURAY = 2;
+    /**
+     * gcj02坐标
+     */
+    int BAIDU_FROM=3;
+    /**
+     * 百度地图采用的经纬度坐标;
+     */
+    int BAIDU_TO=5;
 
     String GAODE_MAP_KEY = "30a02f8c411cc8a6b828a1c4581e68d6";
 

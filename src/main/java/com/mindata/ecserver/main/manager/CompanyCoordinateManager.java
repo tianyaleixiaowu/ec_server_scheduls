@@ -1,19 +1,19 @@
 package com.mindata.ecserver.main.manager;
 
-import com.mindata.ecserver.global.geo.retrofit.model.BaseResult;
-import com.mindata.ecserver.global.geo.retrofit.model.response.CoordinateResult;
 import com.mindata.ecserver.main.model.es.EsCompanyCoordinate;
-import com.mindata.ecserver.main.model.primary.CompanyCoordinateEntity;
-import com.mindata.ecserver.main.repository.primary.CompanyCoordinateRepository;
-import com.mindata.ecserver.main.service.EsCompanyCoordinateService;
+import com.mindata.ecserver.main.model.secondary.CompanyCoordinateEntity;
+import com.mindata.ecserver.main.repository.secondary.CompanyCoordinateRepository;
+import com.xiaoleilu.hutool.util.StrUtil;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
-import static com.mindata.ecserver.global.Constant.*;
+import static com.mindata.ecserver.global.Constant.NONE_ADDRESS;
+import static com.mindata.ecserver.global.Constant.NORELIABLE_ACCURAY;
 
 /**
  * @author hanliqiang wrote on 2017/11/24
@@ -25,80 +25,82 @@ public class CompanyCoordinateManager {
     @Resource
     private EsCompanyCoordinateManager esCompanyCoordinateManager;
 
-    public void saveCoordinate(BaseResult baseResult, Long contactId) {
-        CoordinateResult coordinateResult = (CoordinateResult) baseResult;
-        List<CompanyCoordinateEntity> companyCoordinateEntities = coordinateRepository.findByContactId(contactId);
-        if (companyCoordinateEntities.size() > 0) {
-            return;
-        }
-        CompanyCoordinateEntity companyCoordinateEntity = new CompanyCoordinateEntity();
-        companyCoordinateEntity.setStatus(baseResult.getState());
-        companyCoordinateEntity.setAccuracy(baseResult.getAccuracy());
-        companyCoordinateEntity.setContactId(contactId);
-        companyCoordinateEntity.setSource(baseResult.getSource());
-        if (baseResult.getSource() == BAIDU_SOURCE && baseResult.getQueryCondition() == QUERY_ADDRESS) {
-            companyCoordinateEntity.setBaiduCoordinate(coordinateResult.getResult().getLocation().getLng() + "," + coordinateResult.getResult().getLocation().getLat());
-        }
-        if (baseResult.getSource() == GAODE_SOURCE && baseResult.getQueryCondition() == QUERY_ADDRESS) {
-            companyCoordinateEntity.setGaodeCoordinate(coordinateResult.getGeocodes().get(0).getLocation());
-        }
-        companyCoordinateEntity.setQueryCondition(baseResult.getQueryCondition());
-        companyCoordinateEntity.setQueryConditionValue(baseResult.getQueryConditionValue());
-        companyCoordinateEntity.setLevel(baseResult.getLevel());
-        CompanyCoordinateEntity coordinateEntity = coordinateRepository.save(companyCoordinateEntity);
-        //es插值
-        EsCompanyCoordinate coordinate = new EsCompanyCoordinate();
-        BeanUtils.copyProperties(companyCoordinateEntity, coordinate);
-       if (coordinate.getSource() == BAIDU_SOURCE && coordinate.getQueryCondition() == QUERY_ADDRESS) {
-           coordinate.setBaiduCoordinate(coordinateResult.getResult().getLocation().getLat() + "," + coordinateResult.getResult().getLocation().getLng());
-           esCompanyCoordinateManager.index(coordinate);
-        }
-        if (coordinateEntity.getSource() == GAODE_SOURCE && coordinateEntity.getQueryCondition() == QUERY_ADDRESS) {
-            String[] coordinateArr = companyCoordinateEntity.getGaodeCoordinate().split(",");
+    /**
+     * 将坐标信息保存到数据库
+     *
+     * @param companyCoordinateEntities 集合
+     * @param contactId                 未推送表的Id
+     */
+    public void saveCoordinate(List<CompanyCoordinateEntity> companyCoordinateEntities, Long contactId) {
+        List<CompanyCoordinateEntity> coordinateEntities = coordinateRepository.findByContactId(contactId);
+        for (CompanyCoordinateEntity companyCoordinateEntity : companyCoordinateEntities) {
+            //如果已经存在则更新
+            if (coordinateEntities.size() > 0) {
+                for (CompanyCoordinateEntity coordinateEntity : coordinateEntities) {
+                    coordinateEntity.setStatus(companyCoordinateEntity.getStatus());
+                    coordinateEntity.setAccuracy(companyCoordinateEntity.getAccuracy());
+                    coordinateEntity.setLevel(companyCoordinateEntity.getLevel());
+                    coordinateEntity.setBaiduCoordinate(companyCoordinateEntity.getBaiduCoordinate());
+                    coordinateEntity.setGaodeCoordinate(companyCoordinateEntity.getGaodeCoordinate());
+                    coordinateEntity.setQueryCondition(companyCoordinateEntity.getQueryCondition());
+                    coordinateEntity.setQueryConditionValue(companyCoordinateEntity.getQueryConditionValue());
+                    coordinateRepository.save(coordinateEntity);
+                    return;
+                }
+            }
+            //反之新增
+            companyCoordinateEntity.setContactId(contactId);
+            CompanyCoordinateEntity coordinateEntity = coordinateRepository.save(companyCoordinateEntity);
+            //es插值
+            EsCompanyCoordinate esCompanyCoordinate = new EsCompanyCoordinate();
+            BeanUtils.copyProperties(coordinateEntity, esCompanyCoordinate);
             StringBuffer stringBuffer = new StringBuffer();
-            coordinate.setGaodeCoordinate(stringBuffer.append(coordinateArr[1]+",").append(coordinateArr[0]).toString());
-            esCompanyCoordinateManager.index(coordinate);
-        }
-        //查询条件如果是公司的话可能会有多条 百度
-        if (baseResult.getQueryCondition() == QUERY_COMPANYNAME && baseResult.getSource() == BAIDU_SOURCE && coordinateResult.getResults() != null) {
-            for (int i = 0; i < coordinateResult.getResults().size(); i++) {
-                companyCoordinateEntity = new CompanyCoordinateEntity();
-                companyCoordinateEntity.setStatus(baseResult.getState());
-                //准确度
-                companyCoordinateEntity.setAccuracy(baseResult.getAccuracy());
-                companyCoordinateEntity.setContactId(contactId);
-                companyCoordinateEntity.setSource(baseResult.getSource());
-                companyCoordinateEntity.setQueryCondition(baseResult.getQueryCondition());
-                companyCoordinateEntity.setQueryConditionValue(baseResult.getQueryConditionValue());
-                companyCoordinateEntity.setLevel(baseResult.getLevel());
-                companyCoordinateEntity.setBaiduCoordinate(coordinateResult.getResults().get(i).getLocation().getLng() + "," + coordinateResult.getResults().get(i).getLocation().getLat());
-                coordinateRepository.save(companyCoordinateEntity);
-                //es插值
-                coordinate.setBaiduCoordinate(coordinateResult.getResults().get(i).getLocation().getLat() + "," + coordinateResult.getResults().get(i).getLocation().getLng());
-                esCompanyCoordinateManager.index(coordinate);
+            StringBuffer buffer = new StringBuffer();
+            if (StrUtil.isNotEmpty(coordinateEntity.getBaiduCoordinate())) {
+                String[] baiduCoordinateArr = coordinateEntity.getBaiduCoordinate().split(",");
+                stringBuffer.append(baiduCoordinateArr[1] + ",").append(baiduCoordinateArr[0]);
+                esCompanyCoordinate.setBaiduCoordinate(stringBuffer.toString());
+                if (StrUtil.isNotEmpty(coordinateEntity.getGaodeCoordinate())) {
+                    String[] gaodeCoordinateArr = coordinateEntity.getGaodeCoordinate().split(",");
+                    buffer.append(gaodeCoordinateArr[1] + ",").append(gaodeCoordinateArr[0]);
+                    esCompanyCoordinate.setGaodeCoordinate(buffer.toString());
+                }
+                esCompanyCoordinateManager.index(esCompanyCoordinate);
+            } else {
+                if (StrUtil.isNotEmpty(coordinateEntity.getGaodeCoordinate())) {
+                    String[] gaodeCoordinateArr = coordinateEntity.getGaodeCoordinate().split(",");
+                    buffer.append(gaodeCoordinateArr[1] + ",").append(gaodeCoordinateArr[0]);
+                    esCompanyCoordinate.setGaodeCoordinate(buffer.toString());
+                }
+                esCompanyCoordinateManager.index(esCompanyCoordinate);
             }
         }
-        // 查询条件如果是公司的话可能会有多条  高德
-        if (baseResult.getQueryCondition() == QUERY_COMPANYNAME && baseResult.getSource() == GAODE_SOURCE && coordinateResult.getGeocodes() != null) {
-            for (int i = 0; i < coordinateResult.getGeocodes().size(); i++) {
-                companyCoordinateEntity = new CompanyCoordinateEntity();
-                companyCoordinateEntity.setStatus(baseResult.getState());
-                //准确度
-                companyCoordinateEntity.setAccuracy(baseResult.getAccuracy());
-                companyCoordinateEntity.setContactId(contactId);
-                companyCoordinateEntity.setSource(baseResult.getSource());
-                companyCoordinateEntity.setQueryCondition(baseResult.getQueryCondition());
-                companyCoordinateEntity.setQueryConditionValue(baseResult.getQueryConditionValue());
-                companyCoordinateEntity.setLevel(baseResult.getLevel());
-                companyCoordinateEntity.setGaodeCoordinate(coordinateResult.getGeocodes().get(i).getLocation());
-                coordinateRepository.save(companyCoordinateEntity);
-                ////////////////////
-                String[] coordinateArr = companyCoordinateEntity.getGaodeCoordinate().split(",");
-                StringBuffer stringBuffer = new StringBuffer();
-                coordinate.setGaodeCoordinate(stringBuffer.append(coordinateArr[1]+",").append(coordinateArr[0]).toString());
-                esCompanyCoordinateManager.index(coordinate);
-            }
-        }
+    }
 
+    /**
+     * 查询无地址的数据
+     * @param pageable
+     * @return
+     */
+    public Page<CompanyCoordinateEntity> findByStatus(Pageable pageable){
+         return coordinateRepository.findByStatus(NONE_ADDRESS,pageable);
+    }
+
+    /**
+     * 查询不太靠谱的数据
+     * @param pageable
+     * @return
+     */
+    public Page<CompanyCoordinateEntity> findByAccuracy(Pageable pageable){
+        return coordinateRepository.findByAccuracy(NORELIABLE_ACCURAY,pageable);
+    }
+
+    /**
+     * 查询不太靠谱或者没有坐标的数据
+     * @param pageable
+     * @return
+     */
+    public Page<CompanyCoordinateEntity> findByStatusOrAccuracy(Pageable pageable){
+        return coordinateRepository.findByStatusOrAccuracy(NONE_ADDRESS,NORELIABLE_ACCURAY,pageable);
     }
 }

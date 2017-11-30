@@ -1,5 +1,9 @@
 package com.mindata.ecserver.global.http;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.mindata.ecserver.global.geo.service.BaiduCoordinateService;
+import com.mindata.ecserver.global.geo.service.GaodeCoordinateService;
 import com.mindata.ecserver.retrofit.service.FetchPhoneHistoryService;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -20,6 +24,13 @@ public class RetrofitServiceBuilder {
         return generateRetrofit(requestProperty).create(FetchPhoneHistoryService.class);
     }
 
+    public BaiduCoordinateService getBaiduCoordinateService(RequestProperty requestProperty) {
+        return generateRetrofit(requestProperty).create(BaiduCoordinateService.class);
+    }
+
+    public GaodeCoordinateService getGaodeCoordinateService(RequestProperty requestProperty) {
+        return generateRetrofit(requestProperty).create(GaodeCoordinateService.class);
+    }
     /**
      * 创建retrofit
      * @param requestProperty
@@ -27,6 +38,7 @@ public class RetrofitServiceBuilder {
      * @return
      * retrofit客户端
      */
+
     private Retrofit generateRetrofit(RequestProperty requestProperty) {
         return new Retrofit.Builder()
                 .baseUrl(requestProperty.baseUrl())

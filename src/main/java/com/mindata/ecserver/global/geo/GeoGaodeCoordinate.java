@@ -1,10 +1,13 @@
 package com.mindata.ecserver.global.geo;
 
-import com.mindata.ecserver.global.geo.retrofit.CallBackManager;
-import com.mindata.ecserver.global.geo.retrofit.ServiceBuilde;
-import com.mindata.ecserver.global.geo.retrofit.model.response.CoordinateResult;
-import com.mindata.ecserver.global.geo.retrofit.service.GaodeCoordinateService;
+import com.mindata.ecserver.global.geo.service.GaodeCoordinateService;
+import com.mindata.ecserver.global.http.MapGaodeRquestProperty;
+import com.mindata.ecserver.global.http.RequestProperty;
+import com.mindata.ecserver.global.http.RetrofitServiceBuilder;
+import com.mindata.ecserver.global.http.response.GaodeResponseData;
+import com.mindata.ecserver.retrofit.CallManager;
 import com.xiaoleilu.hutool.util.ObjectUtil;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
@@ -21,29 +24,33 @@ import static com.mindata.ecserver.global.Constant.OUTPUT_TYPE;
 @Service
 public class GeoGaodeCoordinate implements GeoCoordinate {
     @Resource
-    private ServiceBuilde serviceBuilde;
+    private RetrofitServiceBuilder retrofitServiceBuilder;
     @Resource
-    private CallBackManager callBackManager;
+    private CallManager callManager;
+    @Value("${main.gaode-url}")
+    private String gaodeUrl;
 
     @Override
-    public CoordinateResult getCoordinateByAddress(String address) throws IOException {
-        GaodeCoordinateService gaodeCoordinateService = serviceBuilde.getGaodeCoordinateService();
-        CoordinateResult coordinateResult = (CoordinateResult) callBackManager.execute(
+    public GaodeResponseData getCoordinateByAddress(String address) throws IOException {
+        RequestProperty requestProperty = new MapGaodeRquestProperty(gaodeUrl);
+        GaodeCoordinateService gaodeCoordinateService = retrofitServiceBuilder.getGaodeCoordinateService(requestProperty);
+        GaodeResponseData gaodeResponseData = (GaodeResponseData) callManager.execute(
                 gaodeCoordinateService.getCoordinateByAddress(address, OUTPUT_TYPE, GAODE_MAP_KEY));
-        if (ObjectUtil.isNull(coordinateResult)) {
+        if (ObjectUtil.isNull(gaodeResponseData)) {
             return null;
         }
-        return coordinateResult;
+        return gaodeResponseData;
     }
 
     @Override
-    public CoordinateResult getCoordinateByCompanyName(String companyName, String city) throws IOException {
-        GaodeCoordinateService gaodeCoordinateService = serviceBuilde.getGaodeCoordinateService();
-        CoordinateResult coordinateResult = (CoordinateResult) callBackManager.execute(
+    public GaodeResponseData getCoordinateByCompanyName(String companyName, String city) throws IOException {
+        RequestProperty requestProperty = new MapGaodeRquestProperty(gaodeUrl);
+        GaodeCoordinateService gaodeCoordinateService = retrofitServiceBuilder.getGaodeCoordinateService(requestProperty);
+        GaodeResponseData gaodeResponseData = (GaodeResponseData) callManager.execute(
                 gaodeCoordinateService.getCoordinateByCompany(companyName, city, OUTPUT_TYPE, GAODE_MAP_KEY));
-        if (ObjectUtil.isNull(coordinateResult)) {
+        if (ObjectUtil.isNull(gaodeResponseData)) {
             return null;
         }
-        return coordinateResult;
+        return gaodeResponseData;
     }
 }

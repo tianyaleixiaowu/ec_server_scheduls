@@ -1,4 +1,4 @@
-package com.mindata.ecserver.main.model.primary;
+package com.mindata.ecserver.main.model.secondary;
 
 import javax.persistence.*;
 

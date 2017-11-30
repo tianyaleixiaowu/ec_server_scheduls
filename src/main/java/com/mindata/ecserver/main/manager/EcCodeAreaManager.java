@@ -1,5 +1,6 @@
 package com.mindata.ecserver.main.manager;
 
+import com.mindata.ecserver.global.util.CommonUtil;
 import com.mindata.ecserver.main.model.es.EsCodeArea;
 import com.mindata.ecserver.main.model.primary.CodeAreaEntity;
 import com.mindata.ecserver.main.repository.primary.CodeAreaRepository;
@@ -17,6 +18,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import static com.mindata.ecserver.global.Constant.ES_INDEX_NAME;
 import static com.mindata.ecserver.global.Constant.ES_TYPE_AREA;
@@ -96,7 +98,7 @@ public class EcCodeAreaManager {
             boolQueryBuilder.must(matchQuery("parentId", provinceCode));
             hashMap.put(PROVINCE, provinceCode);
         }
-        
+
         boolQueryBuilder.must(matchQuery("name", area));
 
         NativeSearchQueryBuilder builder = new NativeSearchQueryBuilder().withQuery(boolQueryBuilder);
@@ -123,8 +125,7 @@ public class EcCodeAreaManager {
     /**
      * 获取所有的省
      *
-     * @return
-     * 根据区域查询省
+     * @return 根据区域查询省
      */
     private Integer findProvince(String area) {
         if (area.contains("北京")) {
@@ -203,8 +204,7 @@ public class EcCodeAreaManager {
     /**
      * 根据id查询
      *
-     * @param id
-     *         id
+     * @param id id
      * @return 城市名
      */
     public String findById(String id) {
@@ -216,15 +216,21 @@ public class EcCodeAreaManager {
     }
 
     /**
-     * 获取直辖市名称
-     * @param id
+     * 获取城市名称
+     *
+     * @param city
+     * @param province
      * @return
      */
-    public String findByParentId(String id){
-        CodeAreaEntity codeAreaEntity =  codeAreaRepository.findOne(codeAreaRepository.findOne(id).getParentId());
-        if (codeAreaEntity == null) {
-            return "";
+    public String findNmaeById(String city, String province) {
+        String cityName;
+        if (!Objects.equals(city, 0+"")) {
+            String number = CommonUtil.getEncrypt(city);
+            cityName = findById(number);
+        } else {
+            //获取到省或者直辖市
+            cityName = findById(province);
         }
-        return codeAreaEntity.getName();
+        return cityName;
     }
 }

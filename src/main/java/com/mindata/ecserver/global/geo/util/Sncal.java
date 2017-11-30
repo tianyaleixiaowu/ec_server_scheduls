@@ -9,6 +9,7 @@ import static com.mindata.ecserver.global.Constant.*;
 
 /**
  * 计算获得sn值
+ *
  * @author hanliqiang wrote on 2017/11/27
  */
 public class Sncal {
