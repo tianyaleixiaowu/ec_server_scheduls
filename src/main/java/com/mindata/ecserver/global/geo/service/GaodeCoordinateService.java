@@ -13,10 +13,10 @@ public interface GaodeCoordinateService {
     /**
      * 根据地址去高德查经纬度
      *
-     * @param address
-     * @param output
-     * @param key
-     * @return
+     * @param address 地址
+     * @param output  输出格式
+     * @param key     高德key
+     * @return 结果
      */
     @GET("v3/geocode/geo")
     Call<GaodeResponseData> getCoordinateByAddress(@Query("address") String address, @Query("output") String output,
@@ -25,11 +25,11 @@ public interface GaodeCoordinateService {
     /**
      * 根据公司名称去高德查经纬度
      *
-     * @param companyName
-     * @param city
-     * @param output
-     * @param key
-     * @return
+     * @param companyName 公司名称
+     * @param city        城市
+     * @param output      输出格式
+     * @param key         高德key
+     * @return 结果
      */
     @GET("v3/geocode/geo")
     Call<GaodeResponseData> getCoordinateByCompany(@Query("address") String companyName, @Query("city") String city, @Query("output") String output,

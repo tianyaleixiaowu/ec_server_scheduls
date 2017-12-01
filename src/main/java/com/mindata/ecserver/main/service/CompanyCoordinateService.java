@@ -13,8 +13,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 
@@ -36,17 +38,17 @@ public class CompanyCoordinateService {
     /**
      * 新增所有的
      *
-     * @throws IOException
+     * @throws IOException 异常
      */
-//    @PostConstruct
-    public void saveCompanyCoordinate() throws IOException {
+    @PostConstruct
+    public void saveCompanyCoordinate() throws IOException, NoSuchAlgorithmException {
         Pageable pageable = new PageRequest(0, 1, Sort.Direction.ASC, "id");
         Page<EcContactEntity> page = contactManager.findByState(pageable);
         for (int i = 0; i < page.getTotalElements() / PAGE_SIZE + 1; i++) {
             pageable = new PageRequest(i, PAGE_SIZE, Sort.Direction.ASC, "id");
             Page<EcContactEntity> entities = contactManager.findByState(pageable);
             for (EcContactEntity ecContactEntity : entities.getContent()) {
-                String city = ecCodeAreaManager.findNmaeById(ecContactEntity.getCity(), ecContactEntity.getProvince());
+                String city = ecCodeAreaManager.findNameById(ecContactEntity.getCity(), ecContactEntity.getProvince());
                 List<CompanyCoordinateEntity> coordinateEntities = geoCoordinateService.getLocation(ecContactEntity.getAddress(), ecContactEntity.getCompany(), city);
                 coordinateManager.saveCoordinate(coordinateEntities, ecContactEntity.getId());
             }
@@ -58,9 +60,9 @@ public class CompanyCoordinateService {
      *
      * @param beginId 开始id
      * @param endId   结束id
-     * @throws IOException
+     * @throws IOException 异常
      */
-    public void partInsertIdBetween(Long beginId, Long endId) throws IOException {
+    public void partInsertIdBetween(Long beginId, Long endId) throws IOException, NoSuchAlgorithmException {
         Sort sort = new Sort(Sort.Direction.ASC, "id");
         Pageable pageable = new PageRequest(0, 1, sort);
         Page<EcContactEntity> page = contactManager.findByIdBetween(beginId, endId, pageable);
@@ -72,7 +74,7 @@ public class CompanyCoordinateService {
             pageable = new PageRequest(i, PAGE_SIZE, sort);
             List<EcContactEntity> contactEntities = contactManager.findByIdBetween(beginId, endId, pageable).getContent();
             for (EcContactEntity ecContactEntity : contactEntities) {
-                String city = ecCodeAreaManager.findNmaeById(ecContactEntity.getCity(), ecContactEntity.getProvince());
+                String city = ecCodeAreaManager.findNameById(ecContactEntity.getCity(), ecContactEntity.getProvince());
                 List<CompanyCoordinateEntity> coordinateEntities = geoCoordinateService.getLocation(ecContactEntity.getAddress(), ecContactEntity.getCompany(), city);
                 coordinateManager.saveCoordinate(coordinateEntities, ecContactEntity.getId());
             }
@@ -82,11 +84,11 @@ public class CompanyCoordinateService {
     /**
      * 修补一段时间内的数据
      *
-     * @param begin
-     * @param end
-     * @throws IOException
+     * @param begin 开始时间
+     * @param end   结束时间
+     * @throws IOException 异常
      */
-    public void partInsertDateBetween(String begin, String end) throws IOException {
+    public void partInsertDateBetween(String begin, String end) throws IOException, NoSuchAlgorithmException {
         Date beginTime = DateUtil.beginOfDay(DateUtil.parseDate(begin));
         Date endTime = DateUtil.endOfDay(DateUtil.parseDate(end));
         Sort sort = new Sort(Sort.Direction.ASC, "id");
@@ -99,7 +101,7 @@ public class CompanyCoordinateService {
             pageable = new PageRequest(i, PAGE_SIZE, sort);
             List<EcContactEntity> contactEntities = contactManager.findByDateBetween(beginTime, endTime, pageable).getContent();
             for (EcContactEntity ecContactEntity : contactEntities) {
-                String city = ecCodeAreaManager.findNmaeById(ecContactEntity.getCity(), ecContactEntity.getProvince());
+                String city = ecCodeAreaManager.findNameById(ecContactEntity.getCity(), ecContactEntity.getProvince());
                 List<CompanyCoordinateEntity> coordinateEntities = geoCoordinateService.getLocation(ecContactEntity.getAddress(), ecContactEntity.getCompany(), city);
                 coordinateManager.saveCoordinate(coordinateEntities, ecContactEntity.getId());
             }
@@ -109,17 +111,17 @@ public class CompanyCoordinateService {
     /**
      * 对外提供获取经纬度
      *
-     * @param address
-     * @param companyName
-     * @param city
-     * @return
-     * @throws IOException
+     * @param address     地址
+     * @param companyName 公司名称
+     * @param city        城市
+     * @return 结果
+     * @throws IOException 异常
      */
-    public List<Map<String, String>> findCoordinate(String address, String companyName, String city) throws IOException {
+    public List<Map<String, String>> findCoordinate(String address, String companyName, String city) throws IOException, NoSuchAlgorithmException {
         List<Map<String, String>> mapList = new ArrayList<>();
-        Map<String, String> map = new HashMap<>();
         List<CompanyCoordinateEntity> coordinateEntities = geoCoordinateService.getLocation(address, companyName, city);
         for (CompanyCoordinateEntity companyCoordinateEntity : coordinateEntities) {
+            Map<String, String> map = new HashMap<>();
             map.put("coordinate", companyCoordinateEntity.getBaiduCoordinate());
             mapList.add(map);
         }
@@ -129,9 +131,9 @@ public class CompanyCoordinateService {
     /**
      * 定时修改不太靠谱或者没有坐标的数据
      *
-     * @throws IOException
+     * @throws IOException 异常
      */
-    public void timingUpdateCoordinate() throws IOException {
+    public void timingUpdateCoordinate() throws IOException, NoSuchAlgorithmException {
         Sort sort = new Sort(Sort.Direction.ASC, "id");
         Pageable pageable = new PageRequest(0, 1, sort);
         Page<CompanyCoordinateEntity> page = coordinateManager.findByStatusOrAccuracy(pageable);
@@ -143,7 +145,7 @@ public class CompanyCoordinateService {
             List<CompanyCoordinateEntity> coordinateEntities = coordinateManager.findByStatusOrAccuracy(pageable).getContent();
             for (CompanyCoordinateEntity companyCoordinateEntity : coordinateEntities) {
                 EcContactEntity ecContactEntity = contactManager.findOne(companyCoordinateEntity.getContactId());
-                String city = ecCodeAreaManager.findNmaeById(ecContactEntity.getCity(), ecContactEntity.getProvince());
+                String city = ecCodeAreaManager.findNameById(ecContactEntity.getCity(), ecContactEntity.getProvince());
                 List<CompanyCoordinateEntity> companyCoordinateEntities = geoCoordinateService.getLocation(ecContactEntity.getAddress(), ecContactEntity.getCompany(), city);
                 coordinateManager.saveCoordinate(companyCoordinateEntities, ecContactEntity.getId());
             }

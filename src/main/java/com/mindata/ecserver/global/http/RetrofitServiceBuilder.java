@@ -1,7 +1,5 @@
 package com.mindata.ecserver.global.http;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.mindata.ecserver.global.geo.service.BaiduCoordinateService;
 import com.mindata.ecserver.global.geo.service.GaodeCoordinateService;
 import com.mindata.ecserver.retrofit.service.FetchPhoneHistoryService;
@@ -31,12 +29,12 @@ public class RetrofitServiceBuilder {
     public GaodeCoordinateService getGaodeCoordinateService(RequestProperty requestProperty) {
         return generateRetrofit(requestProperty).create(GaodeCoordinateService.class);
     }
+
     /**
      * 创建retrofit
-     * @param requestProperty
-     * 参数
-     * @return
-     * retrofit客户端
+     *
+     * @param requestProperty 参数
+     * @return retrofit客户端
      */
 
     private Retrofit generateRetrofit(RequestProperty requestProperty) {
@@ -62,7 +60,7 @@ public class RetrofitServiceBuilder {
                             builder.addHeader(key, requestProperty.headers().get(key).toString());
                         }
                     }
-                    
+
                     return chain.proceed(builder.build());
                 }).connectTimeout(5, TimeUnit.MINUTES)
                 .readTimeout(5, TimeUnit.MINUTES)

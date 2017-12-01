@@ -39,7 +39,7 @@ public class CommonUtil {
     public static String getEncrypt(String num) {
         StringBuffer buffer = new StringBuffer();
         for (int i = 0; i < num.length(); i++) {
-            if (i < 3 || i > 7) {
+            if (i < 4 || i > 6) {
                 buffer.append(num.charAt(i));
             } else {
                 buffer.append('0');

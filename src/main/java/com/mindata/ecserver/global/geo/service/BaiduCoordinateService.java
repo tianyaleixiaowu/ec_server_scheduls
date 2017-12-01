@@ -16,11 +16,11 @@ public interface BaiduCoordinateService {
     /**
      * 根据地址去百度map查询经纬度
      *
-     * @param address
-     * @param output
-     * @param ak
-     * @param sn
-     * @return
+     * @param address 地址
+     * @param output  输出格式
+     * @param ak      百度ak
+     * @param sn      sn值
+     * @return 结果
      */
 
     @GET("geocoder/v2/")
@@ -30,11 +30,11 @@ public interface BaiduCoordinateService {
     /**
      * 根据公司名称去百度查询经纬度
      *
-     * @param query
-     * @param region
-     * @param output
-     * @param ak
-     * @return
+     * @param query  这传的是公司名称
+     * @param region 城市
+     * @param output 输出格式
+     * @param ak     百度ak
+     * @return 结果
      */
     @GET("place/search?")
     Call<BaiduMutilResponseData> getCoordinateByCompany(@Query("query") String query, @Query("region") String region, @Query("output") String output,
@@ -42,13 +42,14 @@ public interface BaiduCoordinateService {
 
     /**
      * 转换成百度坐标
-     * @param coords  源坐标
-     * @param from
-     * @param to
-     * @param ak
-     * @return
+     *
+     * @param coords 源坐标
+     * @param from   gcj02坐标
+     * @param to     百度坐标
+     * @param ak     百度ak
+     * @return 结果
      */
     @GET("geoconv/v1/?")
     Call<BaiduConvertResponseData> getBaiduCoordinate(@Query("coords") String coords, @Query("from") Integer from,
-                                                      @Query("to") Integer to,@Query("output") String output, @Query("ak") String ak);
+                                                      @Query("to") Integer to, @Query("output") String output, @Query("ak") String ak);
 }

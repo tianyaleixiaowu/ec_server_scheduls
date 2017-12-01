@@ -218,15 +218,18 @@ public class EcCodeAreaManager {
     /**
      * 获取城市名称
      *
-     * @param city
-     * @param province
-     * @return
+     * @param city 城市id
+     * @param province 省份id
+     * @return 结果
      */
-    public String findNmaeById(String city, String province) {
+    public String findNameById(String city, String province) {
         String cityName;
         if (!Objects.equals(city, 0+"")) {
             String number = CommonUtil.getEncrypt(city);
             cityName = findById(number);
+            if(cityName.equals("市辖区")){
+                cityName = findById(province);
+            }
         } else {
             //获取到省或者直辖市
             cityName = findById(province);

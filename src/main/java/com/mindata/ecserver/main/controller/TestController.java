@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * @author wuweifeng wrote on 2017/11/7.
@@ -48,8 +49,8 @@ public class TestController {
         return "force dbToEs";
     }
     @GetMapping("/baidu")
-    public String baidu() throws IOException, InterruptedException {
-        coordinateService.timingUpdateCoordinate();
+    public String baidu() throws IOException, NoSuchAlgorithmException {
+        coordinateService.saveCompanyCoordinate();
         return "baidu";
     }
 }

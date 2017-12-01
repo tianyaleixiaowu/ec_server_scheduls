@@ -11,10 +11,11 @@ import com.mindata.ecserver.retrofit.CallManager;
 import com.xiaoleilu.hutool.util.ObjectUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 import static com.mindata.ecserver.global.Constant.BAIDU_MAP_AK;
 import static com.mindata.ecserver.global.Constant.OUTPUT_TYPE;
@@ -23,7 +24,7 @@ import static com.mindata.ecserver.global.Constant.OUTPUT_TYPE;
  * @author hanliqiang wrote on 2017/11/27
  */
 @Order(0)
-@Service
+@Component
 public class GeoBaiduCoordinate implements GeoCoordinate {
     @Resource
     private RetrofitServiceBuilder retrofitServiceBuilder;
@@ -31,8 +32,9 @@ public class GeoBaiduCoordinate implements GeoCoordinate {
     private CallManager callManager;
     @Value("${main.baidu-url}")
     private String baiduUrl;
+
     @Override
-    public BaiduResponseData getCoordinateByAddress(String address) throws IOException {
+    public BaiduResponseData getCoordinateByAddress(String address) throws IOException, NoSuchAlgorithmException {
         String snValue = Sncal.getSnValue(address);
         RequestProperty requestProperty = new MapBaiduRequestProperty(baiduUrl);
         BaiduCoordinateService baiduCoordinateService = retrofitServiceBuilder.getBaiduCoordinateService(requestProperty);

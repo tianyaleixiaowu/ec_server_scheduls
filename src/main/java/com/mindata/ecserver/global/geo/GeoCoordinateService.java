@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,18 +23,18 @@ public class GeoCoordinateService {
     @Resource
     private ConvertBaiduCoordinate convertBaiduCoordinate;
     @Resource
-    List<GeoCoordinate> geoCoordinates;
+    private List<GeoCoordinate> geoCoordinates;
 
     /**
      * 获取高德、百度返回的数据
      *
-     * @param address
-     * @param companyName
-     * @param city
-     * @return
-     * @throws IOException
+     * @param address     地址
+     * @param companyName 公司名字
+     * @param city        城市
+     * @return 结果
+     * @throws IOException 异常
      */
-    public List<CompanyCoordinateEntity> getLocation(String address, String companyName, String city) throws IOException {
+    public List<CompanyCoordinateEntity> getLocation(String address, String companyName, String city) throws IOException, NoSuchAlgorithmException {
         GaodeResponseData gaodeResult;
         List<CompanyCoordinateEntity> coordinateEntities = new ArrayList<>();
         CompanyCoordinateEntity coordinateEntity = new CompanyCoordinateEntity();

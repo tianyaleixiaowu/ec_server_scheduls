@@ -29,14 +29,15 @@ public class ConvertBaiduCoordinate {
 
     /**
      * 将其他坐标转换为百度坐标
-     * @param coords   源坐标
+     *
+     * @param coords 源坐标
      * @return
      * @throws IOException
      */
     public BaiduConvertResponseData convertBaiduCoordinate(String coords) throws IOException {
         RequestProperty requestProperty = new MapBaiduRequestProperty(baiduUrl);
         BaiduCoordinateService baiduCoordinateService = retrofitServiceBuilder.getBaiduCoordinateService(requestProperty);
-        BaiduConvertResponseData convertResponseData = (BaiduConvertResponseData) callManager.execute(baiduCoordinateService.getBaiduCoordinate(coords, BAIDU_FROM, BAIDU_TO,OUTPUT_TYPE, BAIDU_MAP_AK));
+        BaiduConvertResponseData convertResponseData = (BaiduConvertResponseData) callManager.execute(baiduCoordinateService.getBaiduCoordinate(coords, BAIDU_FROM, BAIDU_TO, OUTPUT_TYPE, BAIDU_MAP_AK));
         if (ObjectUtil.isNull(convertResponseData)) {
             return null;
         }

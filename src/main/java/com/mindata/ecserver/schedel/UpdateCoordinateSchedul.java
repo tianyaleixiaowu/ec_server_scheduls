@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 
 import static com.xiaoleilu.hutool.date.DatePattern.NORM_DATETIME_FORMAT;
@@ -26,7 +27,7 @@ public class UpdateCoordinateSchedul {
      * 定时修补位置信息
      */
     @Scheduled(cron = "0 0 1 * * ?")
-    public void executeUpdateCoordinateTask() throws IOException {
+    public void executeUpdateCoordinateTask() throws IOException, NoSuchAlgorithmException {
         //检查分布式锁
         System.out.println("定时任务开始");
         logger.info("现在时间：" + DateUtil.format(new Date(), NORM_DATETIME_FORMAT));

@@ -2,11 +2,13 @@ package com.mindata.ecserver.main.controller;
 
 import com.mindata.ecserver.main.service.CompanyCoordinateService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * @author hanliqiang wrote on 2017/11/27
@@ -20,27 +22,27 @@ public class CoordinateController {
     /**
      * 获取坐标
      *
-     * @param address
-     * @param companyName
-     * @param city
-     * @return
-     * @throws IOException
+     * @param address     地址
+     * @param companyName 公司名称
+     * @param city        城市
+     * @return 结果
+     * @throws IOException 异常
      */
-    @GetMapping("/getCoordinate")
-    public Object getCoordinate(String address, String companyName, String city) throws IOException {
+    @GetMapping("")
+    public Object getCoordinate(String address, String companyName, String city) throws IOException, NoSuchAlgorithmException {
         return companyCoordinateService.findCoordinate(address, companyName, city);
     }
 
     /**
      * 更新id范围内的数据
      *
-     * @param beginId
-     * @param endId
-     * @return
-     * @throws IOException
+     * @param beginId 开始id
+     * @param endId   结束id
+     * @return 结果
+     * @throws IOException 异常
      */
-    @GetMapping("/updateIdBetweenCoordinate")
-    public Object updateIdBetweenCoordinate(Long beginId, Long endId) throws IOException {
+    @PutMapping("/idBetween")
+    public Object updateIdBetweenCoordinate(Long beginId, Long endId) throws IOException, NoSuchAlgorithmException {
         companyCoordinateService.partInsertIdBetween(beginId, endId);
         return "更新完毕";
     }
@@ -48,13 +50,13 @@ public class CoordinateController {
     /**
      * 更新一段时间范围内的数据
      *
-     * @param begin
-     * @param end
-     * @return
-     * @throws IOException
+     * @param begin 开始时间
+     * @param end   结束时间
+     * @return 结果
+     * @throws IOException 异常
      */
-    @GetMapping("/updateDateBetweenCoordinate")
-    public Object updateDateBetweenCoordinate(String begin, String end) throws IOException {
+    @PutMapping("/dateBetween")
+    public Object updateDateBetweenCoordinate(String begin, String end) throws IOException, NoSuchAlgorithmException {
         companyCoordinateService.partInsertDateBetween(begin, end);
         return "更新完毕";
     }

@@ -9,7 +9,7 @@ import com.mindata.ecserver.retrofit.CallManager;
 import com.xiaoleilu.hutool.util.ObjectUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.io.IOException;
@@ -21,7 +21,7 @@ import static com.mindata.ecserver.global.Constant.OUTPUT_TYPE;
  * @author hanliqiang wrote on 2017/11/27
  */
 @Order(1)
-@Service
+@Component
 public class GeoGaodeCoordinate implements GeoCoordinate {
     @Resource
     private RetrofitServiceBuilder retrofitServiceBuilder;
