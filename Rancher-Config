@@ -1,0 +1,20 @@
+镜像：daocloud.io/tianyaleixiaowu/ec_server_scheduls:master-e55ad48
+服务链接：
+ec-server
+elasticsearch-ik
+elk-logstash
+eureka1
+redis
+
+环境变量：
+变量	 	值
+
+ENV=prod
+REDIS_HOST=redis
+REDIS_PORT=6379
+REDIS_PASSWORD=
+main.server-url=http://ec-server:8080
+TZ=Asia/Shanghai
+ES_IP_PORT=elasticsearch-ik:9300
+logstashIp=elk-logstash
+EUREKA_SERVER=eureka1:8080

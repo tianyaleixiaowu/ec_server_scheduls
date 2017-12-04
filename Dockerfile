@@ -12,4 +12,4 @@ RUN cd /tmp/build && mvn clean package \
 
 VOLUME /tmp
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","/app.jar"]
+ENTRYPOINT ["java","-javaagent:/assets/pinpoint-agent/pinpoint-bootstrap-1.6.2.jar -Dpinpoint.agentId=app-in-docker -Dpinpoint.applicationName=ap -jar","/app.jar"]
