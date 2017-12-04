@@ -13,7 +13,6 @@ RUN cd /tmp/build && mvn clean package \
         && mv target/*.jar /app.jar \
         #清理编译痕迹
         && cd / && rm -rf /tmp/build \
-        && apk add --update curl bash \
         && chmod a+x /usr/local/bin/configure.sh \
         && mkdir -p /assets/pinpoint-agent \
         && curl -SL https://raw.githubusercontent.com/naver/pinpoint/$PINPOINT_VERSION/agent/src/main/resources-release/pinpoint.config -o /assets/pinpoint.config \
