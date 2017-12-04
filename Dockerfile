@@ -1,5 +1,9 @@
 FROM daocloud.io/brave8/maven-jdk8
 
+ENV PINPOINT_VERSION=1.6.2
+
+ADD configure.sh /usr/local/bin/
+
 ADD pom.xml /tmp/build/
 
 ADD src /tmp/build/src
@@ -9,7 +13,18 @@ RUN cd /tmp/build && mvn clean package \
         && mv target/*.jar /app.jar \
         #清理编译痕迹
         && cd / && rm -rf /tmp/build \
-        && mkdir -p /assets/pinpoint-agent
+        && apk add --update curl bash \
+        && chmod a+x /usr/local/bin/configure.sh \
+        && mkdir -p /assets/pinpoint-agent \
+        && curl -SL https://raw.githubusercontent.com/naver/pinpoint/$PINPOINT_VERSION/agent/src/main/resources-release/pinpoint.config -o /assets/pinpoint.config \
+        && curl -SL https://github.com/naver/pinpoint/releases/download/$PINPOINT_VERSION/pinpoint-agent-$PINPOINT_VERSION.tar.gz -o pinpoint-agent-$PINPOINT_VERSION.tar.gz \
+        && gunzip pinpoint-agent-$PINPOINT_VERSION.tar.gz \
+        && tar -xf pinpoint-agent-$PINPOINT_VERSION.tar -C /assets/pinpoint-agent \
+        && curl -SL https://raw.githubusercontent.com/naver/pinpoint/$PINPOINT_VERSION/agent/src/main/resources-release/lib/log4j.xml -o /assets/pinpoint-agent/lib/log4j.xml \
+        && sed -i 's/DEBUG/INFO/' /assets/pinpoint-agent/lib/log4j.xml \
+        && rm pinpoint-agent-$PINPOINT_VERSION.tar \
+        && apk del curl \
+        && rm /var/cache/apk/*
 
 EXPOSE 8080
-ENTRYPOINT ["java","-javaagent:/assets/pinpoint-agent/pinpoint-bootstrap-1.6.2.jar -Dpinpoint.agentId=app-in-docker -Dpinpoint.applicationName=ap -jar","/app.jar"]
+ENTRYPOINT ["/usr/local/bin/configure.sh"]
