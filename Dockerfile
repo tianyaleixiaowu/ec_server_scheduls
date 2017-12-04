@@ -8,7 +8,7 @@ RUN cd /tmp/build && mvn clean package \
         #拷贝编译结果到指定目录
         && mv target/*.jar /app.jar \
         #清理编译痕迹
-        && cd / && rm -rf /tmp/build
+        && cd / && rm -rf /tmp/build \
         && mkdir -p /assets/pinpoint-agent
 
 EXPOSE 8080
