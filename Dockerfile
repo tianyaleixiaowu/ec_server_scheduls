@@ -22,8 +22,6 @@ RUN cd /tmp/build && mvn clean package \
         && curl -SL https://raw.githubusercontent.com/naver/pinpoint/$PINPOINT_VERSION/agent/src/main/resources-release/lib/log4j.xml -o /assets/pinpoint-agent/lib/log4j.xml \
         && sed -i 's/DEBUG/INFO/' /assets/pinpoint-agent/lib/log4j.xml \
         && rm pinpoint-agent-$PINPOINT_VERSION.tar \
-        && apk del curl \
-        && rm /var/cache/apk/*
 
 EXPOSE 8080
 ENTRYPOINT ["/usr/local/bin/configure.sh"]
