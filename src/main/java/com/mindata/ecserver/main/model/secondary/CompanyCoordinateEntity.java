@@ -1,6 +1,7 @@
 package com.mindata.ecserver.main.model.secondary;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * 公司坐标
@@ -59,7 +60,26 @@ public class CompanyCoordinateEntity {
     private String queryConditionValue;
     @Column(name = "level")
     private String level;
+    /**
+     * 创建时间
+     */
+    private Date createTime;
 
+    public String getEsBaiduCoordinate() {
+        if (baiduCoordinate != null) {
+            String[] array = baiduCoordinate.split(",");
+            return array[1] + "," + array[0];
+        }
+        return null;
+    }
+
+    public String getEsGaoDeCoordinate() {
+        if (gaodeCoordinate != null) {
+            String[] array = gaodeCoordinate.split(",");
+            return array[1] + "," + array[0];
+        }
+        return null;
+    }
 
     public Long getId() {
         return id;
@@ -141,5 +161,13 @@ public class CompanyCoordinateEntity {
 
     public void setLevel(String level) {
         this.level = level;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

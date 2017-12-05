@@ -30,21 +30,4 @@ public class CommonUtil {
         return UUID.randomUUID().toString().replaceAll("-", "");
     }
 
-    /**
-     * 替换数字后两位
-     *
-     * @param num
-     * @return
-     */
-    public static String getEncrypt(String num) {
-        StringBuffer buffer = new StringBuffer();
-        for (int i = 0; i < num.length(); i++) {
-            if (i < 4 || i > 6) {
-                buffer.append(num.charAt(i));
-            } else {
-                buffer.append('0');
-            }
-        }
-        return buffer.toString();
-    }
 }

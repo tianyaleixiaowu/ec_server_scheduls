@@ -222,18 +222,33 @@ public class EcCodeAreaManager {
      * @param province 省份id
      * @return 结果
      */
-    public String findNameById(String city, String province) {
+
+    public String findNameById(String city, String province){
         String cityName;
-        if (!Objects.equals(city, 0+"")) {
-            String number = CommonUtil.getEncrypt(city);
-            cityName = findById(number);
-            if(cityName.equals("市辖区")){
-                cityName = findById(province);
-            }
-        } else {
-            //获取到省或者直辖市
+        if(city.equals(0+"")){
             cityName = findById(province);
+        }else{
+            Integer cityId;
+            if(isZhiXiaShi(Integer.valueOf(city))) {
+                cityId = Integer.valueOf(city) / 1000 * 1000;
+            }else {
+                cityId = Integer.valueOf(city) /100 * 100;
+            }
+            cityName = findById(cityId.toString());
         }
-        return cityName;
+        return  cityName;
     }
+    /**
+     * 是否是直辖市里的区县
+     *
+     * @param cityCode
+     *         区县码
+     * @return 是否是直辖市里的
+     */
+    public static boolean isZhiXiaShi(Integer cityCode) {
+        //110000北京，120000天津，310000上海， 500000重庆，810000香港，820000澳门
+        int city = cityCode / 1000;
+        return city == 110 || city == 120 || city == 310 || city == 500 || city == 810 || city == 820;
+    }
+
 }

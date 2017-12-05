@@ -1,16 +1,17 @@
 package com.mindata.ecserver.main.model.es;
 
 import com.mindata.ecserver.global.Constant;
-import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.*;
 
-import javax.persistence.Id;
+import java.util.Date;
 
-import static com.mindata.ecserver.global.Constant.ES_INDEX_NAME;
+import static com.mindata.ecserver.global.Constant.ES_GEO_INDEX_NAME;
 
 /**
  * @author hanliqiang wrote on 2017/11/28
  */
-@Document(indexName = ES_INDEX_NAME, type = Constant.ES_COORDINATE_TYPE_NAME, indexStoreType = "fs", shards = 5, replicas = 1,
+@Document(indexName = ES_GEO_INDEX_NAME, type = Constant.ES_COORDINATE_TYPE_NAME, indexStoreType = "fs", shards = 5, replicas = 1,
         refreshInterval = "-1")
 public class EsCompanyCoordinate {
     @Id
@@ -22,11 +23,13 @@ public class EsCompanyCoordinate {
     /**
      * 百度地图坐标 (经度在前，维度在后)
      */
+    @GeoPointField
     private String baiduCoordinate;
 
     /**
      * 高德地图坐标 (经度在前，维度在后)
      */
+    @GeoPointField
     private String gaodeCoordinate;
     /**
      * 状态
@@ -52,6 +55,10 @@ public class EsCompanyCoordinate {
     private String queryConditionValue;
 
     private String level;
+    /**
+     * 插入es日期
+     */
+    private Date createTime;
 
     public Long getId() {
         return id;
@@ -131,5 +138,13 @@ public class EsCompanyCoordinate {
 
     public void setLevel(String level) {
         this.level = level;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

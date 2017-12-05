@@ -19,13 +19,12 @@ public interface BaiduCoordinateService {
      * @param address 地址
      * @param output  输出格式
      * @param ak      百度ak
-     * @param sn      sn值
      * @return 结果
      */
 
     @GET("geocoder/v2/")
     Call<BaiduResponseData> getCoordinateByAddress(@Query("address") String address, @Query("output") String output,
-                                                   @Query("ak") String ak, @Query("sn") String sn);
+                                                   @Query("ak") String ak);
 
     /**
      * 根据公司名称去百度查询经纬度

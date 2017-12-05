@@ -11,9 +11,11 @@ public interface Constant {
     String ES_TYPE_NAME = "contact";
     String ES_VOCATION_TYPE_NAME = "vocation";
 
-    String ES_COORDINATE_TYPE_NAME = "coordinate";
-
     String ES_TYPE_AREA = "code-area";
+
+    String ES_GEO_INDEX_NAME = "geo";
+
+    String ES_COORDINATE_TYPE_NAME = "coordinate";
 
     /**
      * 正常态

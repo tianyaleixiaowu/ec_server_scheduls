@@ -1,7 +1,6 @@
 package com.mindata.ecserver.global.geo;
 
 import com.mindata.ecserver.global.geo.service.BaiduCoordinateService;
-import com.mindata.ecserver.global.geo.util.Sncal;
 import com.mindata.ecserver.global.http.MapBaiduRequestProperty;
 import com.mindata.ecserver.global.http.RequestProperty;
 import com.mindata.ecserver.global.http.RetrofitServiceBuilder;
@@ -34,12 +33,11 @@ public class GeoBaiduCoordinate implements GeoCoordinate {
     private String baiduUrl;
 
     @Override
-    public BaiduResponseData getCoordinateByAddress(String address) throws IOException, NoSuchAlgorithmException {
-        String snValue = Sncal.getSnValue(address);
+    public BaiduResponseData getCoordinateByAddress(String address) throws IOException {
         RequestProperty requestProperty = new MapBaiduRequestProperty(baiduUrl);
         BaiduCoordinateService baiduCoordinateService = retrofitServiceBuilder.getBaiduCoordinateService(requestProperty);
         BaiduResponseData baiduResponseData = (BaiduResponseData) callManager.execute(
-                baiduCoordinateService.getCoordinateByAddress(address, OUTPUT_TYPE, BAIDU_MAP_AK, snValue));
+                baiduCoordinateService.getCoordinateByAddress(address, OUTPUT_TYPE, BAIDU_MAP_AK));
         if (ObjectUtil.isNull(baiduResponseData)) {
             return null;
         }

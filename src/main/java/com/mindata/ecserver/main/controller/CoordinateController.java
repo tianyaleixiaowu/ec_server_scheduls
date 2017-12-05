@@ -42,8 +42,8 @@ public class CoordinateController {
      * @throws IOException 异常
      */
     @PutMapping("/idBetween")
-    public Object updateIdBetweenCoordinate(Long beginId, Long endId) throws IOException, NoSuchAlgorithmException {
-        companyCoordinateService.partInsertIdBetween(beginId, endId);
+    public Object updateIdBetweenCoordinate(Long beginId, Long endId, Boolean force) throws IOException, NoSuchAlgorithmException {
+        companyCoordinateService.partInsertIdBetween(beginId, endId, force);
         return "更新完毕";
     }
 
@@ -56,8 +56,8 @@ public class CoordinateController {
      * @throws IOException 异常
      */
     @PutMapping("/dateBetween")
-    public Object updateDateBetweenCoordinate(String begin, String end) throws IOException, NoSuchAlgorithmException {
-        companyCoordinateService.partInsertDateBetween(begin, end);
+    public Object updateDateBetweenCoordinate(String begin, String end, Boolean force) throws IOException, NoSuchAlgorithmException {
+        companyCoordinateService.partInsertDateBetween(begin, end, force);
         return "更新完毕";
     }
 }
