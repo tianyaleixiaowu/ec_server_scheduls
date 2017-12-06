@@ -1,4 +1,4 @@
-package com.mindata.ecserver.global.geo.service;
+package com.mindata.ecserver.global.http.service;
 
 import com.mindata.ecserver.global.http.response.GaodeResponseData;
 import retrofit2.Call;

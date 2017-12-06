@@ -7,9 +7,13 @@ import java.util.List;
  */
 public class BaiduMutilResponseData implements ResponseValue {
     /**
-     * 成功是"OK"
+     * 成功是0
      */
-    private String status;
+    private Integer status;
+    /**
+     * 返回数据总数
+     */
+    private Integer total;
     /**
      * 返回多个经纬度
      */
@@ -17,7 +21,7 @@ public class BaiduMutilResponseData implements ResponseValue {
 
     @Override
     public int getStatus() {
-        return "OK".equals(status) ? 0 : -1;
+        return status;
     }
 
     @Override
@@ -30,7 +34,7 @@ public class BaiduMutilResponseData implements ResponseValue {
         return results;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
@@ -40,5 +44,13 @@ public class BaiduMutilResponseData implements ResponseValue {
 
     public void setResults(List<BaiduMutilResponseBean> results) {
         this.results = results;
+    }
+
+    public Integer getTotal() {
+        return total;
+    }
+
+    public void setTotal(Integer total) {
+        this.total = total;
     }
 }
