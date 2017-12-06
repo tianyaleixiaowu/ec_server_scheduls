@@ -39,4 +39,12 @@ public class GaodeResponseData implements ResponseValue {
     public void setGeocodes(List<GaodeResponseBean> geocodes) {
         this.geocodes = geocodes;
     }
+
+    @Override
+    public String toString() {
+        return "GaodeResponseData{" +
+                "status='" + status + '\'' +
+                ", geocodes=" + geocodes +
+                '}';
+    }
 }

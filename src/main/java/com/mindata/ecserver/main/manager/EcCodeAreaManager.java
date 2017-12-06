@@ -1,6 +1,5 @@
 package com.mindata.ecserver.main.manager;
 
-import com.mindata.ecserver.global.util.CommonUtil;
 import com.mindata.ecserver.main.model.es.EsCodeArea;
 import com.mindata.ecserver.main.model.primary.CodeAreaEntity;
 import com.mindata.ecserver.main.repository.primary.CodeAreaRepository;
@@ -18,7 +17,6 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 import static com.mindata.ecserver.global.Constant.ES_INDEX_NAME;
 import static com.mindata.ecserver.global.Constant.ES_TYPE_AREA;
@@ -204,7 +202,8 @@ public class EcCodeAreaManager {
     /**
      * 根据id查询
      *
-     * @param id id
+     * @param id
+     *         id
      * @return 城市名
      */
     public String findById(String id) {
@@ -218,26 +217,29 @@ public class EcCodeAreaManager {
     /**
      * 获取城市名称
      *
-     * @param city 城市id
-     * @param province 省份id
+     * @param city
+     *         城市id
+     * @param province
+     *         省份id
      * @return 结果
      */
 
-    public String findNameById(String city, String province){
+    public String findNameById(String city, String province) {
         String cityName;
-        if(city.equals(0+"")){
+        if (city.equals(0 + "")) {
             cityName = findById(province);
-        }else{
+        } else {
             Integer cityId;
-            if(isZhiXiaShi(Integer.valueOf(city))) {
+            if (isZhiXiaShi(Integer.valueOf(city))) {
                 cityId = Integer.valueOf(city) / 1000 * 1000;
-            }else {
-                cityId = Integer.valueOf(city) /100 * 100;
+            } else {
+                cityId = Integer.valueOf(city) / 100 * 100;
             }
             cityName = findById(cityId.toString());
         }
-        return  cityName;
+        return cityName;
     }
+
     /**
      * 是否是直辖市里的区县
      *

@@ -25,6 +25,7 @@ public class CommonUtil {
      * 生成uuid
      *
      * @return
+     * token
      */
     public static String token() {
         return UUID.randomUUID().toString().replaceAll("-", "");

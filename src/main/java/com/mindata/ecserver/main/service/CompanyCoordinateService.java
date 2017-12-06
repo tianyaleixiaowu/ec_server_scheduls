@@ -148,10 +148,4 @@ public class CompanyCoordinateService {
         }
         return mapList;
     }
-
-/*    public void delete() {
-        for (int i = 218560; i < 218663; i++) {
-            esCompanyCoordinateManager.delete(Long.valueOf(i));
-        }
-    }*/
 }

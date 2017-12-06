@@ -109,8 +109,6 @@ public class ContactManager {
 
     /**
      * 根据状态查询所有正常状态的公司
-     *
-     * @return
      */
     public Page<EcContactEntity> findByState(Pageable pageable) {
         return ecContactRepository.findByState(STATE_NORMAL, pageable);
@@ -133,14 +131,11 @@ public class ContactManager {
 
     /**
      * 查询某段时间内的数据
-     * @param begin
-     * @param end
-     * @param pageable
-     * @return
      */
     public Page<EcContactEntity> findByDateBetween(Date begin, Date end, Pageable pageable) {
         return ecContactRepository.findByCreateTimeBetween(begin,end,pageable);
     }
+
     public EcContactEntity findOne(Long id) {
         return ecContactRepository.findById(id);
     }
