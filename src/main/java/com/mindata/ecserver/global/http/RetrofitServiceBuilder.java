@@ -1,5 +1,7 @@
 package com.mindata.ecserver.global.http;
 
+import com.mindata.ecserver.global.geo.service.BaiduCoordinateService;
+import com.mindata.ecserver.global.geo.service.GaodeCoordinateService;
 import com.mindata.ecserver.retrofit.service.FetchPhoneHistoryService;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -20,13 +22,21 @@ public class RetrofitServiceBuilder {
         return generateRetrofit(requestProperty).create(FetchPhoneHistoryService.class);
     }
 
+    public BaiduCoordinateService getBaiduCoordinateService(RequestProperty requestProperty) {
+        return generateRetrofit(requestProperty).create(BaiduCoordinateService.class);
+    }
+
+    public GaodeCoordinateService getGaodeCoordinateService(RequestProperty requestProperty) {
+        return generateRetrofit(requestProperty).create(GaodeCoordinateService.class);
+    }
+
     /**
      * 创建retrofit
-     * @param requestProperty
-     * 参数
-     * @return
-     * retrofit客户端
+     *
+     * @param requestProperty 参数
+     * @return retrofit客户端
      */
+
     private Retrofit generateRetrofit(RequestProperty requestProperty) {
         return new Retrofit.Builder()
                 .baseUrl(requestProperty.baseUrl())
@@ -50,7 +60,7 @@ public class RetrofitServiceBuilder {
                             builder.addHeader(key, requestProperty.headers().get(key).toString());
                         }
                     }
-                    
+
                     return chain.proceed(builder.build());
                 }).connectTimeout(5, TimeUnit.MINUTES)
                 .readTimeout(5, TimeUnit.MINUTES)

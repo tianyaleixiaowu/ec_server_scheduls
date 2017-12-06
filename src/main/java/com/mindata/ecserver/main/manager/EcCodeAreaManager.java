@@ -1,5 +1,6 @@
 package com.mindata.ecserver.main.manager;
 
+import com.mindata.ecserver.global.util.CommonUtil;
 import com.mindata.ecserver.main.model.es.EsCodeArea;
 import com.mindata.ecserver.main.model.primary.CodeAreaEntity;
 import com.mindata.ecserver.main.repository.primary.CodeAreaRepository;
@@ -17,6 +18,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import static com.mindata.ecserver.global.Constant.ES_INDEX_NAME;
 import static com.mindata.ecserver.global.Constant.ES_TYPE_AREA;
@@ -96,7 +98,7 @@ public class EcCodeAreaManager {
             boolQueryBuilder.must(matchQuery("parentId", provinceCode));
             hashMap.put(PROVINCE, provinceCode);
         }
-        
+
         boolQueryBuilder.must(matchQuery("name", area));
 
         NativeSearchQueryBuilder builder = new NativeSearchQueryBuilder().withQuery(boolQueryBuilder);
@@ -123,8 +125,7 @@ public class EcCodeAreaManager {
     /**
      * 获取所有的省
      *
-     * @return
-     * 根据区域查询省
+     * @return 根据区域查询省
      */
     private Integer findProvince(String area) {
         if (area.contains("北京")) {
@@ -198,6 +199,56 @@ public class EcCodeAreaManager {
         }
 
         return null;
+    }
+
+    /**
+     * 根据id查询
+     *
+     * @param id id
+     * @return 城市名
+     */
+    public String findById(String id) {
+        CodeAreaEntity codeAreaEntity = codeAreaRepository.findOne(id);
+        if (codeAreaEntity == null) {
+            return "";
+        }
+        return codeAreaEntity.getName();
+    }
+
+    /**
+     * 获取城市名称
+     *
+     * @param city 城市id
+     * @param province 省份id
+     * @return 结果
+     */
+
+    public String findNameById(String city, String province){
+        String cityName;
+        if(city.equals(0+"")){
+            cityName = findById(province);
+        }else{
+            Integer cityId;
+            if(isZhiXiaShi(Integer.valueOf(city))) {
+                cityId = Integer.valueOf(city) / 1000 * 1000;
+            }else {
+                cityId = Integer.valueOf(city) /100 * 100;
+            }
+            cityName = findById(cityId.toString());
+        }
+        return  cityName;
+    }
+    /**
+     * 是否是直辖市里的区县
+     *
+     * @param cityCode
+     *         区县码
+     * @return 是否是直辖市里的
+     */
+    public static boolean isZhiXiaShi(Integer cityCode) {
+        //110000北京，120000天津，310000上海， 500000重庆，810000香港，820000澳门
+        int city = cityCode / 1000;
+        return city == 110 || city == 120 || city == 310 || city == 500 || city == 810 || city == 820;
     }
 
 }

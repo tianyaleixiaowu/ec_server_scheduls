@@ -6,16 +6,20 @@ package com.mindata.ecserver.global.http.response;
 public interface ResponseValue {
     /**
      * 状态码
-     * @return
+     * @return 结果
      * 状态码
      */
     int getStatus();
 
+    /**
+     * msg
+     * @return 结果
+     */
     String getMessage();
 
     /**
      * 对象值
-     * @return
+     * @return 结果
      */
     Object getData();
 }

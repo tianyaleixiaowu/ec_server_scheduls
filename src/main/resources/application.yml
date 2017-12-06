@@ -14,6 +14,7 @@ spring:
   jpa:
     database: mysql
     show-sql: true
+
     hibernate:
       ddl-auto: update
       naming:
@@ -24,3 +25,5 @@ logstash:
   port: ${logstashPort:4560}
 main:
   server-url: ${SERVER-URL:http://localhost:8080}  #要访问后台的地址
+  baidu-url: ${BAIDU-URL:http://api.map.baidu.com/}
+  gaode-url: ${GAODE-URL:http://restapi.amap.com/}

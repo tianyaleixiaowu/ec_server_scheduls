@@ -29,4 +29,5 @@ public class CommonUtil {
     public static String token() {
         return UUID.randomUUID().toString().replaceAll("-", "");
     }
+
 }
