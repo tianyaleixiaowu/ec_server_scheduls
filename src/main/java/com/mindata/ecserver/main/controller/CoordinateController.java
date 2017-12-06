@@ -29,7 +29,7 @@ public class CoordinateController {
      * @throws IOException 异常
      */
     @GetMapping("")
-    public Object getCoordinate(String address, String companyName, String city) throws IOException, NoSuchAlgorithmException {
+    public Object getCoordinate(String address, String companyName, String city) throws IOException {
         return companyCoordinateService.findCoordinate(address, companyName, city);
     }
 

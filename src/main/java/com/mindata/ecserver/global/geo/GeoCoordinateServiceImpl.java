@@ -8,7 +8,7 @@ import java.io.IOException;
  * @author hanliqiang wrote on 2017/11/27
  */
 
-public interface GeoCoordinate {
+public interface GeoCoordinateServiceImpl {
 
     /**
      * 根据地址获取经纬度
@@ -27,6 +27,6 @@ public interface GeoCoordinate {
      * @return 结果
      * @throws IOException 异常
      */
-    ResponseValue getCoordinateByCompanyName(String companyName, String city) throws IOException;
+    ResponseValue getCoordinateByCompanyName(String companyName, String city, Integer pageSize, Integer page) throws IOException;
 
 }

@@ -1,9 +1,9 @@
-package com.mindata.ecserver.global.geo;
+package com.mindata.ecserver.global.geo.util;
 
 /**
  * @author hanliqiang wrote on 2017/11/29
  */
-public class ConvertBaiduCoordinate {
+public class ConvertBaiduCoordinateUtil {
 
     /**
      * 火星坐标系 (GCJ-02) 与百度坐标系 (BD-09) 的转换算法 将 GCJ-02 坐标转换成 BD-09 坐标

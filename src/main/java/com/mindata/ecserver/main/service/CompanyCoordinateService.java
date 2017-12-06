@@ -1,12 +1,13 @@
 package com.mindata.ecserver.main.service;
 
-import com.mindata.ecserver.global.geo.GeoCoordinateService;
+import com.mindata.ecserver.global.geo.service.GeoCoordinateService;
 import com.mindata.ecserver.main.manager.CompanyCoordinateManager;
 import com.mindata.ecserver.main.manager.ContactManager;
 import com.mindata.ecserver.main.manager.EsCompanyCoordinateManager;
 import com.mindata.ecserver.main.model.primary.EcContactEntity;
 import com.mindata.ecserver.main.model.secondary.CompanyCoordinateEntity;
 import com.xiaoleilu.hutool.date.DateUtil;
+import com.xiaoleilu.hutool.util.StrUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +19,7 @@ import javax.annotation.Resource;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
@@ -40,7 +42,7 @@ public class CompanyCoordinateService {
      *
      * @throws IOException 异常
      */
-    public void saveCompanyCoordinate(Boolean force) throws IOException, NoSuchAlgorithmException {
+    public void saveCompanyCoordinate(Boolean force) throws IOException {
         if (force == null) {
             force = false;
         }
@@ -138,14 +140,19 @@ public class CompanyCoordinateService {
      * @return 结果
      * @throws IOException 异常
      */
-    public List<Map<String, String>> findCoordinate(String address, String companyName, String city) throws IOException, NoSuchAlgorithmException {
-        List<Map<String, String>> mapList = new ArrayList<>();
-        List<CompanyCoordinateEntity> coordinateEntities = geoCoordinateService.getLocation(address, companyName, city);
-        for (CompanyCoordinateEntity companyCoordinateEntity : coordinateEntities) {
-            Map<String, String> map = new HashMap<>(1);
-            map.put("coordinate", companyCoordinateEntity.getBaiduCoordinate());
-            mapList.add(map);
+    public Map<String, Object> findCoordinate(String address, String companyName, String city) throws IOException {
+        Map<String, Object> map = new HashMap<>(1);
+        if (StrUtil.isNotEmpty(companyName) && StrUtil.isEmpty(city)) {
+            map.put("message", "城市不能为空");
+            return map;
         }
-        return mapList;
+        if (StrUtil.isNotEmpty(city) && StrUtil.isEmpty(companyName) && StrUtil.isEmpty(address)) {
+            map.put("message", "城市不能为空");
+            return map;
+        }
+        List<CompanyCoordinateEntity> coordinateEntities = geoCoordinateService.getOutLocation(address, companyName, city);
+        List<String> coordinates = coordinateEntities.stream().map(CompanyCoordinateEntity::getBaiduCoordinate).collect(Collectors.toList());
+        map.put("coordinate", coordinates);
+        return map;
     }
 }

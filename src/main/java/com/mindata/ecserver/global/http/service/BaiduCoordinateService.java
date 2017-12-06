@@ -1,7 +1,6 @@
-package com.mindata.ecserver.global.geo.service;
+package com.mindata.ecserver.global.http.service;
 
 
-import com.mindata.ecserver.global.http.response.BaiduConvertResponseData;
 import com.mindata.ecserver.global.http.response.BaiduMutilResponseData;
 import com.mindata.ecserver.global.http.response.BaiduResponseData;
 import retrofit2.Call;
@@ -35,20 +34,7 @@ public interface BaiduCoordinateService {
      * @param ak     百度ak
      * @return 结果
      */
-    @GET("place/search?")
-    Call<BaiduMutilResponseData> getCoordinateByCompany(@Query("query") String query, @Query("region") String region, @Query("output") String output,
-                                                        @Query("ak") String ak);
-
-    /**
-     * 转换成百度坐标
-     *
-     * @param coords 源坐标
-     * @param from   gcj02坐标
-     * @param to     百度坐标
-     * @param ak     百度ak
-     * @return 结果
-     */
-    @GET("geoconv/v1/?")
-    Call<BaiduConvertResponseData> getBaiduCoordinate(@Query("coords") String coords, @Query("from") Integer from,
-                                                      @Query("to") Integer to, @Query("output") String output, @Query("ak") String ak);
+    @GET("place/v2/search?")
+    Call<BaiduMutilResponseData> getCoordinateByCompany(@Query("query") String query, @Query("region") String region, @Query("page_size") Integer page_size,
+                                                        @Query("page_num") Integer page_num, @Query("output") String output, @Query("ak") String ak);
 }
