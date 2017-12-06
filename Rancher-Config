@@ -5,16 +5,18 @@ elasticsearch-ik
 elk-logstash
 eureka1
 redis
+pinpoint-collector  ：  collector
 
 环境变量：
 变量	 	值
 
-ENV=prod
-REDIS_HOST=redis
-REDIS_PORT=6379
-REDIS_PASSWORD=
-main.server-url=http://ec-server:8080
-TZ=Asia/Shanghai
-ES_IP_PORT=elasticsearch-ik:9300
-logstashIp=elk-logstash
-EUREKA_SERVER=eureka1:8080
+ENV               =  prod
+REDIS_HOST        =  redis
+REDIS_PORT        =  6379
+REDIS_PASSWORD    =
+main.server-url   =  http://ec-server:8080
+TZ                =  Asia/Shanghai
+ES_IP_PORT        =  elasticsearch-ik:9300
+logstashIp        =  elk-logstash
+EUREKA_SERVER     =  eureka1:8080
+COLLECTOR_IP      =  collector

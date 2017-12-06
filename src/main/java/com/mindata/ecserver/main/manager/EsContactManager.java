@@ -14,13 +14,16 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.mindata.ecserver.global.Constant.ES_INDEX_NAME;
 import static com.mindata.ecserver.global.Constant.ES_TYPE_NAME;
 
 /**
  * elasticsearch的管理类
+ *
  * @author wuweifeng wrote on 2017/11/9.
  */
 @Service
@@ -47,7 +50,11 @@ public class EsContactManager {
         logger.info("查询ES中最新的一条数据");
         //如果ES还未初始化
         if (!elasticsearchTemplate.indexExists(ES_INDEX_NAME)) {
-            elasticsearchTemplate.createIndex(ES_INDEX_NAME);
+            Map<String, Object> map = new HashMap<>(2);
+            //如果不设置，翻页到1千时会报错，后期修改命令：curl -XPUT http://127.0.0.1:9200/cmdb-now/_settings -d '{ "index" : {
+            // "max_result_window" : 100000000}}'
+            map.put("index.max_result_window", 1000000);
+            elasticsearchTemplate.createIndex(ES_INDEX_NAME, map);
             return null;
         }
         Pageable pageable = new PageRequest(0, 1, Sort.Direction.DESC, "id");
@@ -62,10 +69,10 @@ public class EsContactManager {
 
     /**
      * 根据id查询
+     *
      * @param id
-     * id
-     * @return
-     * 数据
+     *         id
+     * @return 数据
      */
     public EsContact findById(Long id) {
         return esContactRepository.findOne(id);
@@ -79,12 +86,12 @@ public class EsContactManager {
         int counter = 1;
         try {
             List<IndexQuery> queries = new ArrayList<>();
-                for (EsContact contact : contacts) {
-                    IndexQuery indexQuery = new IndexQuery();
-                    indexQuery.setId(contact.getId() + "");
-                    indexQuery.setObject(contact);
-                    indexQuery.setIndexName(ES_INDEX_NAME);
-                    indexQuery.setType(ES_TYPE_NAME);
+            for (EsContact contact : contacts) {
+                IndexQuery indexQuery = new IndexQuery();
+                indexQuery.setId(contact.getId() + "");
+                indexQuery.setObject(contact);
+                indexQuery.setIndexName(ES_INDEX_NAME);
+                indexQuery.setType(ES_TYPE_NAME);
 
                 //上面的那几步也可以使用IndexQueryBuilder来构建
                 //IndexQuery index = new IndexQueryBuilder().withId(person.getId() + "").withObject(person).build();
