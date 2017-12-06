@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.mindata.ecserver.global.Constant.ES_COORDINATE_TYPE_NAME;
@@ -33,9 +35,6 @@ public class EsCompanyCoordinateManager {
     }
 
     private void bulkIndex(List<EsCompanyCoordinate> companyCoordinates, Boolean force) {
-        if (!elasticsearchTemplate.indexExists(ES_GEO_INDEX_NAME)) {
-            elasticsearchTemplate.createIndex(ES_GEO_INDEX_NAME);
-        }
         try {
             List<IndexQuery> queries = new ArrayList<>();
             for (EsCompanyCoordinate companyCoordinate : companyCoordinates) {
@@ -93,7 +92,11 @@ public class EsCompanyCoordinateManager {
     @PostConstruct
     public void executeMapping() {
         if (!elasticsearchTemplate.indexExists(ES_GEO_INDEX_NAME)) {
-            elasticsearchTemplate.createIndex(ES_GEO_INDEX_NAME);
+            Map<String, Object> map = new HashMap<>(2);
+            //如果不设置，翻页到1千时会报错，后期修改命令：curl -XPUT http://127.0.0.1:9200/cmdb-now/_settings -d '{ "index" : {
+            // "max_result_window" : 100000000}}'
+            map.put("index.max_result_window", 1000000);
+            elasticsearchTemplate.createIndex(ES_GEO_INDEX_NAME, map);
             elasticsearchTemplate.putMapping(EsCompanyCoordinate.class);
         }
     }

@@ -194,15 +194,17 @@ public class CompanyCoordinateManager {
                 coordinateEntity.setCreateTime(CommonUtil.getNow());
                 coordinateEntities.add(coordinateEntity);
             }
+        } else {
+            //无地址
+            coordinateEntity.setQueryCondition(QUERY_COMPANYNAME);
+            coordinateEntity.setQueryConditionValue(companyName);
+            coordinateEntity.setSource(GAODE_SOURCE);
+            coordinateEntity.setStatus(NONE_ADDRESS);
+            coordinateEntity.setAccuracy(NORELIABLE_ACCURAY);
+            coordinateEntity.setLevel(null);
+            coordinateEntity.setCreateTime(CommonUtil.getNow());
+            coordinateEntities.add(coordinateEntity);
         }
-        coordinateEntity.setQueryCondition(QUERY_COMPANYNAME);
-        coordinateEntity.setQueryConditionValue(companyName);
-        coordinateEntity.setSource(GAODE_SOURCE);
-        coordinateEntity.setStatus(NONE_ADDRESS);
-        coordinateEntity.setAccuracy(NORELIABLE_ACCURAY);
-        coordinateEntity.setLevel(null);
-        coordinateEntity.setCreateTime(CommonUtil.getNow());
-        coordinateEntities.add(coordinateEntity);
         return coordinateEntities;
     }
 }

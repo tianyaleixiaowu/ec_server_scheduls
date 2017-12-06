@@ -5,6 +5,7 @@ import com.mindata.ecserver.global.http.response.BaiduResponseData;
 import com.mindata.ecserver.global.http.response.GaodeResponseData;
 import com.mindata.ecserver.main.manager.CompanyCoordinateManager;
 import com.mindata.ecserver.main.model.secondary.CompanyCoordinateEntity;
+import com.xiaoleilu.hutool.util.CollectionUtil;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -45,12 +46,12 @@ public class GeoCoordinateService {
                 return coordinateManager.getSingleBaiduCoordinate(baiduResult, address);
             }
             gaodeAddressResult = (GaodeResponseData) geoCoordinates.get(1).getCoordinateByAddress(address);
-            if (gaodeAddressResult.getGeocodes() != null) {
+            if (gaodeAddressResult.getGeocodes() != null && CollectionUtil.isNotEmpty(gaodeAddressResult.getGeocodes())) {
                 return coordinateManager.getSingleGaodeCoordinate(gaodeAddressResult, address);
             }
         }
         baiduMutilData = (BaiduMutilResponseData) geoCoordinates.get(0).getCoordinateByCompanyName(companyName, city);
-        if (baiduMutilData.getResults() != null && baiduMutilData.getResults().size() > 0) {
+        if (baiduMutilData.getResults() != null && CollectionUtil.isNotEmpty(baiduMutilData.getResults())) {
             return coordinateManager.getMutilBaiduCoordinate(baiduMutilData, companyName);
         }
         gaodeCompanyResult = (GaodeResponseData) geoCoordinates.get(1).getCoordinateByAddress(companyName);
