@@ -143,16 +143,19 @@ public class CompanyCoordinateService {
     public Map<String, Object> findCoordinate(String address, String companyName, String city) throws IOException {
         Map<String, Object> map = new HashMap<>(1);
         if (StrUtil.isNotEmpty(companyName) && StrUtil.isEmpty(city)) {
-            map.put("message", "城市不能为空");
+            map.put("message", "城市不能为空！");
             return map;
         }
         if (StrUtil.isNotEmpty(city) && StrUtil.isEmpty(companyName) && StrUtil.isEmpty(address)) {
-            map.put("message", "城市不能为空");
+            map.put("message", "不能只单独传城市！");
             return map;
         }
-        List<CompanyCoordinateEntity> coordinateEntities = geoCoordinateService.getOutLocation(address, companyName, city);
-        List<String> coordinates = coordinateEntities.stream().map(CompanyCoordinateEntity::getBaiduCoordinate).collect(Collectors.toList());
-        map.put("coordinate", coordinates);
+        if (StrUtil.isNotEmpty(companyName) && StrUtil.isNotEmpty(address)) {
+            map.put("message", "地址或公司只能传一个！");
+            return map;
+        }
+        List<String> coordinateEntities = geoCoordinateService.getOutLocation(address, companyName, city);
+        map.put("coordinate", coordinateEntities);
         return map;
     }
 }

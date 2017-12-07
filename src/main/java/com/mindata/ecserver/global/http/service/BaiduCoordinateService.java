@@ -1,7 +1,7 @@
 package com.mindata.ecserver.global.http.service;
 
 
-import com.mindata.ecserver.global.http.response.BaiduMutilResponseData;
+import com.mindata.ecserver.global.http.response.BaiduMultipleResponseData;
 import com.mindata.ecserver.global.http.response.BaiduResponseData;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -35,6 +35,6 @@ public interface BaiduCoordinateService {
      * @return 结果
      */
     @GET("place/v2/search?")
-    Call<BaiduMutilResponseData> getCoordinateByCompany(@Query("query") String query, @Query("region") String region, @Query("page_size") Integer page_size,
-                                                        @Query("page_num") Integer page_num, @Query("output") String output, @Query("ak") String ak);
+    Call<BaiduMultipleResponseData> getCoordinateByCompany(@Query("query") String query, @Query("region") String region, @Query("page_size") Integer page_size,
+                                                           @Query("page_num") Integer page_num, @Query("city_limit") boolean city_limit, @Query("output") String output, @Query("ak") String ak);
 }
