@@ -1,5 +1,6 @@
 package com.mindata.ecserver.global.http.service;
 
+import com.mindata.ecserver.global.http.response.GaodeMultipleResponseData;
 import com.mindata.ecserver.global.http.response.GaodeResponseData;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -25,15 +26,16 @@ public interface GaodeCoordinateService {
     /**
      * 根据公司名称去高德查经纬度
      *
-     * @param companyName 公司名称
      * @param city        城市
      * @param output      输出格式
      * @param key         高德key
      * @return 结果
      */
-    @GET("v3/geocode/geo")
-    Call<GaodeResponseData> getCoordinateByCompany(@Query("address") String companyName, @Query("city") String city, @Query("output") String output,
-                                                   @Query("key") String key);
+    @GET("v3/place/text")
+    Call<GaodeMultipleResponseData> getCoordinateByCompany(@Query("keywords") String keywords, @Query("city") String city, @Query("offset") Integer offset, @Query("page") Integer page,
+                                                           @Query("citylimit") boolean citylimit,
+                                                           @Query("output") String output,
+                                                           @Query("key") String key);
 
 
 }

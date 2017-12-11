@@ -23,4 +23,9 @@ public class BaiduLocationResultBean {
     public void setLat(Float lat) {
         this.lat = lat;
     }
+
+    public String getCoordinate() {
+        return lng+","+lat;
+    }
+
 }

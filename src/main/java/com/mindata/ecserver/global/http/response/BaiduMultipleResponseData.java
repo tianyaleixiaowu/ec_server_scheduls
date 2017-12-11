@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * @author wuweifeng wrote on 2017/11/29.
  */
-public class BaiduMutilResponseData implements ResponseValue {
+public class BaiduMultipleResponseData implements ResponseValue {
     /**
      * 成功是0
      */
@@ -17,7 +17,7 @@ public class BaiduMutilResponseData implements ResponseValue {
     /**
      * 返回多个经纬度
      */
-    private List<BaiduMutilResponseBean> results;
+    private List<BaiduMultipleResponseBean> results;
 
     @Override
     public int getStatus() {
@@ -38,11 +38,11 @@ public class BaiduMutilResponseData implements ResponseValue {
         this.status = status;
     }
 
-    public List<BaiduMutilResponseBean> getResults() {
+    public List<BaiduMultipleResponseBean> getResults() {
         return results;
     }
 
-    public void setResults(List<BaiduMutilResponseBean> results) {
+    public void setResults(List<BaiduMultipleResponseBean> results) {
         this.results = results;
     }
 

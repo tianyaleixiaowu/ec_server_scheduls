@@ -39,6 +39,8 @@ public interface Constant {
 
     String ADDRESS_NUMBER = "号";
 
+    String ADDRESS_BUILDING = "幢";
+
     String ADDRESS_MANSION = "厦";
     /**
      * 1 查询条件是地址

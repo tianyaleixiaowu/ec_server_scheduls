@@ -3,11 +3,10 @@ package com.mindata.ecserver.global.http.response;
 /**
  * @author wuweifeng wrote on 2017/11/29.
  */
-public class BaiduMutilResponseBean {
+public class BaiduMultipleResponseBean {
 
     private BaiduLocationResultBean location;
 
-    private String name;
 
     public BaiduLocationResultBean getLocation() {
         return location;
@@ -17,11 +16,4 @@ public class BaiduMutilResponseBean {
         this.location = location;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

@@ -24,6 +24,8 @@ public interface GeoCoordinateServiceImpl {
      *
      * @param companyName 公司名字
      * @param city        城市
+     * @param pageSize    pageSize
+     * @param page        page
      * @return 结果
      * @throws IOException 异常
      */
