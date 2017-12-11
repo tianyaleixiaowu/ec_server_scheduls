@@ -24,6 +24,12 @@ public class ContactController {
         return "补齐完毕";
     }
 
+    @RequestMapping("/completeCompanyScore")
+    public Object completeCompanyScore() {
+        esContactService.partUpdateByColumn();
+        return "补齐公司评分完毕";
+    }
+
     /**
      * 删除Contact
      */
