@@ -104,7 +104,7 @@ public class GeoCoordinateService {
         if (ObjectUtil.isNotNull(baiduMultipleData) && baiduMultipleData.getTotal() > 0) {
             for (int i = 0; i < CommonUtil.getTotalPages(baiduMultipleData.getTotal(), PAGE_SIZE); i++) {
                 baiduMultipleData = (BaiduMultipleResponseData) geoCoordinates.get(0).getCoordinateByCompanyName(companyName, city, PAGE_SIZE, i);
-                if (ObjectUtil.isNull(baiduMultipleData) || baiduMultipleData.getResults().get(0).getLocation() == null) {
+                if (ObjectUtil.isNull(baiduMultipleData) || baiduMultipleData.getTotal() == 0 || baiduMultipleData.getResults().get(0).getLocation() == null) {
                     break;
                 }
                 baiduMultipleData.getResults().forEach(multipleResponseBean -> list.add(multipleResponseBean.getLocation().getCoordinate()));
