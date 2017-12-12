@@ -2,7 +2,6 @@ package com.mindata.ecserver.main.manager;
 
 import com.mindata.ecserver.main.model.es.EsCompanyCoordinate;
 import com.mindata.ecserver.main.model.secondary.CompanyCoordinateEntity;
-import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.DeleteQuery;
@@ -19,7 +18,6 @@ import java.util.stream.Collectors;
 
 import static com.mindata.ecserver.global.Constant.ES_COORDINATE_TYPE_NAME;
 import static com.mindata.ecserver.global.Constant.ES_GEO_INDEX_NAME;
-import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 
 /**
@@ -31,16 +29,19 @@ public class EsCompanyCoordinateManager {
     private ElasticsearchTemplate elasticsearchTemplate;
 
     public void bulkIndexCompany(List<CompanyCoordinateEntity> companyCoordinates, Boolean force) {
+        if (force == null) {
+            force = false;
+        }
         bulkIndex(companyCoordinates.stream().map(this::convert).collect(Collectors.toList()), force);
     }
 
     private void bulkIndex(List<EsCompanyCoordinate> companyCoordinates, Boolean force) {
         try {
             List<IndexQuery> queries = new ArrayList<>();
+            if (force) {
+                companyCoordinates.forEach(esCompanyCoordinate -> delete(esCompanyCoordinate.getContactId()));
+            }
             for (EsCompanyCoordinate companyCoordinate : companyCoordinates) {
-                if (force) {
-                    delete(companyCoordinate.getId());
-                }
                 IndexQuery indexQuery = new IndexQuery();
                 indexQuery.setId(companyCoordinate.getId() + "");
                 indexQuery.setObject(companyCoordinate);
@@ -64,10 +65,8 @@ public class EsCompanyCoordinateManager {
      * @param contactId contactId
      */
     private void delete(Long contactId) {
-        BoolQueryBuilder boolQuery = boolQuery();
-        boolQuery.must(termQuery("contactId", contactId));
         DeleteQuery deleteQuery = new DeleteQuery();
-        deleteQuery.setQuery(boolQuery);
+        deleteQuery.setQuery(termQuery("contactId", contactId));
         elasticsearchTemplate.delete(deleteQuery, EsCompanyCoordinate.class);
         System.out.println("删除contactId是" + contactId + "的数据");
     }

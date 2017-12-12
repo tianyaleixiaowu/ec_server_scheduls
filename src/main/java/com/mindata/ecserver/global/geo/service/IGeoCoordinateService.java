@@ -1,4 +1,4 @@
-package com.mindata.ecserver.global.geo;
+package com.mindata.ecserver.global.geo.service;
 
 import com.mindata.ecserver.global.http.response.ResponseValue;
 
@@ -8,7 +8,7 @@ import java.io.IOException;
  * @author hanliqiang wrote on 2017/11/27
  */
 
-public interface GeoCoordinateServiceImpl {
+public interface IGeoCoordinateService {
 
     /**
      * 根据地址获取经纬度

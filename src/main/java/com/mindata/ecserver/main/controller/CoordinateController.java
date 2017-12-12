@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 
 /**
  * @author hanliqiang wrote on 2017/11/27
@@ -20,17 +19,28 @@ public class CoordinateController {
     private CompanyCoordinateService companyCoordinateService;
 
     /**
-     * 获取坐标
+     * 根据地址获取坐标
      *
-     * @param address     地址
+     * @param address 地址
+     * @return 结果
+     * @throws IOException 异常
+     */
+    @GetMapping("/address")
+    public Object getCoordinateByAddress(String address) throws IOException {
+        return companyCoordinateService.findCoordinateByAddress(address);
+    }
+
+    /**
+     * 根据公司获取坐标
+     *
      * @param companyName 公司名称
      * @param city        城市
      * @return 结果
      * @throws IOException 异常
      */
-    @GetMapping("")
-    public Object getCoordinate(String address, String companyName, String city) throws IOException {
-        return companyCoordinateService.findCoordinate(address, companyName, city);
+    @GetMapping("/company")
+    public Object getCoordinateByCompany(String companyName, String city) throws IOException {
+        return companyCoordinateService.findCoordinateByCompany(companyName, city);
     }
 
     /**
@@ -42,7 +52,7 @@ public class CoordinateController {
      * @throws IOException 异常
      */
     @PutMapping("/idBetween")
-    public Object updateIdBetweenCoordinate(Long beginId, Long endId, Boolean force) throws IOException, NoSuchAlgorithmException {
+    public Object updateIdBetweenCoordinate(Long beginId, Long endId, Boolean force) throws IOException {
         companyCoordinateService.partInsertIdBetween(beginId, endId, force);
         return "更新完毕";
     }
@@ -56,7 +66,7 @@ public class CoordinateController {
      * @throws IOException 异常
      */
     @PutMapping("/dateBetween")
-    public Object updateDateBetweenCoordinate(String begin, String end, Boolean force) throws IOException, NoSuchAlgorithmException {
+    public Object updateDateBetweenCoordinate(String begin, String end, Boolean force) throws IOException {
         companyCoordinateService.partInsertDateBetween(begin, end, force);
         return "更新完毕";
     }

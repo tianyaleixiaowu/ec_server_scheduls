@@ -1,6 +1,6 @@
 package com.mindata.ecserver.main.service;
 
-import com.mindata.ecserver.global.geo.service.GeoCoordinateService;
+import com.mindata.ecserver.global.geo.GeoCoordinateService;
 import com.mindata.ecserver.main.manager.CompanyCoordinateManager;
 import com.mindata.ecserver.main.manager.ContactManager;
 import com.mindata.ecserver.main.manager.EsCompanyCoordinateManager;
@@ -17,9 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 /**
@@ -43,9 +41,6 @@ public class CompanyCoordinateService {
      * @throws IOException 异常
      */
     public void saveCompanyCoordinate(Boolean force) throws IOException {
-        if (force == null) {
-            force = false;
-        }
         Pageable pageable = new PageRequest(0, 1, Sort.Direction.ASC, "id");
         Page<EcContactEntity> page = contactManager.findByState(pageable);
         for (int i = 0; i < page.getTotalElements() / PAGE_SIZE + 1; i++) {
@@ -66,7 +61,7 @@ public class CompanyCoordinateService {
      * @throws IOException 异常
      */
     @Transactional(rollbackFor = Exception.class)
-    public void partInsertIdBetween(Long beginId, Long endId, Boolean force) throws IOException, NoSuchAlgorithmException {
+    public void partInsertIdBetween(Long beginId, Long endId, Boolean force) throws IOException {
         Pageable pageable = new PageRequest(0, 1, Sort.Direction.ASC, "id");
         Page<EcContactEntity> page = contactManager.findByIdBetween(beginId, endId, pageable);
         //没有新数据
@@ -88,7 +83,7 @@ public class CompanyCoordinateService {
      * @param end   结束时间
      * @throws IOException 异常
      */
-    public void partInsertDateBetween(String begin, String end, Boolean force) throws IOException, NoSuchAlgorithmException {
+    public void partInsertDateBetween(String begin, String end, Boolean force) throws IOException {
         Date beginTime = DateUtil.beginOfDay(DateUtil.parseDate(begin));
         Date endTime = DateUtil.endOfDay(DateUtil.parseDate(end));
         Sort sort = new Sort(Sort.Direction.ASC, "id");
@@ -110,7 +105,7 @@ public class CompanyCoordinateService {
      *
      * @throws IOException 异常
      */
-    public void timingUpdateCoordinate() throws IOException, NoSuchAlgorithmException {
+    public void timingUpdateCoordinate() throws IOException {
         Sort sort = new Sort(Sort.Direction.ASC, "id");
         Pageable pageable = new PageRequest(0, 1, sort);
         Page<CompanyCoordinateEntity> page = coordinateManager.findByStatusOrAccuracy(pageable);
@@ -134,27 +129,40 @@ public class CompanyCoordinateService {
     /**
      * 对外提供获取经纬度
      *
-     * @param address     地址
      * @param companyName 公司名称
      * @param city        城市
      * @return 结果
      * @throws IOException 异常
      */
-    public Map<String, Object> findCoordinate(String address, String companyName, String city) throws IOException {
+    public Map<String, Object> findCoordinateByCompany(String companyName, String city) throws IOException {
         Map<String, Object> map = new HashMap<>(1);
-        if (StrUtil.isNotEmpty(companyName) && StrUtil.isEmpty(city)) {
+        if (StrUtil.isEmpty(city)) {
             map.put("message", "城市不能为空！");
             return map;
         }
-        if (StrUtil.isNotEmpty(city) && StrUtil.isEmpty(companyName) && StrUtil.isEmpty(address)) {
-            map.put("message", "不能只单独传城市！");
+        if (StrUtil.isEmpty(companyName)) {
+            map.put("message", "公司不能为空！");
             return map;
         }
-        if (StrUtil.isNotEmpty(companyName) && StrUtil.isNotEmpty(address)) {
-            map.put("message", "地址或公司只能传一个！");
+        List<String> coordinateEntities = geoCoordinateService.getOutLocationByCompany(companyName, city);
+        map.put("coordinate", coordinateEntities);
+        return map;
+    }
+
+    /**
+     * 根据地址查经纬度
+     *
+     * @param address 地址
+     * @return 结果
+     * @throws IOException 异常
+     */
+    public Map<String, Object> findCoordinateByAddress(String address) throws IOException {
+        Map<String, Object> map = new HashMap<>(1);
+        if (StrUtil.isEmpty(address)) {
+            map.put("message", "地址不能为空！");
             return map;
         }
-        List<String> coordinateEntities = geoCoordinateService.getOutLocation(address, companyName, city);
+        List<String> coordinateEntities = geoCoordinateService.getOutLocationByAddress(address);
         map.put("coordinate", coordinateEntities);
         return map;
     }
