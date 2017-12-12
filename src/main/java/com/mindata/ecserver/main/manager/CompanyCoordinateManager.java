@@ -40,9 +40,6 @@ public class CompanyCoordinateManager {
         List<CompanyCoordinateEntity> coordinateEntities = new ArrayList<>();
         for (EcContactEntity ecContactEntity : contactEntities) {
             String city = ecCodeAreaManager.findNameById(ecContactEntity.getCity(), ecContactEntity.getProvince());
-//            String address = "北京市";
-//            String company = "北京博茶茶业有限公司";
-//            String cityname = "北京市";
             List<CoordinateResultData> temp = geoCoordinateService.getLocation(ecContactEntity.getAddress(), ecContactEntity.getCompany(), city);
             coordinateEntities.addAll(save(temp, ecContactEntity.getId(), force));
         }
