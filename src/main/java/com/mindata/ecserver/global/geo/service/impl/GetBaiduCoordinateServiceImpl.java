@@ -1,6 +1,6 @@
-package com.mindata.ecserver.global.geo.manager;
+package com.mindata.ecserver.global.geo.service.impl;
 
-import com.mindata.ecserver.global.geo.GeoCoordinateServiceImpl;
+import com.mindata.ecserver.global.geo.service.IGeoCoordinateService;
 import com.mindata.ecserver.global.http.MapBaiduRequestProperty;
 import com.mindata.ecserver.global.http.RequestProperty;
 import com.mindata.ecserver.global.http.RetrofitServiceBuilder;
@@ -8,8 +8,6 @@ import com.mindata.ecserver.global.http.response.BaiduMultipleResponseData;
 import com.mindata.ecserver.global.http.response.BaiduResponseData;
 import com.mindata.ecserver.global.http.service.BaiduCoordinateService;
 import com.mindata.ecserver.retrofit.CallManager;
-import com.xiaoleilu.hutool.util.CollectionUtil;
-import com.xiaoleilu.hutool.util.ObjectUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
@@ -27,7 +25,7 @@ import static com.mindata.ecserver.global.Constant.OUTPUT_TYPE;
  */
 @Order(0)
 @Service
-public class GeoBaiduCoordinateManager implements GeoCoordinateServiceImpl {
+public class GetBaiduCoordinateServiceImpl implements IGeoCoordinateService {
     @Resource
     private RetrofitServiceBuilder retrofitServiceBuilder;
     @Resource
@@ -48,9 +46,6 @@ public class GeoBaiduCoordinateManager implements GeoCoordinateServiceImpl {
         BaiduCoordinateService baiduCoordinateService = retrofitServiceBuilder.getBaiduCoordinateService(requestProperty);
         BaiduResponseData baiduResponseData = (BaiduResponseData) callManager.execute(
                 baiduCoordinateService.getCoordinateByAddress(address, OUTPUT_TYPE, BAIDU_MAP_AK));
-        if (ObjectUtil.isNull(baiduResponseData) && ObjectUtil.isNull(baiduResponseData.getResult())) {
-            return null;
-        }
         return baiduResponseData;
     }
 
@@ -68,9 +63,6 @@ public class GeoBaiduCoordinateManager implements GeoCoordinateServiceImpl {
         BaiduCoordinateService baiduCoordinateService = retrofitServiceBuilder.getBaiduCoordinateService(requestProperty);
         BaiduMultipleResponseData multipleResponseData = (BaiduMultipleResponseData) callManager.execute(
                 baiduCoordinateService.getCoordinateByCompany(companyName, city, pageSize, page, true, OUTPUT_TYPE, BAIDU_MAP_AK));
-        if (ObjectUtil.isNull(multipleResponseData) && CollectionUtil.isEmpty(multipleResponseData.getResults())) {
-            return null;
-        }
         return multipleResponseData;
     }
 }

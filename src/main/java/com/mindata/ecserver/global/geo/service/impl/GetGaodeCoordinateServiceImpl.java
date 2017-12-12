@@ -1,6 +1,6 @@
-package com.mindata.ecserver.global.geo.manager;
+package com.mindata.ecserver.global.geo.service.impl;
 
-import com.mindata.ecserver.global.geo.GeoCoordinateServiceImpl;
+import com.mindata.ecserver.global.geo.service.IGeoCoordinateService;
 import com.mindata.ecserver.global.http.MapGaodeRquestProperty;
 import com.mindata.ecserver.global.http.RequestProperty;
 import com.mindata.ecserver.global.http.RetrofitServiceBuilder;
@@ -8,8 +8,6 @@ import com.mindata.ecserver.global.http.response.GaodeMultipleResponseData;
 import com.mindata.ecserver.global.http.response.GaodeResponseData;
 import com.mindata.ecserver.global.http.service.GaodeCoordinateService;
 import com.mindata.ecserver.retrofit.CallManager;
-import com.xiaoleilu.hutool.util.CollectionUtil;
-import com.xiaoleilu.hutool.util.ObjectUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
@@ -27,7 +25,7 @@ import static com.mindata.ecserver.global.Constant.OUTPUT_TYPE;
  */
 @Order(1)
 @Service
-public class GeoGaodeCoordinateManager implements GeoCoordinateServiceImpl {
+public class GetGaodeCoordinateServiceImpl implements IGeoCoordinateService {
     @Resource
     private RetrofitServiceBuilder retrofitServiceBuilder;
     @Resource
@@ -48,9 +46,6 @@ public class GeoGaodeCoordinateManager implements GeoCoordinateServiceImpl {
         GaodeCoordinateService gaodeCoordinateService = retrofitServiceBuilder.getGaodeCoordinateService(requestProperty);
         GaodeResponseData gaodeResponseData = (GaodeResponseData) callManager.execute(
                 gaodeCoordinateService.getCoordinateByAddress(address, OUTPUT_TYPE, GAODE_MAP_KEY));
-        if (ObjectUtil.isNull(gaodeResponseData) && CollectionUtil.isEmpty(gaodeResponseData.getGeocodes())) {
-            return null;
-        }
         return gaodeResponseData;
     }
 
@@ -68,9 +63,6 @@ public class GeoGaodeCoordinateManager implements GeoCoordinateServiceImpl {
         GaodeCoordinateService gaodeCoordinateService = retrofitServiceBuilder.getGaodeCoordinateService(requestProperty);
         GaodeMultipleResponseData multipleResponseData = (GaodeMultipleResponseData) callManager.execute(
                 gaodeCoordinateService.getCoordinateByCompany(companyName, city, pageSize, page, true, OUTPUT_TYPE, GAODE_MAP_KEY));
-        if (ObjectUtil.isNull(multipleResponseData) && CollectionUtil.isEmpty(multipleResponseData.getPois())) {
-            return null;
-        }
         return multipleResponseData;
     }
 }

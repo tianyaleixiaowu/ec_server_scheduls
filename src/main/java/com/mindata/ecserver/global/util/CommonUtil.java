@@ -24,8 +24,7 @@ public class CommonUtil {
     /**
      * 生成uuid
      *
-     * @return
-     * token
+     * @return token
      */
     public static String token() {
         return UUID.randomUUID().toString().replaceAll("-", "");
@@ -33,13 +32,13 @@ public class CommonUtil {
 
     /**
      * 获取总页数
+     *
      * @param totalCount 总数量
-     * @param pageSize 一页多少
+     * @param pageSize   一页多少
      * @return 结果
      */
-    public static Integer getTotalPages(Integer totalCount,Integer pageSize){
-        int totalPages = totalCount % pageSize == 0 ? totalCount / pageSize : (totalCount / pageSize) + 1;
-        return totalPages;
+    public static Integer getTotalPages(Integer totalCount, Integer pageSize) {
+        return totalCount % pageSize == 0 ? totalCount / pageSize : (totalCount / pageSize) + 1;
     }
 
 }
