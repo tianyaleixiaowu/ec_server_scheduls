@@ -67,7 +67,7 @@ public class EcContactEntity {
      */
     private Integer websiteId;
     /**
-     * 推送的状态（0未推送，1成功，2失败）
+     * 推送的状态（0未推送，1成功，2失败，3删除）
      */
     private Integer state;
     /**
@@ -82,6 +82,10 @@ public class EcContactEntity {
      * 主要招聘岗位
      */
     private String mainJob;
+    /**
+     * 公司评分打分
+     */
+    private Double companyScore;
 
     private Date createTime;
 
@@ -344,6 +348,14 @@ public class EcContactEntity {
 
     public void setWebsiteId(Integer websiteId) {
         this.websiteId = websiteId;
+    }
+
+    public Double getCompanyScore() {
+        return companyScore;
+    }
+
+    public void setCompanyScore(Double companyScore) {
+        this.companyScore = companyScore;
     }
 
     @Basic

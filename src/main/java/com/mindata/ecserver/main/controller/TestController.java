@@ -49,6 +49,4 @@ public class TestController {
     public String baidu(Boolean force) throws IOException {
         coordinateService.saveCompanyCoordinate(force);
         return "baidu";
-    }
-
 }

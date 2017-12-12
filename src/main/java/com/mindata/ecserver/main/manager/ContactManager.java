@@ -41,6 +41,17 @@ public class ContactManager {
     }
 
     /**
+     * 分页查询所有
+     * @param pageable
+     * pageable
+     * @return
+     * 分页结果
+     */
+    public Page<EcContactEntity> findAll(Pageable pageable) {
+        return ecContactRepository.findAll(pageable);
+    }
+
+    /**
      * 查询没有省市code的
      *
      * @param pageable 分页
@@ -76,6 +87,13 @@ public class ContactManager {
      */
     public Page<EcContactEntity> findByIdBetween(Long beginId, Long endId, Pageable pageable) {
         return ecContactRepository.findByIdBetween(beginId, endId, pageable);
+    }
+
+    public Integer deleteByIds(String ids) {
+        if (ids.endsWith(",")) {
+            ids = ids.substring(0, ids.length() - 1);
+        }
+        return ecContactRepository.updateState(ids);
     }
 
     /**
