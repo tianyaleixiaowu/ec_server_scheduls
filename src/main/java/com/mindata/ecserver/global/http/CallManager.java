@@ -1,4 +1,4 @@
-package com.mindata.ecserver.retrofit;
+package com.mindata.ecserver.global.http;
 
 
 import com.mindata.ecserver.global.exception.EcException;

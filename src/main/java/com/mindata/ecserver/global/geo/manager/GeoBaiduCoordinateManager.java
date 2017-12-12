@@ -7,7 +7,7 @@ import com.mindata.ecserver.global.http.RetrofitServiceBuilder;
 import com.mindata.ecserver.global.http.response.BaiduMultipleResponseData;
 import com.mindata.ecserver.global.http.response.BaiduResponseData;
 import com.mindata.ecserver.global.http.service.BaiduCoordinateService;
-import com.mindata.ecserver.retrofit.CallManager;
+import com.mindata.ecserver.global.http.CallManager;
 import com.xiaoleilu.hutool.util.CollectionUtil;
 import com.xiaoleilu.hutool.util.ObjectUtil;
 import org.springframework.beans.factory.annotation.Value;

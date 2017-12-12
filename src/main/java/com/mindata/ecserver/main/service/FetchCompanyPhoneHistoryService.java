@@ -9,7 +9,7 @@ import com.mindata.ecserver.main.manager.PtUserRoleManager;
 import com.mindata.ecserver.main.model.secondary.PtPhoneHistoryCompany;
 import com.mindata.ecserver.main.model.secondary.PtUserRole;
 import com.mindata.ecserver.main.repository.secondary.PtPhoneHistoryCompanyRepository;
-import com.mindata.ecserver.retrofit.CallManager;
+import com.mindata.ecserver.global.http.CallManager;
 import com.xiaoleilu.hutool.date.DateUtil;
 import com.xiaoleilu.hutool.util.CollectionUtil;
 import org.slf4j.Logger;

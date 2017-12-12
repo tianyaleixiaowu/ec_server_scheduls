@@ -33,14 +33,16 @@ public class CompanyCoordinateManager {
     @Resource
     private GeoCoordinateService geoCoordinateService;
 
-    public List<CompanyCoordinateEntity> saveByContacts(List<EcContactEntity> contactEntities, Boolean force) throws IOException {
+    public List<CompanyCoordinateEntity> saveByContacts(List<EcContactEntity> contactEntities, Boolean force) throws
+            IOException {
         if (force == null) {
             force = false;
         }
         List<CompanyCoordinateEntity> coordinateEntities = new ArrayList<>();
         for (EcContactEntity ecContactEntity : contactEntities) {
             String city = ecCodeAreaManager.findNameById(ecContactEntity.getCity(), ecContactEntity.getProvince());
-            List<CoordinateResultData> temp = geoCoordinateService.getLocation(ecContactEntity.getAddress(), ecContactEntity.getCompany(), city);
+            List<CoordinateResultData> temp = geoCoordinateService.getLocation(ecContactEntity.getAddress(),
+                    ecContactEntity.getCompany(), city);
             coordinateEntities.addAll(save(temp, ecContactEntity.getId(), force));
         }
         return coordinateEntities;
@@ -49,7 +51,8 @@ public class CompanyCoordinateManager {
     /**
      * 插入一个contactId的经纬度
      *
-     * @param contactId 未推送表的Id
+     * @param contactId
+     *         未推送表的Id
      */
     private List<CompanyCoordinateEntity> save(List<CoordinateResultData> resultDatas, Long contactId, Boolean force) {
         List<CompanyCoordinateEntity> coordinateEntities = coordinateRepository.findByContactId(contactId);
@@ -64,7 +67,8 @@ public class CompanyCoordinateManager {
     /**
      * 转换为数据库实体
      *
-     * @param resultData 参数
+     * @param resultData
+     *         参数
      * @return 结果
      */
     private CompanyCoordinateEntity convert(CoordinateResultData resultData) {
@@ -76,7 +80,8 @@ public class CompanyCoordinateManager {
     /**
      * 查询不太靠谱或者没有坐标的数据
      *
-     * @param pageable 分页
+     * @param pageable
+     *         分页
      * @return 结果
      */
     public Page<CompanyCoordinateEntity> findByStatusOrAccuracy(Pageable pageable) {
@@ -86,8 +91,10 @@ public class CompanyCoordinateManager {
     /**
      * 获取单个百度坐标
      *
-     * @param baiduResult 参数
-     * @param address     地址
+     * @param baiduResult
+     *         参数
+     * @param address
+     *         地址
      * @return 结果
      */
     public List<CoordinateResultData> getSingleBaiduCoordinate(BaiduResponseData baiduResult, String address) {
@@ -108,12 +115,16 @@ public class CompanyCoordinateManager {
     /**
      * 获取单个高德坐标
      *
-     * @param gaodeResult 参数
-     * @param address     地址
+     * @param gaodeResult
+     *         参数
+     * @param address
+     *         地址
      * @return 结果
-     * @throws IOException 异常
+     * @throws IOException
+     *         异常
      */
-    public List<CoordinateResultData> getSingleGaodeCoordinate(GaodeResponseData gaodeResult, String address) throws IOException {
+    public List<CoordinateResultData> getSingleGaodeCoordinate(GaodeResponseData gaodeResult, String address) throws
+            IOException {
         List<CoordinateResultData> coordinateEntities = new ArrayList<>();
         CoordinateResultData resultData = new CoordinateResultData();
         //百度根据地址没查到则根据地址去查询高德
@@ -134,40 +145,59 @@ public class CompanyCoordinateManager {
     /**
      * 获取多个百度坐标
      *
-     * @param companyName companyName
+     * @param companyName
+     *         companyName
      * @return 结果
      */
-    public List<CoordinateResultData> getMultipleBaiduCoordinate(List<BaiduLocationResultBean> baiduMultipleDatas, String companyName) {
+    public List<CoordinateResultData> getMultipleBaiduCoordinate(List<BaiduLocationResultBean> baiduMultipleDatas,
+                                                                 String companyName) {
         List<CoordinateResultData> coordinateEntities = new ArrayList<>();
+
+        if (baiduMultipleDatas.size() == 1) {
+            CoordinateResultData resultData = parseBaiduLocationResultBean(companyName, true);
+            return new ArrayList<CoordinateResultData>() {
+                @Override
+                public boolean add(CoordinateResultData coordinateResultData) {
+                    return add(resultData);
+                }
+            };
+        }
+
         for (BaiduLocationResultBean baiduLocationResultBean : baiduMultipleDatas) {
-            CoordinateResultData resultData = new CoordinateResultData();
-            //如果多条会有多个地址
-            if (baiduMultipleDatas.size() > 1) {
-                resultData.setStatus(MORE_ADDRESS);
-                resultData.setAccuracy(MAYBE_ACCURAY);
-                //反之单个 则正常可以确认
-            } else {
-                resultData.setStatus(NORMAL_ADDRESS);
-                resultData.setAccuracy(CONFIRM_ACCURAY);
-            }
-            resultData.setQueryCondition(QUERY_COMPANYNAME);
-            resultData.setQueryConditionValue(companyName);
-            resultData.setSource(BAIDU_SOURCE);
-            resultData.setCreateTime(CommonUtil.getNow());
+            CoordinateResultData resultData = parseBaiduLocationResultBean(companyName, false);
             resultData.setBaiduCoordinate(baiduLocationResultBean.getCoordinate());
             coordinateEntities.add(resultData);
         }
         return coordinateEntities;
     }
 
+    private CoordinateResultData parseBaiduLocationResultBean(String companyName, boolean single) {
+        CoordinateResultData resultData = new CoordinateResultData();
+        if (single) {
+            resultData.setStatus(NORMAL_ADDRESS);
+            resultData.setAccuracy(CONFIRM_ACCURAY);
+        } else {
+            resultData.setStatus(MORE_ADDRESS);
+            resultData.setAccuracy(MAYBE_ACCURAY);
+        }
+        resultData.setQueryCondition(QUERY_COMPANYNAME);
+        resultData.setQueryConditionValue(companyName);
+        resultData.setSource(BAIDU_SOURCE);
+        return resultData;
+    }
+
     /**
      * 获取多个高德坐标或者没有
      *
-     * @param companyName 公司名
+     * @param companyName
+     *         公司名
      * @return 结果
-     * @throws IOException 异常
+     * @throws IOException
+     *         异常
      */
-    public List<CoordinateResultData> getMultipleGaodeCoordinate(List<GaodeMultipleResponseBean> multipleResponseBeans, String companyName) throws IOException {
+    public List<CoordinateResultData> getMultipleGaodeCoordinate(List<GaodeMultipleResponseBean>
+                                                                         multipleResponseBeans, String companyName)
+            throws IOException {
         List<CoordinateResultData> coordinateEntities = new ArrayList<>();
         for (GaodeMultipleResponseBean gaodeMultipleResponseBean : multipleResponseBeans) {
             CoordinateResultData resultData = new CoordinateResultData();
@@ -195,9 +225,11 @@ public class CompanyCoordinateManager {
     /**
      * 没有查到经纬度
      *
-     * @param companyName 公司名称
+     * @param companyName
+     *         公司名称
      * @return 结果
-     * @throws IOException 异常
+     * @throws IOException
+     *         异常
      */
     public List<CoordinateResultData> getNoneCoordinate(String companyName) throws IOException {
         List<CoordinateResultData> coordinateEntities = new ArrayList<>();
