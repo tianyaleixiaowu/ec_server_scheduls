@@ -2,7 +2,7 @@ package com.mindata.ecserver.global.http;
 
 import com.mindata.ecserver.global.http.service.BaiduCoordinateService;
 import com.mindata.ecserver.global.http.service.GaodeCoordinateService;
-import com.mindata.ecserver.retrofit.service.FetchPhoneHistoryService;
+import com.mindata.ecserver.global.http.service.FetchPhoneHistoryService;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import org.springframework.stereotype.Component;

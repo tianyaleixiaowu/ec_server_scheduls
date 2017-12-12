@@ -105,5 +105,8 @@ public interface EcContactRepository extends JpaRepository<EcContactEntity, Inte
 
     EcContactEntity findById(Long id);
 
-
+    @Query(value = "update EcContactEntity p set p.state = 3 where p.id in (?1)")
+    @Modifying
+    @Transactional(rollbackFor = Exception.class)
+    Integer updateState(String ids);
 }

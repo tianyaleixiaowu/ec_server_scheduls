@@ -50,5 +50,4 @@ public class TestController {
         coordinateService.saveCompanyCoordinate(force);
         return "baidu";
     }
-
 }

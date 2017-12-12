@@ -33,14 +33,16 @@ public class CompanyCoordinateManager {
     @Resource
     private GeoCoordinateService geoCoordinateService;
 
-    public List<CompanyCoordinateEntity> saveByContacts(List<EcContactEntity> contactEntities, Boolean force) throws IOException {
+    public List<CompanyCoordinateEntity> saveByContacts(List<EcContactEntity> contactEntities, Boolean force) throws
+            IOException {
         if (force == null) {
             force = false;
         }
         List<CompanyCoordinateEntity> coordinateEntities = new ArrayList<>();
         for (EcContactEntity ecContactEntity : contactEntities) {
             String city = ecCodeAreaManager.findNameById(ecContactEntity.getCity(), ecContactEntity.getProvince());
-            List<CoordinateResultData> temp = geoCoordinateService.getLocation(ecContactEntity.getAddress(), ecContactEntity.getCompany(), city);
+            List<CoordinateResultData> temp = geoCoordinateService.getLocation(ecContactEntity.getAddress(),
+                    ecContactEntity.getCompany(), city);
             coordinateEntities.addAll(save(temp, ecContactEntity.getId(), force));
         }
         return coordinateEntities;
@@ -49,7 +51,8 @@ public class CompanyCoordinateManager {
     /**
      * 插入一个contactId的经纬度
      *
-     * @param contactId 未推送表的Id
+     * @param contactId
+     *         未推送表的Id
      */
     private List<CompanyCoordinateEntity> save(List<CoordinateResultData> resultDatas, Long contactId, Boolean force) {
         List<CompanyCoordinateEntity> coordinateEntities = coordinateRepository.findByContactId(contactId);
@@ -67,7 +70,8 @@ public class CompanyCoordinateManager {
     /**
      * 转换为数据库实体
      *
-     * @param resultData 参数
+     * @param resultData
+     *         参数
      * @return 结果
      */
     private CompanyCoordinateEntity convert(CoordinateResultData resultData) {
@@ -79,12 +83,12 @@ public class CompanyCoordinateManager {
     /**
      * 查询不太靠谱或者没有坐标的数据
      *
-     * @param pageable 分页
+     * @param pageable
+     *         分页
      * @return 结果
      */
     public Page<CompanyCoordinateEntity> findByStatusOrAccuracy(Pageable pageable) {
         return coordinateRepository.findByStatusOrAccuracy(NONE_ADDRESS, NORELIABLE_ACCURAY, pageable);
     }
-
 
 }

@@ -1,13 +1,13 @@
 package com.mindata.ecserver.global.geo.service.impl;
 
 import com.mindata.ecserver.global.geo.service.IGeoCoordinateService;
+import com.mindata.ecserver.global.http.CallManager;
 import com.mindata.ecserver.global.http.MapGaodeRquestProperty;
 import com.mindata.ecserver.global.http.RequestProperty;
 import com.mindata.ecserver.global.http.RetrofitServiceBuilder;
 import com.mindata.ecserver.global.http.response.GaodeMultipleResponseData;
 import com.mindata.ecserver.global.http.response.GaodeResponseData;
 import com.mindata.ecserver.global.http.service.GaodeCoordinateService;
-import com.mindata.ecserver.retrofit.CallManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;

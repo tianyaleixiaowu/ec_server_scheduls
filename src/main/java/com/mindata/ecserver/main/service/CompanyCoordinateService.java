@@ -136,7 +136,7 @@ public class CompanyCoordinateService {
      */
     public Map<String, Object> findCoordinateByCompany(String companyName, String city) throws IOException {
         Map<String, Object> map = new HashMap<>(1);
-        if (StrUtil.isNotEmpty(companyName) && StrUtil.isEmpty(city)) {
+        if (StrUtil.isEmpty(city)) {
             map.put("message", "城市不能为空！");
             return map;
         }

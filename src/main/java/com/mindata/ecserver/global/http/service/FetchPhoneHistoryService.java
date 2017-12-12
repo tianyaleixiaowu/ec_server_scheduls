@@ -1,4 +1,4 @@
-package com.mindata.ecserver.retrofit.service;
+package com.mindata.ecserver.global.http.service;
 
 import com.mindata.ecserver.global.http.response.BaseData;
 import retrofit2.Call;

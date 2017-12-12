@@ -106,6 +106,23 @@ public class EsContactService {
     }
 
     /**
+     * 删除某些ids
+     * @param ids
+     * ids
+     */
+    public void deleteByIds(String ids) {
+        if (ids.endsWith(",")) {
+            ids = ids.substring(0, ids.length() - 1);
+        }
+        String[] array = ids.split(",");
+        for (String id : array) {
+            EsContact esContact = esContactManager.findById(Long.valueOf(id));
+            esContact.setState(3);
+            esContactManager.save(esContact);
+        }
+    }
+
+    /**
      * 更新一部分id的值到ES
      * @param beginId
      * 开始id
@@ -157,6 +174,34 @@ public class EsContactService {
     }
 
     /**
+     * 更新某个字段(companyScore)
+     * 列名
+     */
+    public void partUpdateByColumn() {
+        Sort sort = new Sort(Sort.Direction.ASC, "id");
+        //去数据库查询该范围的集合，插入到ES
+        Pageable pageable = new PageRequest(0, 1, sort);
+        Page<EcContactEntity> page = contactManager.findAll(pageable);
+        //没有新数据
+        if (page.getTotalElements() == 0) {
+            return;
+        }
+        //判断要查多少页
+        for (int i = 0; i < page.getTotalElements() / PAGE_SIZE + 1; i++) {
+            pageable = new PageRequest(i, PAGE_SIZE, sort);
+            List<EcContactEntity> contactEntities = contactManager.findAll(pageable).getContent();
+            esContactManager.bulkIndex(contactEntities.stream().map(this::convertOneColumn).collect(Collectors.toList()));
+        }
+
+    }
+
+    private EsContact convertOneColumn(EcContactEntity ecContactEntity) {
+        EsContact esContact = esContactManager.findById(ecContactEntity.getId());
+        esContact.setCompanyScore(ecContactEntity.getCompanyScore());
+        return esContact;
+    }
+
+    /**
      * 将DB读取的entity转为ES的对象
      *
      * @param ecContactEntity
@@ -188,6 +233,7 @@ public class EsContactService {
         esContact.setState(ecContactEntity.getState());
         esContact.setMainJob(ecContactEntity.getMainJob());
         esContact.setCreateTime(ecContactEntity.getCreateTime());
+        esContact.setCompanyScore(ecContactEntity.getCompanyScore());
         //下面的都是别的表聚合来的数据
         List<String> extraInfo = companyJobInfoManager.getExtraInfo(ecContactEntity.getCompId());
         esContact.setJobName(extraInfo.get(0));
@@ -197,6 +243,7 @@ public class EsContactService {
         List<String> industryList = industryInfoManager.getIndustryAndComintroInfoForEs(ecContactEntity.getCompId());
         esContact.setIndustry(industryList.get(0));
         esContact.setComintro(industryList.get(1));
+
         esContact.setInsertTime(CommonUtil.getTimeStamp());
         return esContact;
     }
