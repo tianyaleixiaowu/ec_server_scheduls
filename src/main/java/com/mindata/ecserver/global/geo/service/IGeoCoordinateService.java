@@ -22,13 +22,13 @@ public interface IGeoCoordinateService {
     /**
      * 根据公司名称或者地址获取经纬度
      *
-     * @param companyName 公司名字
-     * @param city        城市
-     * @param pageSize    pageSize
-     * @param page        page
+     * @param parameter 公司名字或地址
+     * @param city      城市
+     * @param pageSize  pageSize
+     * @param page      page
      * @return 结果
      * @throws IOException 异常
      */
-    ResponseValue getCoordinateByParameter(String companyName, String city, Integer pageSize, Integer page) throws IOException;
+    ResponseValue getCoordinateByParameter(String parameter, String city, Integer pageSize, Integer page) throws IOException;
 
 }

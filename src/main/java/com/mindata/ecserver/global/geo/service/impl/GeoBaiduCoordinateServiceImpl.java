@@ -55,21 +55,21 @@ public class GeoBaiduCoordinateServiceImpl implements IGeoCoordinateService {
     }
 
     /**
-     * 根据公司名称去百度地图获取经纬度
+     * 根据公司名称或者地址去百度地图获取经纬度
      *
-     * @param companyName 公司名字
-     * @param city        城市
+     * @param parameter 公司名字或地址
+     * @param city      城市
      * @return 结果
      * @throws IOException 异常
      */
     @Override
-    public BaiduMultipleResponseData getCoordinateByParameter(String companyName, String city, Integer pageSize,
+    public BaiduMultipleResponseData getCoordinateByParameter(String parameter, String city, Integer pageSize,
                                                               Integer page) throws IOException {
         RequestProperty requestProperty = new MapBaiduRequestProperty(baiduUrl);
         BaiduCoordinateService baiduCoordinateService = retrofitServiceBuilder.getBaiduCoordinateService
                 (requestProperty);
         BaiduMultipleResponseData baiduMultipleResponseData = (BaiduMultipleResponseData) callManager.execute(
-                baiduCoordinateService.getCoordinateByParameter(companyName, city, pageSize, page, true, "json",
+                baiduCoordinateService.getCoordinateByParameter(parameter, city, pageSize, page, true, "json",
                         baiduAK));
         logger.info("获取到百度返回的地址信息：" + baiduMultipleResponseData);
         return baiduMultipleResponseData;

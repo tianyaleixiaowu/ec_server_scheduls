@@ -55,19 +55,19 @@ public class GeoGaodeCoordinateServiceImpl implements IGeoCoordinateService {
     }
 
     /**
-     * 根据公司名称获取经纬度名称
+     * 根据公司名称或地址获取经纬度名称
      *
-     * @param companyName 公司名字
+     * @param parameter 公司名字或地址
      * @param city        城市
      * @return 结果
      * @throws IOException 异常
      */
     @Override
-    public GaodeMultipleResponseData getCoordinateByParameter(String companyName, String city, Integer pageSize, Integer page) throws IOException {
+    public GaodeMultipleResponseData getCoordinateByParameter(String parameter, String city, Integer pageSize, Integer page) throws IOException {
         RequestProperty requestProperty = new MapGaodeRquestProperty(gaodeUrl);
         GaodeCoordinateService gaodeCoordinateService = retrofitServiceBuilder.getGaodeCoordinateService(requestProperty);
         GaodeMultipleResponseData gaodeMultipleResponseData = (GaodeMultipleResponseData) callManager.execute(
-                gaodeCoordinateService.getCoordinateByParameter(companyName, city, pageSize, page, true, "json", gaodeAK));
+                gaodeCoordinateService.getCoordinateByParameter(parameter, city, pageSize, page, true, "json", gaodeAK));
 
         logger.info("获取到高德返回的地址信息：" + gaodeMultipleResponseData);
         return gaodeMultipleResponseData;
