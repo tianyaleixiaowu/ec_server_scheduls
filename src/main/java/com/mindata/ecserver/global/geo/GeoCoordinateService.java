@@ -201,14 +201,18 @@ public class GeoCoordinateService {
         if (multipleResponseBeans.size() == 1) {
             CoordinateResultData resultData = parseCoordinateResultData(companyName, true);
             resultData.setSource(GAODE_SOURCE);
-            resultData.setBaiduCoordinate(multipleResponseBeans.get(0).getLocation());
+            resultData.setGaodeCoordinate(multipleResponseBeans.get(0).getLocation());
+            String location = ConvertBaiduCoordinateUtil.convertBaiduCoordinate(resultData.getGaodeCoordinate());
+            resultData.setBaiduCoordinate(location);
             coordinateEntities.add(resultData);
             return coordinateEntities;
         }
         for (GaodeMultipleResponseBean gaodeMultipleResponseBean : multipleResponseBeans) {
             CoordinateResultData resultData = parseCoordinateResultData(companyName, false);
             resultData.setSource(GAODE_SOURCE);
-            resultData.setBaiduCoordinate(gaodeMultipleResponseBean.getLocation());
+            resultData.setGaodeCoordinate(gaodeMultipleResponseBean.getLocation());
+            String location = ConvertBaiduCoordinateUtil.convertBaiduCoordinate(resultData.getGaodeCoordinate());
+            resultData.setBaiduCoordinate(location);
             coordinateEntities.add(resultData);
         }
         return coordinateEntities;
