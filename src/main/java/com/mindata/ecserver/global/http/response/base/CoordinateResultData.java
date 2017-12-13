@@ -1,9 +1,9 @@
-package com.mindata.ecserver.global.http.response;
+package com.mindata.ecserver.global.http.response.base;
 
 /**
  * @author hanliqiang wrote on 2017/12/7
  */
-public class CoordinateResultData {
+public class CoordinateResultData implements ResponseValue {
     /**
      * 百度地图坐标 (经度在前，维度在后)
      */

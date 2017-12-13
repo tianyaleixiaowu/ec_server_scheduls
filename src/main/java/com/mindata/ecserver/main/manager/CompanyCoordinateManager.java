@@ -1,7 +1,7 @@
 package com.mindata.ecserver.main.manager;
 
 import com.mindata.ecserver.global.geo.GeoCoordinateService;
-import com.mindata.ecserver.global.http.response.CoordinateResultData;
+import com.mindata.ecserver.global.http.response.base.CoordinateResultData;
 import com.mindata.ecserver.global.util.CommonUtil;
 import com.mindata.ecserver.main.model.primary.EcContactEntity;
 import com.mindata.ecserver.main.model.secondary.CompanyCoordinateEntity;
