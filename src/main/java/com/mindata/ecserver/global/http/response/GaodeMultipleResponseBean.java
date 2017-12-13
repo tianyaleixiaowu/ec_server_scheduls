@@ -28,4 +28,12 @@ public class GaodeMultipleResponseBean {
     public void setLocation(String location) {
         this.location = location;
     }
+
+    @Override
+    public String toString() {
+        return "GaodeMultipleResponseBean{" +
+                "name='" + name + '\'' +
+                ", location='" + location + '\'' +
+                '}';
+    }
 }

@@ -28,4 +28,12 @@ public class GaodeResponseBean {
     public void setLevel(String level) {
         this.level = level;
     }
+
+    @Override
+    public String toString() {
+        return "GaodeResponseBean{" +
+                "location='" + location + '\'' +
+                ", level='" + level + '\'' +
+                '}';
+    }
 }

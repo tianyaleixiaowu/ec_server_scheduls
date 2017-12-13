@@ -9,6 +9,8 @@ import com.mindata.ecserver.global.http.response.base.ResponseValue;
 import com.xiaoleilu.hutool.util.CollectionUtil;
 import com.xiaoleilu.hutool.util.ObjectUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -28,6 +30,8 @@ public class GeoCoordinateService {
     @Resource
     private List<IGeoCoordinateService> geoCoordinates;
 
+    private Logger logger = LoggerFactory.getLogger(getClass());
+
     /**
      * 获取高德、百度返回的数据。该方法用于给Contact表的线索信息获取经纬度
      *
@@ -37,6 +41,7 @@ public class GeoCoordinateService {
      * @return 结果
      * @throws IOException 异常
      */
+    @SuppressWarnings("AlibabaUndefineMagicConstant")
     public List<CoordinateResultData> getLocation(String address, String companyName, String city) throws IOException {
         List<CoordinateResultData> dataList = new ArrayList<>();
         GeoBaiduCoordinateServiceImpl baiduCoordinateService = (GeoBaiduCoordinateServiceImpl) geoCoordinates.get(0);
@@ -46,18 +51,25 @@ public class GeoCoordinateService {
             //判断地址里是否包含 层、号、幢、楼、厦 如果包含认为是准确地址
             if (address.contains("层") || address.contains("楼") || address.contains("号") ||
                     address.contains("幢") || address.contains("厦")) {
+                logger.info("开始拿Address字段进行查询");
                 BaiduResponseData baiduResult = baiduCoordinateService.getCoordinateByAddress(address);
                 if (ObjectUtil.isNotNull(baiduResult) && ObjectUtil.isNotNull(baiduResult.getResult())) {
                     dataList.add(singleCoordinate(baiduResult, address));
+
+                    logger.info("获取到百度精确地址为：" + baiduResult.toString());
                     return dataList;
                 }
+                logger.info("没有获取到百度精确地址");
                 GaodeResponseData gaodeResult = gaodeCoordinateService.getCoordinateByAddress(address);
                 if (ObjectUtil.isNotNull(gaodeResult) && CollectionUtil.isNotEmpty(gaodeResult.getGeocodes())) {
                     dataList.add(singleCoordinate(gaodeResult, address));
+
+                    logger.info("获取到高德精确地址为：" + gaodeResult.toString());
                     return dataList;
                 }
             }
         }
+        logger.info("开始拿公司名和城市字段进行查询");
         //使用城市和公司名查询时，返回1或者多条数据
         BaiduMultipleResponseData baiduMultipleData = baiduCoordinateService.getCoordinateByParameter(companyName, city, PAGE_SIZE, PAGE);
         if (ObjectUtil.isNotNull(baiduMultipleData) && baiduMultipleData.getTotal() > 0 && baiduMultipleData.getResults().get(0).getLocation() != null) {

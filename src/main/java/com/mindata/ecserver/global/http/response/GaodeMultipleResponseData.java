@@ -41,4 +41,13 @@ public class GaodeMultipleResponseData implements ResponseValue {
     public void setPois(List<GaodeMultipleResponseBean> pois) {
         this.pois = pois;
     }
+
+    @Override
+    public String toString() {
+        return "GaodeMultipleResponseData{" +
+                "status='" + status + '\'' +
+                ", count='" + count + '\'' +
+                ", pois=" + pois +
+                '}';
+    }
 }

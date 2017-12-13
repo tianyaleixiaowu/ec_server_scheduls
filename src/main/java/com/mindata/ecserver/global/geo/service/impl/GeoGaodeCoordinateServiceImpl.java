@@ -8,6 +8,8 @@ import com.mindata.ecserver.global.http.request.base.RequestProperty;
 import com.mindata.ecserver.global.http.response.GaodeMultipleResponseData;
 import com.mindata.ecserver.global.http.response.GaodeResponseData;
 import com.mindata.ecserver.global.http.service.GaodeCoordinateService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
@@ -32,6 +34,8 @@ public class GeoGaodeCoordinateServiceImpl implements IGeoCoordinateService {
     @Value("${geo.gaode-ak}")
     private String gaodeAK;
 
+    private Logger logger = LoggerFactory.getLogger(getClass());
+
     /**
      * 根据地址获取高德地图的经纬度
      *
@@ -43,8 +47,11 @@ public class GeoGaodeCoordinateServiceImpl implements IGeoCoordinateService {
     public GaodeResponseData getCoordinateByAddress(String address) throws IOException {
         RequestProperty requestProperty = new MapGaodeRquestProperty(gaodeUrl);
         GaodeCoordinateService gaodeCoordinateService = retrofitServiceBuilder.getGaodeCoordinateService(requestProperty);
-        return (GaodeResponseData) callManager.execute(
+        GaodeResponseData gaodeResponseData = (GaodeResponseData) callManager.execute(
                 gaodeCoordinateService.getCoordinateByAddress(address, "json", gaodeAK));
+
+        logger.info("获取到高德返回的地址信息：" + gaodeResponseData);
+        return gaodeResponseData;
     }
 
     /**
@@ -59,7 +66,10 @@ public class GeoGaodeCoordinateServiceImpl implements IGeoCoordinateService {
     public GaodeMultipleResponseData getCoordinateByParameter(String companyName, String city, Integer pageSize, Integer page) throws IOException {
         RequestProperty requestProperty = new MapGaodeRquestProperty(gaodeUrl);
         GaodeCoordinateService gaodeCoordinateService = retrofitServiceBuilder.getGaodeCoordinateService(requestProperty);
-        return (GaodeMultipleResponseData) callManager.execute(
+        GaodeMultipleResponseData gaodeMultipleResponseData = (GaodeMultipleResponseData) callManager.execute(
                 gaodeCoordinateService.getCoordinateByParameter(companyName, city, pageSize, page, true, "json", gaodeAK));
+
+        logger.info("获取到高德返回的地址信息：" + gaodeMultipleResponseData);
+        return gaodeMultipleResponseData;
     }
 }
