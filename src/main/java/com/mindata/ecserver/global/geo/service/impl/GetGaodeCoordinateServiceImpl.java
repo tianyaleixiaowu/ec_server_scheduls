@@ -50,19 +50,19 @@ public class GetGaodeCoordinateServiceImpl implements IGeoCoordinateService {
     }
 
     /**
-     * 根据公司名称获取经纬度名称
+     * 根据公司名称或者地址获取经纬度名称
      *
-     * @param companyName 公司名字
-     * @param city        城市
+     * @param paramater 参数
+     * @param city      城市
      * @return 结果
      * @throws IOException 异常
      */
     @Override
-    public GaodeMultipleResponseData getCoordinateByCompanyName(String companyName, String city, Integer pageSize, Integer page) throws IOException {
+    public GaodeMultipleResponseData getCoordinateByParameter(String paramater, String city, Integer pageSize, Integer page) throws IOException {
         RequestProperty requestProperty = new MapGaodeRquestProperty(gaodeUrl);
         GaodeCoordinateService gaodeCoordinateService = retrofitServiceBuilder.getGaodeCoordinateService(requestProperty);
         GaodeMultipleResponseData multipleResponseData = (GaodeMultipleResponseData) callManager.execute(
-                gaodeCoordinateService.getCoordinateByCompany(companyName, city, pageSize, page, true, OUTPUT_TYPE, GAODE_MAP_KEY));
+                gaodeCoordinateService.getCoordinateByParameter(paramater, city, pageSize, page, true, OUTPUT_TYPE, GAODE_MAP_KEY));
         return multipleResponseData;
     }
 }

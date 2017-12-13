@@ -57,13 +57,13 @@ public class GeoCoordinateService {
                 }
             }
         }
-        BaiduMultipleResponseData baiduMultipleData = baiduCoordinateService.getCoordinateByCompanyName(companyName, city, PAGE_SIZE, PAGE);
+        BaiduMultipleResponseData baiduMultipleData = baiduCoordinateService.getCoordinateByParameter(companyName, city, PAGE_SIZE, PAGE);
         if (ObjectUtil.isNotNull(baiduMultipleData) && baiduMultipleData.getTotal() > 0 && baiduMultipleData.getResults().get(0).getLocation() != null) {
             List<BaiduLocationResultBean> locationResultBeans = new ArrayList<>();
             baiduMultipleData.getResults().forEach(multipleResponseBean -> locationResultBeans.add(multipleResponseBean.getLocation()));
             return getMultipleBaiduCoordinate(locationResultBeans, companyName);
         }
-        GaodeMultipleResponseData gaodeMultipleResponseData = gaodeCoordinateService.getCoordinateByCompanyName(companyName, city, PAGE_SIZE, PAGE + 1);
+        GaodeMultipleResponseData gaodeMultipleResponseData = gaodeCoordinateService.getCoordinateByParameter(companyName, city, PAGE_SIZE, PAGE + 1);
         if (ObjectUtil.isNotNull(gaodeMultipleResponseData) && CollectionUtil.isNotEmpty(gaodeMultipleResponseData.getPois())) {
             List<GaodeMultipleResponseBean> multipleResponseBeans = new ArrayList<>(gaodeMultipleResponseData.getPois());
             return getMultipleGaodeCoordinate(multipleResponseBeans, companyName);
@@ -72,47 +72,23 @@ public class GeoCoordinateService {
     }
 
     /**
-     * 根据地址获取经纬度
+     * 根据公司名称或者地址获取经纬度
      *
-     * @param address 地址
+     * @param paramater 参数
+     * @param city      城市
      * @return 结果
      * @throws IOException 异常
      */
-    public List<String> getOutLocationByAddress(String address) throws IOException {
+    public List<String> getOutLocationByParamater(String paramater, String city) throws IOException {
         List<String> list = new ArrayList<>();
         GetBaiduCoordinateServiceImpl baiduCoordinateService = (GetBaiduCoordinateServiceImpl) geoCoordinates.get(0);
         GetGaodeCoordinateServiceImpl gaodeCoordinateService = (GetGaodeCoordinateServiceImpl) geoCoordinates.get(1);
-        BaiduResponseData baiduResult = baiduCoordinateService.getCoordinateByAddress(address);
-        if (ObjectUtil.isNotNull(baiduResult) && ObjectUtil.isNotNull(baiduResult.getResult())) {
-            list.add(baiduResult.getResult().getLocation().getCoordinate());
-            return list;
-        }
-        GaodeResponseData gaodeResult = gaodeCoordinateService.getCoordinateByAddress(address);
-        if (ObjectUtil.isNotNull(gaodeResult) && CollectionUtil.isNotEmpty(gaodeResult.getGeocodes())) {
-            list.add(gaodeResult.getGeocodes().get(0).getLocation());
-            return list;
-        }
-        return list;
-    }
-
-    /**
-     * 根据公司获取经纬度
-     *
-     * @param companyName 公司名称
-     * @param city        城市
-     * @return 结果
-     * @throws IOException 异常
-     */
-    public List<String> getOutLocationByCompany(String companyName, String city) throws IOException {
-        List<String> list = new ArrayList<>();
-        GetBaiduCoordinateServiceImpl baiduCoordinateService = (GetBaiduCoordinateServiceImpl) geoCoordinates.get(0);
-        GetGaodeCoordinateServiceImpl gaodeCoordinateService = (GetGaodeCoordinateServiceImpl) geoCoordinates.get(1);
-        BaiduMultipleResponseData baiduMultipleData = baiduCoordinateService.getCoordinateByCompanyName(companyName, city, PAGE_SIZE, PAGE);
+        BaiduMultipleResponseData baiduMultipleData = baiduCoordinateService.getCoordinateByParameter(paramater, city, PAGE_SIZE, PAGE);
         if (ObjectUtil.isNotNull(baiduMultipleData) && baiduMultipleData.getTotal() > 0 && baiduMultipleData.getResults().get(0).getLocation() != null) {
             baiduMultipleData.getResults().forEach(multipleResponseBean -> list.add(multipleResponseBean.getLocation().getCoordinate()));
             return list;
         }
-        GaodeMultipleResponseData gaodeMultipleData = gaodeCoordinateService.getCoordinateByCompanyName(companyName, city, PAGE_SIZE, PAGE + 1);
+        GaodeMultipleResponseData gaodeMultipleData = gaodeCoordinateService.getCoordinateByParameter(paramater, city, PAGE_SIZE, PAGE + 1);
         if (ObjectUtil.isNotNull(gaodeMultipleData) && CollectionUtil.isNotEmpty(gaodeMultipleData.getPois())) {
             gaodeMultipleData.getPois().forEach(multipleResponseBean -> list.add(ConvertBaiduCoordinateUtil.convertBaiduCoordinate(multipleResponseBean.getLocation())));
             return list;
