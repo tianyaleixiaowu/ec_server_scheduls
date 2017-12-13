@@ -25,7 +25,14 @@ public class BaiduLocationResultBean {
     }
 
     public String getCoordinate() {
-        return lng+","+lat;
+        return lng + "," + lat;
     }
 
+    @Override
+    public String toString() {
+        return "BaiduLocationResultBean{" +
+                "lng=" + lng +
+                ", lat=" + lat +
+                '}';
+    }
 }

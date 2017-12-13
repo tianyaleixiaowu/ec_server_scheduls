@@ -1,7 +1,7 @@
 package com.mindata.ecserver.main.service;
 
-import com.mindata.ecserver.global.http.EcServerRequestProperty;
-import com.mindata.ecserver.global.http.RequestProperty;
+import com.mindata.ecserver.global.http.request.EcServerRequestProperty;
+import com.mindata.ecserver.global.http.request.base.RequestProperty;
 import com.mindata.ecserver.global.http.RetrofitServiceBuilder;
 import com.mindata.ecserver.global.http.response.BaseData;
 import com.mindata.ecserver.main.manager.PtUserManager;
@@ -80,7 +80,7 @@ public class FetchCompanyPhoneHistoryService {
             BaseData baseData = (BaseData) callManager.execute(retrofitServiceBuilder.getFetchPhoneHistoryService(requestProperty).fetchHistory
                     (beginTime,
                     endTime));
-            logger.info("返回的code" + baseData.getStatus() + "----返回的message" + baseData.getMessage());
+            logger.info("返回的code" + baseData.getCode() + "----返回的message" + baseData.getMessage());
         }
         return null;
     }

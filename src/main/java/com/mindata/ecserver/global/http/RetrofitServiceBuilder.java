@@ -1,10 +1,13 @@
 package com.mindata.ecserver.global.http;
 
+import com.mindata.ecserver.global.http.request.base.RequestProperty;
 import com.mindata.ecserver.global.http.service.BaiduCoordinateService;
 import com.mindata.ecserver.global.http.service.GaodeCoordinateService;
 import com.mindata.ecserver.global.http.service.FetchPhoneHistoryService;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -17,6 +20,8 @@ import java.util.concurrent.TimeUnit;
  */
 @Component
 public class RetrofitServiceBuilder {
+
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     public FetchPhoneHistoryService getFetchPhoneHistoryService(RequestProperty requestProperty) {
         return generateRetrofit(requestProperty).create(FetchPhoneHistoryService.class);
@@ -38,6 +43,7 @@ public class RetrofitServiceBuilder {
      */
 
     private Retrofit generateRetrofit(RequestProperty requestProperty) {
+        logger.info("发起retrofit请求，baseUrl是:" + requestProperty.baseUrl());
         return new Retrofit.Builder()
                 .baseUrl(requestProperty.baseUrl())
                 .client(generateClient(requestProperty))

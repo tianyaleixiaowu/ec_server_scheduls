@@ -43,4 +43,14 @@ public class BaiduResponseBean {
     public void setLocation(BaiduLocationResultBean location) {
         this.location = location;
     }
+
+    @Override
+    public String toString() {
+        return "BaiduResponseBean{" +
+                "precise=" + precise +
+                ", confidence=" + confidence +
+                ", level='" + level + '\'' +
+                ", location=" + location +
+                '}';
+    }
 }

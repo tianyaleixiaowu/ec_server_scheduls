@@ -1,15 +1,9 @@
 package com.mindata.ecserver.global.http.response;
 
-import java.util.Date;
-
 /**
  * @author hanliqiang wrote on 2017/12/7
  */
 public class CoordinateResultData {
-    /**
-     * 未推送表的id
-     */
-    private Long contactId;
     /**
      * 百度地图坐标 (经度在前，维度在后)
      */
@@ -45,10 +39,6 @@ public class CoordinateResultData {
      * 地点描述
      */
     private String level;
-    /**
-     * 创建时间
-     */
-    private Date createTime;
 
     public String getBaiduCoordinate() {
         return baiduCoordinate;
@@ -114,19 +104,17 @@ public class CoordinateResultData {
         this.level = level;
     }
 
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Long getContactId() {
-        return contactId;
-    }
-
-    public void setContactId(Long contactId) {
-        this.contactId = contactId;
+    @Override
+    public String toString() {
+        return "CoordinateResultData{" +
+                "baiduCoordinate='" + baiduCoordinate + '\'' +
+                ", gaodeCoordinate='" + gaodeCoordinate + '\'' +
+                ", status=" + status +
+                ", source=" + source +
+                ", accuracy=" + accuracy +
+                ", queryCondition=" + queryCondition +
+                ", queryConditionValue='" + queryConditionValue + '\'' +
+                ", level='" + level + '\'' +
+                '}';
     }
 }

@@ -89,6 +89,22 @@ public class ContactManager {
         return ecContactRepository.findByIdBetween(beginId, endId, pageable);
     }
 
+    /**
+     * 查询最新的一条
+     */
+    public EcContactEntity findLastOne() {
+        Pageable pageable = new PageRequest(0, 1, Sort.Direction.DESC, "id");
+        return ecContactRepository.findAll(pageable).getContent().get(0);
+    }
+
+    /**
+     * 查询第一条
+     */
+    public EcContactEntity findFirstOne() {
+        Pageable pageable = new PageRequest(0, 1, Sort.Direction.ASC, "id");
+        return ecContactRepository.findAll(pageable).getContent().get(0);
+    }
+
     public Integer deleteByIds(String ids) {
         if (ids.endsWith(",")) {
             ids = ids.substring(0, ids.length() - 1);

@@ -226,7 +226,7 @@ public class EcCodeAreaManager {
 
     public String findNameById(String city, String province) {
         String cityName;
-        if (city.equals(0 + "")) {
+        if ("0".equals(city)) {
             cityName = findById(province);
         } else {
             Integer cityId;
