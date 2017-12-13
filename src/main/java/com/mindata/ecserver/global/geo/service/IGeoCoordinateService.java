@@ -20,7 +20,7 @@ public interface IGeoCoordinateService {
     ResponseValue getCoordinateByAddress(String address) throws IOException;
 
     /**
-     * 根据公司名称获取经纬度
+     * 根据公司名称或者地址获取经纬度
      *
      * @param companyName 公司名字
      * @param city        城市
@@ -29,6 +29,6 @@ public interface IGeoCoordinateService {
      * @return 结果
      * @throws IOException 异常
      */
-    ResponseValue getCoordinateByCompanyName(String companyName, String city, Integer pageSize, Integer page) throws IOException;
+    ResponseValue getCoordinateByParameter(String companyName, String city, Integer pageSize, Integer page) throws IOException;
 
 }

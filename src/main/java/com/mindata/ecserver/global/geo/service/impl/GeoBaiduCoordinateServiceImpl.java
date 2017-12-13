@@ -39,11 +39,9 @@ public class GeoBaiduCoordinateServiceImpl implements IGeoCoordinateService {
     /**
      * 根据地址去百度地图获取经纬度
      *
-     * @param address
-     *         地址
+     * @param address 地址
      * @return 结果
-     * @throws IOException
-     *         异常
+     * @throws IOException 异常
      */
     @Override
     public BaiduResponseData getCoordinateByAddress(String address) throws IOException {
@@ -59,22 +57,19 @@ public class GeoBaiduCoordinateServiceImpl implements IGeoCoordinateService {
     /**
      * 根据公司名称去百度地图获取经纬度
      *
-     * @param companyName
-     *         公司名字
-     * @param city
-     *         城市
+     * @param companyName 公司名字
+     * @param city        城市
      * @return 结果
-     * @throws IOException
-     *         异常
+     * @throws IOException 异常
      */
     @Override
-    public BaiduMultipleResponseData getCoordinateByCompanyName(String companyName, String city, Integer pageSize,
-                                                                Integer page) throws IOException {
+    public BaiduMultipleResponseData getCoordinateByParameter(String companyName, String city, Integer pageSize,
+                                                              Integer page) throws IOException {
         RequestProperty requestProperty = new MapBaiduRequestProperty(baiduUrl);
         BaiduCoordinateService baiduCoordinateService = retrofitServiceBuilder.getBaiduCoordinateService
                 (requestProperty);
         BaiduMultipleResponseData baiduMultipleResponseData = (BaiduMultipleResponseData) callManager.execute(
-                baiduCoordinateService.getCoordinateByCompany(companyName, city, pageSize, page, true, "json",
+                baiduCoordinateService.getCoordinateByParameter(companyName, city, pageSize, page, true, "json",
                         baiduAK));
         logger.info("获取到百度返回的地址信息：" + baiduMultipleResponseData);
         return baiduMultipleResponseData;

@@ -26,8 +26,8 @@ public class CoordinateController {
      * @throws IOException 异常
      */
     @GetMapping("/address")
-    public Object getCoordinateByAddress(String address) throws IOException {
-        return companyCoordinateService.findCoordinateByAddress(address);
+    public Object getCoordinateByAddress(String address, String city) throws IOException {
+        return companyCoordinateService.getOutLocationByAddress(address, city);
     }
 
     /**
@@ -40,7 +40,7 @@ public class CoordinateController {
      */
     @GetMapping("/company")
     public Object getCoordinateByCompany(String companyName, String city) throws IOException {
-        return companyCoordinateService.findCoordinateByCompany(companyName, city);
+        return companyCoordinateService.getOutLocationByCompany(companyName, city);
     }
 
     /**

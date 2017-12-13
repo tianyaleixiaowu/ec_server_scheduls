@@ -122,7 +122,6 @@ public class CompanyCoordinateService {
         }
     }
 
-
     /**
      * 对外提供获取经纬度
      *
@@ -131,11 +130,11 @@ public class CompanyCoordinateService {
      * @return 结果
      * @throws IOException 异常
      */
-    public Object findCoordinateByCompany(String companyName, String city) throws IOException {
+    public Object getOutLocationByCompany(String companyName, String city) throws IOException {
         if (StrUtil.isEmpty(companyName) || StrUtil.isEmpty(city)) {
             return ResultGenerator.genFailResult("城市和公司名不能为空");
         }
-        List<String> coordinateEntities = geoCoordinateService.getOutLocationByCompany(companyName, city);
+        List<String> coordinateEntities = geoCoordinateService.getOutLocationByParameter(companyName, city);
         return ResultGenerator.genSuccessResult(coordinateEntities);
     }
 
@@ -146,11 +145,14 @@ public class CompanyCoordinateService {
      * @return 结果
      * @throws IOException 异常
      */
-    public Object findCoordinateByAddress(String address) throws IOException {
-        if (StrUtil.isEmpty(address)) {
-            return ResultGenerator.genFailResult("地址不能为空");
+    public Object getOutLocationByAddress(String address, String city) throws IOException {
+        if (StrUtil.isEmpty(address) || StrUtil.isEmpty(city)) {
+            return ResultGenerator.genFailResult("城市和地址不能为空");
         }
-        List<String> coordinateEntities = geoCoordinateService.getOutLocationByAddress(address);
-        return ResultGenerator.genSuccessResult(coordinateEntities);
+        List<String> coordinateEntities = geoCoordinateService.getOutLocationByParameter(address, city);
+        if (coordinateEntities.size() > 0) {
+            return ResultGenerator.genSuccessResult(coordinateEntities.get(0));
+        }
+        return ResultGenerator.genFailResult("没有查到该地址的经纬度");
     }
 }

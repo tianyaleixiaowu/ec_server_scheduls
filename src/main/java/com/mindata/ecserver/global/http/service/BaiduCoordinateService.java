@@ -22,7 +22,7 @@ public interface BaiduCoordinateService {
      */
 
     @GET("geocoder/v2/")
-    Call<BaiduResponseData> getCoordinateByAddress(@Query("address") String address, @Query("output") String output,
+    Call<BaiduResponseData>  getCoordinateByAddress(@Query("address") String address, @Query("output") String output,
                                                    @Query("ak") String ak);
 
     /**
@@ -35,6 +35,8 @@ public interface BaiduCoordinateService {
      * @return 结果
      */
     @GET("place/v2/search?")
-    Call<BaiduMultipleResponseData> getCoordinateByCompany(@Query("query") String query, @Query("region") String region, @Query("page_size") Integer page_size,
-                                                           @Query("page_num") Integer page_num, @Query("city_limit") boolean city_limit, @Query("output") String output, @Query("ak") String ak);
+    Call<BaiduMultipleResponseData> getCoordinateByParameter(@Query("query") String query, @Query("region") String region, @Query("page_size") Integer page_size,
+                                                           @Query("page_num") Integer pageNum, @Query("city_limit") boolean cityLimit, @Query("output") String output, @Query("ak") String ak);
+
+
 }

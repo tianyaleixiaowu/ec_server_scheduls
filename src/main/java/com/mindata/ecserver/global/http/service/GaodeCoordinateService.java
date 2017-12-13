@@ -24,15 +24,15 @@ public interface GaodeCoordinateService {
                                                    @Query("key") String key);
 
     /**
-     * 根据公司名称去高德查经纬度
+     * 根据公司名称或者地址去高德查经纬度
      *
-     * @param city        城市
-     * @param output      输出格式
-     * @param key         高德key
+     * @param city   城市
+     * @param output 输出格式
+     * @param key    高德key
      * @return 结果
      */
     @GET("v3/place/text")
-    Call<GaodeMultipleResponseData> getCoordinateByCompany(@Query("keywords") String keywords, @Query("city") String city, @Query("offset") Integer offset, @Query("page") Integer page,
+    Call<GaodeMultipleResponseData> getCoordinateByParameter(@Query("keywords") String keywords, @Query("city") String city, @Query("offset") Integer offset, @Query("page") Integer page,
                                                            @Query("citylimit") boolean citylimit,
                                                            @Query("output") String output,
                                                            @Query("key") String key);

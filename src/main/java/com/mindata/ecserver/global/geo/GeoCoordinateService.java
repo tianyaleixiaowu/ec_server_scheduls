@@ -59,14 +59,14 @@ public class GeoCoordinateService {
             }
         }
         //使用城市和公司名查询时，返回1或者多条数据
-        BaiduMultipleResponseData baiduMultipleData = baiduCoordinateService.getCoordinateByCompanyName(companyName, city, PAGE_SIZE, PAGE);
+        BaiduMultipleResponseData baiduMultipleData = baiduCoordinateService.getCoordinateByParameter(companyName, city, PAGE_SIZE, PAGE);
         if (ObjectUtil.isNotNull(baiduMultipleData) && baiduMultipleData.getTotal() > 0 && baiduMultipleData.getResults().get(0).getLocation() != null) {
             List<BaiduLocationResultBean> locationResultBeans = new ArrayList<>();
             baiduMultipleData.getResults().forEach(multipleResponseBean -> locationResultBeans.add(multipleResponseBean.getLocation()));
             return getMultipleBaiduCoordinate(locationResultBeans, companyName);
         }
         //高德是从第一页开始，真奇葩
-        GaodeMultipleResponseData gaodeMultipleResponseData = gaodeCoordinateService.getCoordinateByCompanyName(companyName, city, PAGE_SIZE, PAGE + 1);
+        GaodeMultipleResponseData gaodeMultipleResponseData = gaodeCoordinateService.getCoordinateByParameter(companyName, city, PAGE_SIZE, PAGE + 1);
         if (ObjectUtil.isNotNull(gaodeMultipleResponseData) && CollectionUtil.isNotEmpty(gaodeMultipleResponseData.getPois())) {
             List<GaodeMultipleResponseBean> multipleResponseBeans = new ArrayList<>(gaodeMultipleResponseData.getPois());
             return getMultipleGaodeCoordinate(multipleResponseBeans, companyName);
@@ -74,48 +74,25 @@ public class GeoCoordinateService {
         return getNoneCoordinate(companyName);
     }
 
-    /**
-     * 根据地址获取经纬度
-     *
-     * @param address 地址
-     * @return 结果
-     * @throws IOException 异常
-     */
-    public List<String> getOutLocationByAddress(String address) throws IOException {
-        List<String> list = new ArrayList<>();
-        GeoBaiduCoordinateServiceImpl baiduCoordinateService = (GeoBaiduCoordinateServiceImpl) geoCoordinates.get(0);
-        BaiduResponseData baiduResult = baiduCoordinateService.getCoordinateByAddress(address);
-        if (ObjectUtil.isNotNull(baiduResult) && ObjectUtil.isNotNull(baiduResult.getResult())) {
-            list.add(baiduResult.getResult().getLocation().getCoordinate());
-            return list;
-        }
-        GeoGaodeCoordinateServiceImpl gaodeCoordinateService = (GeoGaodeCoordinateServiceImpl) geoCoordinates.get(1);
-        GaodeResponseData gaodeResult = gaodeCoordinateService.getCoordinateByAddress(address);
-        if (ObjectUtil.isNotNull(gaodeResult) && CollectionUtil.isNotEmpty(gaodeResult.getGeocodes())) {
-            list.add(gaodeResult.getGeocodes().get(0).getLocation());
-            return list;
-        }
-        return list;
-    }
 
     /**
-     * 根据公司获取经纬度
+     * 根据公司名称或者地址获取经纬度
      *
-     * @param companyName 公司名称
-     * @param city        城市
+     * @param parameter 参数
+     * @param city      城市
      * @return 结果
      * @throws IOException 异常
      */
-    public List<String> getOutLocationByCompany(String companyName, String city) throws IOException {
+    public List<String> getOutLocationByParameter(String parameter, String city) throws IOException {
         List<String> list = new ArrayList<>();
         GeoBaiduCoordinateServiceImpl baiduCoordinateService = (GeoBaiduCoordinateServiceImpl) geoCoordinates.get(0);
-        BaiduMultipleResponseData baiduMultipleData = baiduCoordinateService.getCoordinateByCompanyName(companyName, city, PAGE_SIZE, PAGE);
+        BaiduMultipleResponseData baiduMultipleData = baiduCoordinateService.getCoordinateByParameter(parameter, city, PAGE_SIZE, PAGE);
         if (ObjectUtil.isNotNull(baiduMultipleData) && baiduMultipleData.getTotal() > 0 && baiduMultipleData.getResults().get(0).getLocation() != null) {
             baiduMultipleData.getResults().forEach(multipleResponseBean -> list.add(multipleResponseBean.getLocation().getCoordinate()));
             return list;
         }
         GeoGaodeCoordinateServiceImpl gaodeCoordinateService = (GeoGaodeCoordinateServiceImpl) geoCoordinates.get(1);
-        GaodeMultipleResponseData gaodeMultipleData = gaodeCoordinateService.getCoordinateByCompanyName(companyName, city, PAGE_SIZE, PAGE + 1);
+        GaodeMultipleResponseData gaodeMultipleData = gaodeCoordinateService.getCoordinateByParameter(parameter, city, PAGE_SIZE, PAGE + 1);
         if (ObjectUtil.isNotNull(gaodeMultipleData) && CollectionUtil.isNotEmpty(gaodeMultipleData.getPois())) {
             gaodeMultipleData.getPois().forEach(multipleResponseBean -> list.add(ConvertBaiduCoordinateUtil.convertBaiduCoordinate(multipleResponseBean.getLocation())));
             return list;
@@ -128,7 +105,7 @@ public class GeoCoordinateService {
      * 根据Address获取到的单个坐标
      *
      * @param responseValue 参数
-     * @param address     地址
+     * @param address       地址
      * @return 结果
      */
     private CoordinateResultData singleCoordinate(ResponseValue responseValue, String address) {
@@ -201,7 +178,7 @@ public class GeoCoordinateService {
     }
 
     /**
-     * 获取多个高德坐标或者没有
+     * 获取多个高德坐标
      *
      * @param companyName 公司名
      * @return 结果
