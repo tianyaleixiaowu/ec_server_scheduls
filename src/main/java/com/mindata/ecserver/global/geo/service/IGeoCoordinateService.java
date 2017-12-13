@@ -1,6 +1,6 @@
 package com.mindata.ecserver.global.geo.service;
 
-import com.mindata.ecserver.global.http.response.ResponseValue;
+import com.mindata.ecserver.global.http.response.base.ResponseValue;
 
 import java.io.IOException;
 

@@ -47,7 +47,7 @@ public class TestController {
 
     @GetMapping("/baidu")
     public String baidu(Boolean force) throws IOException {
-        coordinateService.saveCompanyCoordinate(force);
+        coordinateService.completeAllCompanyCoordinate(force);
         return "baidu";
     }
 }

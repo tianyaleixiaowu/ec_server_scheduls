@@ -1,4 +1,4 @@
-package com.mindata.ecserver.global.http;
+package com.mindata.ecserver.global.http.request.base;
 
 import java.util.HashMap;
 

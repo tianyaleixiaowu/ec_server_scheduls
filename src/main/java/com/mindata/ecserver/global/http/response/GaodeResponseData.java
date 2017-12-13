@@ -1,5 +1,7 @@
 package com.mindata.ecserver.global.http.response;
 
+import com.mindata.ecserver.global.http.response.base.ResponseValue;
+
 import java.util.List;
 
 /**
@@ -13,19 +15,8 @@ public class GaodeResponseData implements ResponseValue {
 
     private List<GaodeResponseBean> geocodes;
 
-    @Override
-    public int getStatus() {
-        return "1".equals(status) ? 0 : -1;
-    }
-
-    @Override
-    public String getMessage() {
-        return null;
-    }
-
-    @Override
-    public Object getData() {
-        return geocodes;
+    public String getStatus() {
+        return status;
     }
 
     public void setStatus(String status) {

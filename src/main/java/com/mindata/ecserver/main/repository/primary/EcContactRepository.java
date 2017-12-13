@@ -98,7 +98,9 @@ public interface EcContactRepository extends JpaRepository<EcContactEntity, Inte
      * 根据状态查询
      *
      * @param state
+     * 是否被推送了
      * @return
+     * 结果
      */
     Page<EcContactEntity> findByState(Integer state, Pageable pageable);
 

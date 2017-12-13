@@ -2,7 +2,7 @@ package com.mindata.ecserver.global.http;
 
 
 import com.mindata.ecserver.global.exception.EcException;
-import com.mindata.ecserver.global.http.response.ResponseValue;
+import com.mindata.ecserver.global.http.response.base.ResponseValue;
 import org.springframework.stereotype.Component;
 import retrofit2.Call;
 

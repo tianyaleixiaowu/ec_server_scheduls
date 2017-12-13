@@ -7,7 +7,6 @@ public class BaiduMultipleResponseBean {
 
     private BaiduLocationResultBean location;
 
-
     public BaiduLocationResultBean getLocation() {
         return location;
     }
@@ -16,4 +15,10 @@ public class BaiduMultipleResponseBean {
         this.location = location;
     }
 
+    @Override
+    public String toString() {
+        return "BaiduMultipleResponseBean{" +
+                "location=" + location +
+                '}';
+    }
 }

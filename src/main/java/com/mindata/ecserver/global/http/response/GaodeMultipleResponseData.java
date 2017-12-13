@@ -1,5 +1,7 @@
 package com.mindata.ecserver.global.http.response;
 
+import com.mindata.ecserver.global.http.response.base.ResponseValue;
+
 import java.util.List;
 
 /**
@@ -14,23 +16,10 @@ public class GaodeMultipleResponseData implements ResponseValue {
      * 数量
      */
     private String count;
-    /**
-     *
-     */
     private List<GaodeMultipleResponseBean> pois;
-    @Override
-    public int getStatus() {
-        return "1".equals(status) ? 0 : -1;
-    }
 
-    @Override
-    public String getMessage() {
-        return null;
-    }
-
-    @Override
-    public Object getData() {
-        return pois;
+    public String getStatus() {
+        return status;
     }
 
     public void setStatus(String status) {

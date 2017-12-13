@@ -36,16 +36,16 @@ public class CompanyCoordinateService {
     private EsCompanyCoordinateManager esCompanyCoordinateManager;
 
     /**
-     * 新增所有的
+     * 补充所有的公司经纬度信息
      *
      * @throws IOException 异常
      */
-    public void saveCompanyCoordinate(Boolean force) throws IOException {
+    public void completeAllCompanyCoordinate(Boolean force) throws IOException {
         Pageable pageable = new PageRequest(0, 1, Sort.Direction.ASC, "id");
-        Page<EcContactEntity> page = contactManager.findByState(pageable);
+        Page<EcContactEntity> page = contactManager.findAll(pageable);
         for (int i = 0; i < page.getTotalElements() / PAGE_SIZE + 1; i++) {
             pageable = new PageRequest(i, PAGE_SIZE, Sort.Direction.ASC, "id");
-            Page<EcContactEntity> entities = contactManager.findByState(pageable);
+            Page<EcContactEntity> entities = contactManager.findAll(pageable);
             //保存数据库
             List<CompanyCoordinateEntity> coordinateEntities = coordinateManager.saveByContacts(entities.getContent(), force);
             //保存es
@@ -60,14 +60,15 @@ public class CompanyCoordinateService {
      * @param endId   结束id
      * @throws IOException 异常
      */
-    @Transactional(rollbackFor = Exception.class)
     public void partInsertIdBetween(Long beginId, Long endId, Boolean force) throws IOException {
+        if (endId == null) {
+            endId = contactManager.findLastOne().getId();
+        }
+        if (beginId == null) {
+            beginId = contactManager.findFirstOne().getId();
+        }
         Pageable pageable = new PageRequest(0, 1, Sort.Direction.ASC, "id");
         Page<EcContactEntity> page = contactManager.findByIdBetween(beginId, endId, pageable);
-        //没有新数据
-        if (page.getTotalElements() == 0) {
-            return;
-        }
         for (int i = 0; i < page.getTotalElements() / PAGE_SIZE + 1; i++) {
             pageable = new PageRequest(i, PAGE_SIZE, Sort.Direction.ASC, "id");
             List<EcContactEntity> contactEntities = contactManager.findByIdBetween(beginId, endId, pageable).getContent();
@@ -89,9 +90,6 @@ public class CompanyCoordinateService {
         Sort sort = new Sort(Sort.Direction.ASC, "id");
         Pageable pageable = new PageRequest(0, 1, sort);
         Page<EcContactEntity> page = contactManager.findByDateBetween(beginTime, endTime, pageable);
-        if (page.getTotalElements() == 0) {
-            return;
-        }
         for (int i = 0; i < page.getTotalElements() / PAGE_SIZE + 1; i++) {
             pageable = new PageRequest(i, PAGE_SIZE, sort);
             List<EcContactEntity> contactEntities = contactManager.findByDateBetween(beginTime, endTime, pageable).getContent();
@@ -109,9 +107,6 @@ public class CompanyCoordinateService {
         Sort sort = new Sort(Sort.Direction.ASC, "id");
         Pageable pageable = new PageRequest(0, 1, sort);
         Page<CompanyCoordinateEntity> page = coordinateManager.findByStatusOrAccuracy(pageable);
-        if (page.getTotalElements() == 0) {
-            return;
-        }
         List<EcContactEntity> contactEntities = new ArrayList<>();
         for (int i = 0; i < page.getTotalElements() / PAGE_SIZE + 1; i++) {
             pageable = new PageRequest(i, PAGE_SIZE, sort);
@@ -134,17 +129,17 @@ public class CompanyCoordinateService {
      * @return 结果
      * @throws IOException 异常
      */
-    public Map<String, Object> getOutLocationByCompany(String companyName, String city) throws IOException {
+    public Map<String, Object> findCoordinateByCompany(String companyName, String city) throws IOException {
         Map<String, Object> map = new HashMap<>(1);
         if (StrUtil.isEmpty(city)) {
-            map.put("message", "城市为空！");
+            map.put("message", "城市不能为空！");
             return map;
         }
         if (StrUtil.isEmpty(companyName)) {
-            map.put("message", "公司为空！");
+            map.put("message", "公司不能为空！");
             return map;
         }
-        List<String> coordinateEntities = geoCoordinateService.getOutLocationByParamater(companyName, city);
+        List<String> coordinateEntities = geoCoordinateService.getOutLocationByCompany(companyName, city);
         map.put("coordinate", coordinateEntities);
         return map;
     }
@@ -156,22 +151,14 @@ public class CompanyCoordinateService {
      * @return 结果
      * @throws IOException 异常
      */
-    public Map<String, Object> getOutLocationByAddress(String address, String city) throws IOException {
+    public Map<String, Object> findCoordinateByAddress(String address) throws IOException {
         Map<String, Object> map = new HashMap<>(1);
         if (StrUtil.isEmpty(address)) {
-            map.put("message", "地址为空！");
+            map.put("message", "地址不能为空！");
             return map;
         }
-        if (StrUtil.isEmpty(city)) {
-            map.put("message", "城市为空！");
-            return map;
-        }
-        List<String> coordinateEntities = geoCoordinateService.getOutLocationByParamater(address, city);
-        if (coordinateEntities.size() > 0) {
-            map.put("coordinate", coordinateEntities.get(0));
-        } else {
-            map.put("coordinate", null);
-        }
+        List<String> coordinateEntities = geoCoordinateService.getOutLocationByAddress(address);
+        map.put("coordinate", coordinateEntities);
         return map;
     }
 }

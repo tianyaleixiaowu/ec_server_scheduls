@@ -1,5 +1,7 @@
 package com.mindata.ecserver.global.http.response;
 
+import com.mindata.ecserver.global.http.response.base.ResponseValue;
+
 /**
  * @author wuweifeng wrote on 2017/11/29.
  */
@@ -9,19 +11,8 @@ public class BaiduResponseData implements ResponseValue {
 
     private BaiduResponseBean result;
 
-    @Override
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
-    }
-
-    @Override
-    public String getMessage() {
-        return null;
-    }
-
-    @Override
-    public Object getData() {
-        return result;
     }
 
     public void setStatus(Integer status) {
@@ -34,5 +25,13 @@ public class BaiduResponseData implements ResponseValue {
 
     public void setResult(BaiduResponseBean result) {
         this.result = result;
+    }
+
+    @Override
+    public String toString() {
+        return "BaiduResponseData{" +
+                "status=" + status +
+                ", result=" + result +
+                '}';
     }
 }

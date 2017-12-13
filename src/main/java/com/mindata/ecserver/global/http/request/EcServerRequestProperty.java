@@ -1,4 +1,6 @@
-package com.mindata.ecserver.global.http;
+package com.mindata.ecserver.global.http.request;
+
+import com.mindata.ecserver.global.http.request.base.RequestProperty;
 
 import java.util.HashMap;
 
