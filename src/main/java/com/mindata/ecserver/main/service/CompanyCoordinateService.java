@@ -1,5 +1,6 @@
 package com.mindata.ecserver.main.service;
 
+import com.mindata.ecserver.global.bean.ResultGenerator;
 import com.mindata.ecserver.global.geo.GeoCoordinateService;
 import com.mindata.ecserver.main.manager.CompanyCoordinateManager;
 import com.mindata.ecserver.main.manager.ContactManager;
@@ -13,11 +14,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -128,19 +130,12 @@ public class CompanyCoordinateService {
      * @return 结果
      * @throws IOException 异常
      */
-    public Map<String, Object> getOutLocationByCompany(String companyName, String city) throws IOException {
-        Map<String, Object> map = new HashMap<>(1);
-        if (StrUtil.isEmpty(city)) {
-            map.put("message", "城市为空！");
-            return map;
+    public Object getOutLocationByCompany(String companyName, String city) throws IOException {
+        if (StrUtil.isEmpty(companyName) || StrUtil.isEmpty(city)) {
+            return ResultGenerator.genFailResult("城市和公司名不能为空");
         }
-        if (StrUtil.isEmpty(companyName)) {
-            map.put("message", "公司为空！");
-            return map;
-        }
-        List<String> coordinateEntities = geoCoordinateService.getOutLocationByParamater(companyName, city);
-        map.put("coordinate", coordinateEntities);
-        return map;
+        List<String> coordinateEntities = geoCoordinateService.getOutLocationByParameter(companyName, city);
+        return ResultGenerator.genSuccessResult(coordinateEntities);
     }
 
     /**
@@ -150,22 +145,14 @@ public class CompanyCoordinateService {
      * @return 结果
      * @throws IOException 异常
      */
-    public Map<String, Object> getOutLocationByAddress(String address, String city) throws IOException {
-        Map<String, Object> map = new HashMap<>(1);
-        if (StrUtil.isEmpty(address)) {
-            map.put("message", "地址为空！");
-            return map;
+    public Object getOutLocationByAddress(String address, String city) throws IOException {
+        if (StrUtil.isEmpty(address) || StrUtil.isEmpty(city)) {
+            return ResultGenerator.genFailResult("城市和地址不能为空");
         }
-        if (StrUtil.isEmpty(city)) {
-            map.put("message", "城市为空！");
-            return map;
-        }
-        List<String> coordinateEntities = geoCoordinateService.getOutLocationByParamater(address, city);
+        List<String> coordinateEntities = geoCoordinateService.getOutLocationByParameter(address, city);
         if (coordinateEntities.size() > 0) {
-            map.put("coordinate", coordinateEntities.get(0));
-        } else {
-            map.put("coordinate", null);
+            return ResultGenerator.genSuccessResult(coordinateEntities.get(0));
         }
-        return map;
+        return ResultGenerator.genFailResult("没有查到该地址的经纬度");
     }
 }

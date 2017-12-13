@@ -78,21 +78,21 @@ public class GeoCoordinateService {
     /**
      * 根据公司名称或者地址获取经纬度
      *
-     * @param paramater 参数
+     * @param parameter 参数
      * @param city      城市
      * @return 结果
      * @throws IOException 异常
      */
-    public List<String> getOutLocationByParamater(String paramater, String city) throws IOException {
+    public List<String> getOutLocationByParameter(String parameter, String city) throws IOException {
         List<String> list = new ArrayList<>();
         GeoBaiduCoordinateServiceImpl baiduCoordinateService = (GeoBaiduCoordinateServiceImpl) geoCoordinates.get(0);
-        GeoGaodeCoordinateServiceImpl gaodeCoordinateService = (GeoGaodeCoordinateServiceImpl) geoCoordinates.get(1);
-        BaiduMultipleResponseData baiduMultipleData = baiduCoordinateService.getCoordinateByParameter(paramater, city, PAGE_SIZE, PAGE);
+        BaiduMultipleResponseData baiduMultipleData = baiduCoordinateService.getCoordinateByParameter(parameter, city, PAGE_SIZE, PAGE);
         if (ObjectUtil.isNotNull(baiduMultipleData) && baiduMultipleData.getTotal() > 0 && baiduMultipleData.getResults().get(0).getLocation() != null) {
             baiduMultipleData.getResults().forEach(multipleResponseBean -> list.add(multipleResponseBean.getLocation().getCoordinate()));
             return list;
         }
-        GaodeMultipleResponseData gaodeMultipleData = gaodeCoordinateService.getCoordinateByParameter(paramater, city, PAGE_SIZE, PAGE + 1);
+        GeoGaodeCoordinateServiceImpl gaodeCoordinateService = (GeoGaodeCoordinateServiceImpl) geoCoordinates.get(1);
+        GaodeMultipleResponseData gaodeMultipleData = gaodeCoordinateService.getCoordinateByParameter(parameter, city, PAGE_SIZE, PAGE + 1);
         if (ObjectUtil.isNotNull(gaodeMultipleData) && CollectionUtil.isNotEmpty(gaodeMultipleData.getPois())) {
             gaodeMultipleData.getPois().forEach(multipleResponseBean -> list.add(ConvertBaiduCoordinateUtil.convertBaiduCoordinate(multipleResponseBean.getLocation())));
             return list;
@@ -105,7 +105,7 @@ public class GeoCoordinateService {
      * 根据Address获取到的单个坐标
      *
      * @param responseValue 参数
-     * @param address     地址
+     * @param address       地址
      * @return 结果
      */
     private CoordinateResultData singleCoordinate(ResponseValue responseValue, String address) {
