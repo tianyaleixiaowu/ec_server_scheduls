@@ -178,7 +178,7 @@ public class GeoCoordinateService {
     }
 
     /**
-     * 获取多个高德坐标或者没有
+     * 获取多个高德坐标
      *
      * @param companyName 公司名
      * @return 结果

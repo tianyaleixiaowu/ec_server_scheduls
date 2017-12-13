@@ -120,7 +120,6 @@ public class CompanyCoordinateService {
         }
     }
 
-
     /**
      * 对外提供获取经纬度
      *
@@ -129,17 +128,17 @@ public class CompanyCoordinateService {
      * @return 结果
      * @throws IOException 异常
      */
-    public Map<String, Object> findCoordinateByCompany(String companyName, String city) throws IOException {
+    public Map<String, Object> getOutLocationByCompany(String companyName, String city) throws IOException {
         Map<String, Object> map = new HashMap<>(1);
         if (StrUtil.isEmpty(city)) {
-            map.put("message", "城市不能为空！");
+            map.put("message", "城市为空！");
             return map;
         }
         if (StrUtil.isEmpty(companyName)) {
-            map.put("message", "公司不能为空！");
+            map.put("message", "公司为空！");
             return map;
         }
-        List<String> coordinateEntities = geoCoordinateService.getOutLocationByCompany(companyName, city);
+        List<String> coordinateEntities = geoCoordinateService.getOutLocationByParamater(companyName, city);
         map.put("coordinate", coordinateEntities);
         return map;
     }
@@ -151,14 +150,22 @@ public class CompanyCoordinateService {
      * @return 结果
      * @throws IOException 异常
      */
-    public Map<String, Object> findCoordinateByAddress(String address) throws IOException {
+    public Map<String, Object> getOutLocationByAddress(String address, String city) throws IOException {
         Map<String, Object> map = new HashMap<>(1);
         if (StrUtil.isEmpty(address)) {
-            map.put("message", "地址不能为空！");
+            map.put("message", "地址为空！");
             return map;
         }
-        List<String> coordinateEntities = geoCoordinateService.getOutLocationByAddress(address);
-        map.put("coordinate", coordinateEntities);
+        if (StrUtil.isEmpty(city)) {
+            map.put("message", "城市为空！");
+            return map;
+        }
+        List<String> coordinateEntities = geoCoordinateService.getOutLocationByParamater(address, city);
+        if (coordinateEntities.size() > 0) {
+            map.put("coordinate", coordinateEntities.get(0));
+        } else {
+            map.put("coordinate", null);
+        }
         return map;
     }
 }

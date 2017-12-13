@@ -56,10 +56,10 @@ public class GeoGaodeCoordinateServiceImpl implements IGeoCoordinateService {
      * @throws IOException 异常
      */
     @Override
-    public GaodeMultipleResponseData getCoordinateByCompanyName(String companyName, String city, Integer pageSize, Integer page) throws IOException {
+    public GaodeMultipleResponseData getCoordinateByParameter(String companyName, String city, Integer pageSize, Integer page) throws IOException {
         RequestProperty requestProperty = new MapGaodeRquestProperty(gaodeUrl);
         GaodeCoordinateService gaodeCoordinateService = retrofitServiceBuilder.getGaodeCoordinateService(requestProperty);
         return (GaodeMultipleResponseData) callManager.execute(
-                gaodeCoordinateService.getCoordinateByCompany(companyName, city, pageSize, page, true, "json", gaodeAK));
+                gaodeCoordinateService.getCoordinateByParameter(companyName, city, pageSize, page, true, "json", gaodeAK));
     }
 }
