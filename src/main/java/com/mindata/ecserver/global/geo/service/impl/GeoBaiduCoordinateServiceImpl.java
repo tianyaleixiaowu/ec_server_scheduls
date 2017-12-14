@@ -22,6 +22,7 @@ import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static com.mindata.ecserver.global.GeoConstant.BAIDU_SOURCE;
 
@@ -56,8 +57,11 @@ public class GeoBaiduCoordinateServiceImpl extends BaseGeoCoordinateService impl
         RequestProperty requestProperty = new MapBaiduRequestProperty(baiduUrl);
         BaiduCoordinateService baiduCoordinateService = retrofitServiceBuilder.getBaiduCoordinateService
                 (requestProperty);
+        //两个ak随机取一个
+        String[] baidus = baiduAK.split(",");
+        String ak = baidus[new Random().nextInt(1)];
         BaiduResponseData baiduResponseData = (BaiduResponseData) callManager.execute(
-                baiduCoordinateService.getCoordinateByAddress(address, "json", baiduAK));
+                baiduCoordinateService.getCoordinateByAddress(address, "json", ak));
         logger.info("获取到百度返回的地址信息：" + baiduResponseData);
 
         return singleCoordinate(baiduResponseData, address);
@@ -77,9 +81,13 @@ public class GeoBaiduCoordinateServiceImpl extends BaseGeoCoordinateService impl
         RequestProperty requestProperty = new MapBaiduRequestProperty(baiduUrl);
         BaiduCoordinateService baiduCoordinateService = retrofitServiceBuilder.getBaiduCoordinateService
                 (requestProperty);
+
+        //两个ak随机取一个
+        String[] baidus = baiduAK.split(",");
+        String ak = baidus[new Random().nextInt(1)];
         BaiduMultipleResponseData baiduMultipleResponseData = (BaiduMultipleResponseData) callManager.execute(
                 baiduCoordinateService.getCoordinateByParameter(parameter, city, pageSize, page, true, "json",
-                        baiduAK));
+                        ak));
         logger.info("获取到百度返回的地址信息：" + baiduMultipleResponseData);
         List<BaiduMultipleResponseBean> baiduMultipleResponseBeans = baiduMultipleResponseData.getResults();
 
