@@ -61,6 +61,7 @@ public class GeoCoordinateService {
                 return coordinateResultData;
             }
         }
+        logger.info("什么也没找到");
         return null;
     }
 
@@ -77,6 +78,9 @@ public class GeoCoordinateService {
      */
     public List<String> getOutLocationByParameter(String parameter, String city) throws IOException {
         List<CoordinateResultData> coordinateResultData = getLocation(parameter, parameter, city);
+        if (coordinateResultData == null) {
+            return null;
+        }
         return coordinateResultData.stream().map(CoordinateResultData::getBaiduCoordinate).collect(Collectors.toList());
     }
 
