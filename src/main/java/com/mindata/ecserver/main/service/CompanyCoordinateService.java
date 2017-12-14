@@ -44,6 +44,9 @@ public class CompanyCoordinateService {
      * @throws IOException 异常
      */
     public void completeAllCompanyCoordinate(Boolean force) throws IOException {
+        if (force == null) {
+            force = false;
+        }
         Pageable pageable = new PageRequest(0, 1, Sort.Direction.ASC, "id");
         Page<EcContactEntity> page = contactManager.findAll(pageable);
         for (int i = 0; i < page.getTotalElements() / PAGE_SIZE + 1; i++) {

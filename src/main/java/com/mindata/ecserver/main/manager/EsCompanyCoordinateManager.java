@@ -29,9 +29,6 @@ public class EsCompanyCoordinateManager {
     private ElasticsearchTemplate elasticsearchTemplate;
 
     public void bulkIndexCompany(List<CompanyCoordinateEntity> companyCoordinates, Boolean force) {
-        if (force == null) {
-            force = false;
-        }
         bulkIndex(companyCoordinates.stream().map(this::convert).collect(Collectors.toList()), force);
     }
 
@@ -68,7 +65,7 @@ public class EsCompanyCoordinateManager {
         DeleteQuery deleteQuery = new DeleteQuery();
         deleteQuery.setQuery(termQuery("contactId", contactId));
         elasticsearchTemplate.delete(deleteQuery, EsCompanyCoordinate.class);
-        System.out.println("删除contactId是" + contactId + "的数据");
+        System.out.println("删除contactId是" + contactId + "的经纬度数据");
     }
 
     /**
