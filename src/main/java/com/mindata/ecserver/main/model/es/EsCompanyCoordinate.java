@@ -21,13 +21,14 @@ public class EsCompanyCoordinate {
      */
     private Long contactId;
     /**
-     * 百度地图坐标 (经度在前，维度在后)
+     * 百度地图坐标 (纬度在前，经度在后，lat，lon)
+     * 40.06892,116.59217
      */
     @GeoPointField
     private String baiduCoordinate;
 
     /**
-     * 高德地图坐标 (经度在前，维度在后)
+     * 高德地图坐标 (纬度在前，经度在后)
      */
     @GeoPointField
     private String gaodeCoordinate;
