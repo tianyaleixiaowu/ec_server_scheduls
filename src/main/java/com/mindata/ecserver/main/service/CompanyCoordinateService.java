@@ -109,8 +109,8 @@ public class CompanyCoordinateService {
             Pageable pageable = new PageRequest(i, PAGE_SIZE, Sort.Direction.ASC, "id");
             List<EcContactEntity> contactEntities = contactManager.findByIdBetween(beginId, endId, pageable)
                     .getContent();
-            if (contactEntities.size() > 0) {
-                System.err.println("第一个contactId为：" + contactEntities.get(0).getId());
+            if (contactEntities.size() == 0) {
+                 continue;
             }
             List<PtCompanyCoordinate> coordinateEntities;
             try {
