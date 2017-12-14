@@ -42,6 +42,15 @@ public class CompanyCoordinateManager {
             IOException {
         List<PtCompanyCoordinate> coordinateEntities = new ArrayList<>();
         for (EcContactEntity ecContactEntity : contactEntities) {
+            //如果不是强制，就先查数据库判断该contactId是否已经存在
+            if (!force) {
+                List<PtCompanyCoordinate> tempList = coordinateRepository.findByContactId(ecContactEntity.getId());
+                if (CollectionUtil.isNotEmpty(coordinateEntities)) {
+                    coordinateEntities.add(tempList.get(0));
+                    continue;
+                }
+            }
+
             String city = ecCodeAreaManager.findNameById(ecContactEntity.getCity(), ecContactEntity.getProvince());
             List<CoordinateResultData> temp = geoCoordinateService.getLocation(ecContactEntity.getAddress(),
                     ecContactEntity.getCompany(), city);
@@ -61,10 +70,6 @@ public class CompanyCoordinateManager {
      */
     private PtCompanyCoordinate save(List<CoordinateResultData> resultDatas, Long contactId, Boolean force) {
         logger.info("开始插入contactId为" + contactId + "的经纬度数据");
-        List<PtCompanyCoordinate> coordinateEntities = coordinateRepository.findByContactId(contactId);
-        if (CollectionUtil.isNotEmpty(coordinateEntities) && !force) {
-            return coordinateEntities.get(0);
-        }
         if (force) {
             logger.info("删除contactId为" + contactId + "的经纬度数据");
             coordinateRepository.deleteByContactId(contactId);
