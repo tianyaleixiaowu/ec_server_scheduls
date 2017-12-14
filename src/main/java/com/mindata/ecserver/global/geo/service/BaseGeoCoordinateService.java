@@ -58,10 +58,10 @@ public class BaseGeoCoordinateService  {
         CoordinateResultData resultData = new CoordinateResultData();
         if (single) {
             resultData.setStatus(NORMAL_ADDRESS);
-            resultData.setAccuracy(MAYBE_ACCURAY);
+            resultData.setAccuracy(CONFIRM_ACCURAY);
         } else {
             resultData.setStatus(MORE_ADDRESS);
-            resultData.setAccuracy(CONFIRM_ACCURAY);
+            resultData.setAccuracy(MAYBE_ACCURAY);
         }
         resultData.setQueryCondition(QUERY_COMPANYNAME);
         resultData.setLevel(null);
