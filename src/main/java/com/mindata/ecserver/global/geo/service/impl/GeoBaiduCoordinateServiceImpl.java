@@ -109,6 +109,9 @@ public class GeoBaiduCoordinateServiceImpl extends BaseGeoCoordinateService impl
             return coordinateEntities;
         }
         for (BaiduLocationResultBean baiduLocationResultBean : baiduMultipleDatas) {
+            if (baiduLocationResultBean == null) {
+                continue;
+            }
             CoordinateResultData resultData = parseCoordinateResultData(parameter, false);
             resultData.setSource(BAIDU_SOURCE);
             resultData.setBaiduCoordinate(baiduLocationResultBean.getCoordinate());
