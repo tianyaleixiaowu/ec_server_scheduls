@@ -9,7 +9,7 @@ import java.util.Date;
  * @author hanliqiang wrote on 2017/11/24
  */
 @Entity
-@Table(name = "company_coordinate")
+@Table(name = "pt_company_coordinate")
 public class CompanyCoordinateEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
