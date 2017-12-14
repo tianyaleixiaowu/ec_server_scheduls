@@ -1,7 +1,7 @@
 package com.mindata.ecserver.main.manager;
 
 import com.mindata.ecserver.main.model.es.EsCompanyCoordinate;
-import com.mindata.ecserver.main.model.secondary.PtCompanyCoordinateEntity;
+import com.mindata.ecserver.main.model.secondary.PtCompanyCoordinate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -32,7 +32,7 @@ public class EsCompanyCoordinateManager {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-    public void bulkIndexCompany(List<PtCompanyCoordinateEntity> companyCoordinates, Boolean force) {
+    public void bulkIndexCompany(List<PtCompanyCoordinate> companyCoordinates, Boolean force) {
         bulkIndex(companyCoordinates.stream().map(this::convert).collect(Collectors.toList()), force);
     }
 
@@ -75,14 +75,14 @@ public class EsCompanyCoordinateManager {
     /**
      * 转换为es实体
      *
-     * @param ptCompanyCoordinateEntity 实体
+     * @param ptCompanyCoordinate 实体
      * @return 结果
      */
-    private EsCompanyCoordinate convert(PtCompanyCoordinateEntity ptCompanyCoordinateEntity) {
+    private EsCompanyCoordinate convert(PtCompanyCoordinate ptCompanyCoordinate) {
         EsCompanyCoordinate esCompanyCoordinate = new EsCompanyCoordinate();
-        BeanUtils.copyProperties(ptCompanyCoordinateEntity, esCompanyCoordinate);
-        esCompanyCoordinate.setGaodeCoordinate(ptCompanyCoordinateEntity.getEsGaoDeCoordinate());
-        esCompanyCoordinate.setBaiduCoordinate(ptCompanyCoordinateEntity.getEsBaiduCoordinate());
+        BeanUtils.copyProperties(ptCompanyCoordinate, esCompanyCoordinate);
+        esCompanyCoordinate.setGaodeCoordinate(ptCompanyCoordinate.getEsGaoDeCoordinate());
+        esCompanyCoordinate.setBaiduCoordinate(ptCompanyCoordinate.getEsBaiduCoordinate());
         return esCompanyCoordinate;
     }
 

@@ -36,6 +36,20 @@ public class ContactManager {
 
     private final Logger LOGGER = LoggerFactory.getLogger(getClass().getName());
 
+
+    /**
+     * 计算两个id间的数量
+     * @param beginId
+     * begin
+     * @param endId
+     * end
+     * @return
+     * 数量
+     */
+    public Long countIdBetween(Long beginId, Long endId) {
+        return ecContactRepository.countByIdBetween(beginId, endId);
+    }
+
     public Page<EcContactEntity> findContact(Pageable pageable) {
         return ecContactRepository.findAll(pageable);
     }

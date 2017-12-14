@@ -9,8 +9,9 @@ import java.util.Date;
  * @author hanliqiang wrote on 2017/11/24
  */
 @Entity
-@Table(name = "pt_company_coordinate")
-public class PtCompanyCoordinateEntity {
+@Table(name = "pt_company_coordinate", indexes = {@Index(name = "contact_id", columnList =
+        "contact_id")})
+public class PtCompanyCoordinate {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")

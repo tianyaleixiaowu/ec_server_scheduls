@@ -19,6 +19,17 @@ public interface EcContactRepository extends JpaRepository<EcContactEntity, Inte
         JpaSpecificationExecutor<EcContactEntity> {
 
     /**
+     * 统计两个id间的数量
+     * @param beginId
+     * begin
+     * @param endId
+     * end
+     * @return
+     * 数量
+     */
+    Long countByIdBetween(Long beginId, Long endId);
+
+    /**
      * 根据id集合查询线索集合
      *
      * @param ids id集合
