@@ -2,6 +2,7 @@ package com.mindata.ecserver.global.geo;
 
 import com.mindata.ecserver.global.geo.service.IGeoCoordinateService;
 import com.mindata.ecserver.global.http.response.base.CoordinateResultData;
+import com.xiaoleilu.hutool.util.CollectionUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +47,7 @@ public class GeoCoordinateService {
             for (IGeoCoordinateService geoCoordinateService : geoCoordinates) {
                 List<CoordinateResultData> coordinateResultData = geoCoordinateService.getCoordinateByParameter
                         (address, city, PAGE_SIZE, PAGE);
-                if (coordinateResultData.size() > 0) {
+                if (CollectionUtil.isNotEmpty(coordinateResultData)) {
                     logger.info("根据Address字段查询到的结果是" + coordinateResultData);
                     return coordinateResultData;
                 }
@@ -56,7 +57,7 @@ public class GeoCoordinateService {
         for (IGeoCoordinateService geoCoordinateService : geoCoordinates) {
             List<CoordinateResultData> coordinateResultData = geoCoordinateService.getCoordinateByParameter
                     (companyName, city, PAGE_SIZE, PAGE);
-            if (coordinateResultData.size() > 0) {
+            if (CollectionUtil.isNotEmpty(coordinateResultData)) {
                 logger.info("根据公司名和城市字段查询到的结果是" + coordinateResultData);
                 return coordinateResultData;
             }

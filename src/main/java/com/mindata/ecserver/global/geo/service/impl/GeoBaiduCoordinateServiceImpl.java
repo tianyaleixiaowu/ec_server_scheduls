@@ -64,6 +64,9 @@ public class GeoBaiduCoordinateServiceImpl extends BaseGeoCoordinateService impl
                 baiduCoordinateService.getCoordinateByAddress(address, "json", ak));
         logger.info("获取到百度返回的地址信息：" + baiduResponseData);
 
+        if (baiduResponseData.getResult() == null) {
+            return null;
+        }
         return singleCoordinate(baiduResponseData, address);
     }
 
@@ -90,6 +93,10 @@ public class GeoBaiduCoordinateServiceImpl extends BaseGeoCoordinateService impl
                         ak));
         logger.info("获取到百度返回的地址信息：" + baiduMultipleResponseData);
         List<BaiduMultipleResponseBean> baiduMultipleResponseBeans = baiduMultipleResponseData.getResults();
+        //302访问过多
+        if (baiduMultipleResponseBeans == null) {
+            return null;
+        }
 
         List<BaiduLocationResultBean> baiduLocationResultBeans = new ArrayList<>();
         baiduMultipleResponseBeans.forEach(multipleResponseBean -> baiduLocationResultBeans.add(multipleResponseBean
