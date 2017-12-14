@@ -59,7 +59,7 @@ public class GeoBaiduCoordinateServiceImpl extends BaseGeoCoordinateService impl
                 (requestProperty);
         //两个ak随机取一个
         String[] baidus = baiduAK.split(",");
-        String ak = baidus[new Random().nextInt(1)];
+        String ak = baidus[new Random().nextInt(2)];
         BaiduResponseData baiduResponseData = (BaiduResponseData) callManager.execute(
                 baiduCoordinateService.getCoordinateByAddress(address, "json", ak));
         logger.info("获取到百度返回的地址信息：" + baiduResponseData);
