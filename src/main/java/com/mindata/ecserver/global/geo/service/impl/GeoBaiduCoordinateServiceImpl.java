@@ -84,7 +84,7 @@ public class GeoBaiduCoordinateServiceImpl extends BaseGeoCoordinateService impl
 
         //两个ak随机取一个
         String[] baidus = baiduAK.split(",");
-        String ak = baidus[new Random().nextInt(1)];
+        String ak = baidus[new Random().nextInt(2)];
         BaiduMultipleResponseData baiduMultipleResponseData = (BaiduMultipleResponseData) callManager.execute(
                 baiduCoordinateService.getCoordinateByParameter(parameter, city, pageSize, page, true, "json",
                         ak));
