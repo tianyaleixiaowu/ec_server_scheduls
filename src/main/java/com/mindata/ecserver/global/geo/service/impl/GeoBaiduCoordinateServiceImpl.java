@@ -7,11 +7,11 @@ import com.mindata.ecserver.global.http.RetrofitServiceBuilder;
 import com.mindata.ecserver.global.http.request.MapBaiduRequestProperty;
 import com.mindata.ecserver.global.http.request.base.RequestProperty;
 import com.mindata.ecserver.global.http.response.BaiduLocationResultBean;
+import com.mindata.ecserver.global.http.response.BaiduMultipleResponseBean;
 import com.mindata.ecserver.global.http.response.BaiduMultipleResponseData;
 import com.mindata.ecserver.global.http.response.BaiduResponseData;
 import com.mindata.ecserver.global.http.response.base.CoordinateResultData;
 import com.mindata.ecserver.global.http.service.BaiduCoordinateService;
-import com.xiaoleilu.hutool.util.CollectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -81,10 +81,12 @@ public class GeoBaiduCoordinateServiceImpl extends BaseGeoCoordinateService impl
                 baiduCoordinateService.getCoordinateByParameter(parameter, city, pageSize, page, true, "json",
                         baiduAK));
         logger.info("获取到百度返回的地址信息：" + baiduMultipleResponseData);
-        List<BaiduLocationResultBean> locationResultBeans = new ArrayList<>();
-        baiduMultipleResponseData.getResults().forEach(multipleResponseBean -> locationResultBeans.add(multipleResponseBean
+        List<BaiduMultipleResponseBean> baiduMultipleResponseBeans = baiduMultipleResponseData.getResults();
+
+        List<BaiduLocationResultBean> baiduLocationResultBeans = new ArrayList<>();
+        baiduMultipleResponseBeans.forEach(multipleResponseBean -> baiduLocationResultBeans.add(multipleResponseBean
                 .getLocation()));
-        return getMultipleBaiduCoordinate(locationResultBeans, parameter);
+        return getMultipleBaiduCoordinate(baiduLocationResultBeans, parameter);
     }
 
     /**
@@ -96,10 +98,10 @@ public class GeoBaiduCoordinateServiceImpl extends BaseGeoCoordinateService impl
      */
     private List<CoordinateResultData> getMultipleBaiduCoordinate(List<BaiduLocationResultBean> baiduMultipleDatas, String parameter) {
         List<CoordinateResultData> coordinateEntities = new ArrayList<>();
-        if (CollectionUtil.isEmpty(baiduMultipleDatas)) {
-            return coordinateEntities;
-        }
         if (baiduMultipleDatas.size() == 1) {
+            if (baiduMultipleDatas.get(0) == null) {
+                return coordinateEntities;
+            }
             CoordinateResultData resultData = parseCoordinateResultData(parameter, true);
             resultData.setSource(BAIDU_SOURCE);
             resultData.setBaiduCoordinate(baiduMultipleDatas.get(0).getCoordinate());
