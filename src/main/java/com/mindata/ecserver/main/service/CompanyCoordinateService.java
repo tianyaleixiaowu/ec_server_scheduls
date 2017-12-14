@@ -67,6 +67,9 @@ public class CompanyCoordinateService {
      * @throws IOException 异常
      */
     public void partInsertIdBetween(Long beginId, Long endId, Boolean force) throws IOException {
+        if (force == null) {
+            force = false;
+        }
         if (endId == null) {
             endId = contactManager.findLastOne().getId();
         }
