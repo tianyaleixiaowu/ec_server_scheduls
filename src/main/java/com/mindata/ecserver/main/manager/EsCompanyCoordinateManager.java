@@ -2,6 +2,8 @@ package com.mindata.ecserver.main.manager;
 
 import com.mindata.ecserver.main.model.es.EsCompanyCoordinate;
 import com.mindata.ecserver.main.model.secondary.CompanyCoordinateEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.DeleteQuery;
@@ -27,6 +29,8 @@ import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 public class EsCompanyCoordinateManager {
     @Resource
     private ElasticsearchTemplate elasticsearchTemplate;
+
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     public void bulkIndexCompany(List<CompanyCoordinateEntity> companyCoordinates, Boolean force) {
         bulkIndex(companyCoordinates.stream().map(this::convert).collect(Collectors.toList()), force);

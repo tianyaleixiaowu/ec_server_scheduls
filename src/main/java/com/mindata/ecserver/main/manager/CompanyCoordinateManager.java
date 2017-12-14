@@ -65,8 +65,10 @@ public class CompanyCoordinateManager {
         if (CollectionUtil.isNotEmpty(coordinateEntities) && !force) {
             return coordinateEntities.get(0);
         }
-        logger.info("删除contactId为" + contactId + "的经纬度数据");
-        coordinateRepository.deleteByContactId(contactId);
+        if (force) {
+            logger.info("删除contactId为" + contactId + "的经纬度数据");
+            coordinateRepository.deleteByContactId(contactId);
+        }
         CompanyCoordinateEntity companyCoordinateEntity = coordinateRepository.save(convert(resultDatas.get(0),
                 contactId));
         logger.info("contactId为" + contactId + "的经纬度数据，已经插入成功");
