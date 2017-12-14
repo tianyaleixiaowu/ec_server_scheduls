@@ -12,6 +12,7 @@ import com.mindata.ecserver.global.http.response.GaodeMultipleResponseData;
 import com.mindata.ecserver.global.http.response.GaodeResponseData;
 import com.mindata.ecserver.global.http.response.base.CoordinateResultData;
 import com.mindata.ecserver.global.http.service.GaodeCoordinateService;
+import com.xiaoleilu.hutool.util.CollectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -91,7 +92,9 @@ public class GeoGaodeCoordinateServiceImpl extends BaseGeoCoordinateService impl
      */
     private List<CoordinateResultData> getMultipleGaodeCoordinate(List<GaodeMultipleResponseBean> multipleResponseBeans, String parameter) {
         List<CoordinateResultData> coordinateEntities = new ArrayList<>();
-
+        if (CollectionUtil.isEmpty(multipleResponseBeans)) {
+            return coordinateEntities;
+        }
         if (multipleResponseBeans.size() == 1) {
             CoordinateResultData resultData = parseCoordinateResultData(parameter, true);
             resultData.setSource(GAODE_SOURCE);

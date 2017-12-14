@@ -11,6 +11,7 @@ import com.mindata.ecserver.global.http.response.BaiduMultipleResponseData;
 import com.mindata.ecserver.global.http.response.BaiduResponseData;
 import com.mindata.ecserver.global.http.response.base.CoordinateResultData;
 import com.mindata.ecserver.global.http.service.BaiduCoordinateService;
+import com.xiaoleilu.hutool.util.CollectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -95,6 +96,9 @@ public class GeoBaiduCoordinateServiceImpl extends BaseGeoCoordinateService impl
      */
     private List<CoordinateResultData> getMultipleBaiduCoordinate(List<BaiduLocationResultBean> baiduMultipleDatas, String parameter) {
         List<CoordinateResultData> coordinateEntities = new ArrayList<>();
+        if (CollectionUtil.isEmpty(baiduMultipleDatas)) {
+            return coordinateEntities;
+        }
         if (baiduMultipleDatas.size() == 1) {
             CoordinateResultData resultData = parseCoordinateResultData(parameter, true);
             resultData.setSource(BAIDU_SOURCE);
