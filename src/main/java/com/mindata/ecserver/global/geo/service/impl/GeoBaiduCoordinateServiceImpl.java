@@ -31,7 +31,7 @@ import static com.mindata.ecserver.global.GeoConstant.BAIDU_SOURCE;
  */
 @Order(0)
 @Service
-public class GeoBaiduCoordinateServiceImplImpl extends BaseGeoCoordinateService implements IGeoCoordinateService {
+public class GeoBaiduCoordinateServiceImpl extends BaseGeoCoordinateService implements IGeoCoordinateService {
     @Resource
     private RetrofitServiceBuilder retrofitServiceBuilder;
     @Resource

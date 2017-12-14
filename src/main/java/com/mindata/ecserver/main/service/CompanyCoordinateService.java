@@ -136,7 +136,7 @@ public class CompanyCoordinateService {
         }
         List<String> coordinateEntities = geoCoordinateService.getOutLocationByParameter(address, city);
         if (CollectionUtil.isNotEmpty(coordinateEntities)) {
-            return ResultGenerator.genSuccessResult(coordinateEntities.get(0));
+            return ResultGenerator.genSuccessResult(coordinateEntities);
         }
         return ResultGenerator.genFailResult("没有查到该地址的经纬度");
     }
