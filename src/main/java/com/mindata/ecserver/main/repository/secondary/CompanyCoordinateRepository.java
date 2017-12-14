@@ -1,6 +1,6 @@
 package com.mindata.ecserver.main.repository.secondary;
 
-import com.mindata.ecserver.main.model.secondary.CompanyCoordinateEntity;
+import com.mindata.ecserver.main.model.secondary.PtCompanyCoordinateEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,8 +11,8 @@ import java.util.List;
 /**
  * @author hanliqiang wrote on 2017/11/26
  */
-public interface CompanyCoordinateRepository extends JpaRepository<CompanyCoordinateEntity, Integer>,
-        JpaSpecificationExecutor<CompanyCoordinateEntity> {
+public interface CompanyCoordinateRepository extends JpaRepository<PtCompanyCoordinateEntity, Integer>,
+        JpaSpecificationExecutor<PtCompanyCoordinateEntity> {
 
     /**
      * 查询不太靠谱或者无坐标的数据
@@ -25,7 +25,7 @@ public interface CompanyCoordinateRepository extends JpaRepository<CompanyCoordi
      *         分页
      * @return 结果
      */
-    Page<CompanyCoordinateEntity> findByStatusOrAccuracy(Integer status, Integer accuracy, Pageable pageable);
+    Page<PtCompanyCoordinateEntity> findByStatusOrAccuracy(Integer status, Integer accuracy, Pageable pageable);
 
     /**
      * 根据contactId 删除
@@ -43,5 +43,5 @@ public interface CompanyCoordinateRepository extends JpaRepository<CompanyCoordi
      *         公司Id
      * @return 结果
      */
-    List<CompanyCoordinateEntity> findByContactId(Long contactId);
+    List<PtCompanyCoordinateEntity> findByContactId(Long contactId);
 }

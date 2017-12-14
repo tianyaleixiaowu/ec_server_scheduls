@@ -10,7 +10,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "pt_company_coordinate")
-public class CompanyCoordinateEntity {
+public class PtCompanyCoordinateEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")

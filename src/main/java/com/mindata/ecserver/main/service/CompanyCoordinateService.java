@@ -6,7 +6,7 @@ import com.mindata.ecserver.main.manager.CompanyCoordinateManager;
 import com.mindata.ecserver.main.manager.ContactManager;
 import com.mindata.ecserver.main.manager.EsCompanyCoordinateManager;
 import com.mindata.ecserver.main.model.primary.EcContactEntity;
-import com.mindata.ecserver.main.model.secondary.CompanyCoordinateEntity;
+import com.mindata.ecserver.main.model.secondary.PtCompanyCoordinateEntity;
 import com.xiaoleilu.hutool.date.DateUtil;
 import com.xiaoleilu.hutool.util.CollectionUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
@@ -53,7 +53,7 @@ public class CompanyCoordinateService {
             pageable = new PageRequest(i, PAGE_SIZE, Sort.Direction.ASC, "id");
             Page<EcContactEntity> entities = contactManager.findAll(pageable);
             //保存数据库
-            List<CompanyCoordinateEntity> coordinateEntities = coordinateManager.saveByContacts(entities.getContent(), force);
+            List<PtCompanyCoordinateEntity> coordinateEntities = coordinateManager.saveByContacts(entities.getContent(), force);
             //保存es
             esCompanyCoordinateManager.bulkIndexCompany(coordinateEntities, force);
         }
@@ -81,7 +81,7 @@ public class CompanyCoordinateService {
         for (int i = 0; i < page.getTotalElements() / PAGE_SIZE + 1; i++) {
             pageable = new PageRequest(i, PAGE_SIZE, Sort.Direction.ASC, "id");
             List<EcContactEntity> contactEntities = contactManager.findByIdBetween(beginId, endId, pageable).getContent();
-            List<CompanyCoordinateEntity> coordinateEntities = coordinateManager.saveByContacts(contactEntities, force);
+            List<PtCompanyCoordinateEntity> coordinateEntities = coordinateManager.saveByContacts(contactEntities, force);
             esCompanyCoordinateManager.bulkIndexCompany(coordinateEntities, force);
         }
     }
@@ -102,7 +102,7 @@ public class CompanyCoordinateService {
         for (int i = 0; i < page.getTotalElements() / PAGE_SIZE + 1; i++) {
             pageable = new PageRequest(i, PAGE_SIZE, sort);
             List<EcContactEntity> contactEntities = contactManager.findByDateBetween(beginTime, endTime, pageable).getContent();
-            List<CompanyCoordinateEntity> coordinateEntities = coordinateManager.saveByContacts(contactEntities, force);
+            List<PtCompanyCoordinateEntity> coordinateEntities = coordinateManager.saveByContacts(contactEntities, force);
             esCompanyCoordinateManager.bulkIndexCompany(coordinateEntities, force);
         }
     }
@@ -115,16 +115,16 @@ public class CompanyCoordinateService {
     public void timingUpdateCoordinate() throws IOException {
         Sort sort = new Sort(Sort.Direction.ASC, "id");
         Pageable pageable = new PageRequest(0, 1, sort);
-        Page<CompanyCoordinateEntity> page = coordinateManager.findByStatusOrAccuracy(pageable);
+        Page<PtCompanyCoordinateEntity> page = coordinateManager.findByStatusOrAccuracy(pageable);
         List<EcContactEntity> contactEntities = new ArrayList<>();
         for (int i = 0; i < page.getTotalElements() / PAGE_SIZE + 1; i++) {
             pageable = new PageRequest(i, PAGE_SIZE, sort);
-            List<CompanyCoordinateEntity> coordinateEntities = coordinateManager.findByStatusOrAccuracy(pageable).getContent();
-            for (CompanyCoordinateEntity companyCoordinateEntity : coordinateEntities) {
-                EcContactEntity ecContactEntity = contactManager.findOne(companyCoordinateEntity.getContactId());
+            List<PtCompanyCoordinateEntity> coordinateEntities = coordinateManager.findByStatusOrAccuracy(pageable).getContent();
+            for (PtCompanyCoordinateEntity ptCompanyCoordinateEntity : coordinateEntities) {
+                EcContactEntity ecContactEntity = contactManager.findOne(ptCompanyCoordinateEntity.getContactId());
                 contactEntities.add(ecContactEntity);
             }
-            List<CompanyCoordinateEntity> entityList = coordinateManager.saveByContacts(contactEntities, null);
+            List<PtCompanyCoordinateEntity> entityList = coordinateManager.saveByContacts(contactEntities, null);
             esCompanyCoordinateManager.bulkIndexCompany(entityList, null);
         }
     }
