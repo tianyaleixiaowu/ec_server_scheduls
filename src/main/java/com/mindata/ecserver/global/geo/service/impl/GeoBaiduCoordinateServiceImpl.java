@@ -22,7 +22,6 @@ import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import static com.mindata.ecserver.global.GeoConstant.BAIDU_SOURCE;
 
@@ -45,6 +44,8 @@ public class GeoBaiduCoordinateServiceImpl extends BaseGeoCoordinateService impl
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
+
+
     /**
      * 根据地址去百度地图获取经纬度
      *
@@ -58,10 +59,8 @@ public class GeoBaiduCoordinateServiceImpl extends BaseGeoCoordinateService impl
         BaiduCoordinateService baiduCoordinateService = retrofitServiceBuilder.getBaiduCoordinateService
                 (requestProperty);
         //两个ak随机取一个
-        String[] baidus = baiduAK.split(",");
-        String ak = baidus[new Random().nextInt(2)];
         BaiduResponseData baiduResponseData = (BaiduResponseData) callManager.execute(
-                baiduCoordinateService.getCoordinateByAddress(address, "json", ak));
+                baiduCoordinateService.getCoordinateByAddress(address, "json", getAK(baiduAK)));
         logger.info("获取到百度返回的地址信息：" + baiduResponseData);
 
         if (baiduResponseData.getResult() == null) {
@@ -85,12 +84,9 @@ public class GeoBaiduCoordinateServiceImpl extends BaseGeoCoordinateService impl
         BaiduCoordinateService baiduCoordinateService = retrofitServiceBuilder.getBaiduCoordinateService
                 (requestProperty);
 
-        //两个ak随机取一个
-        String[] baidus = baiduAK.split(",");
-        String ak = baidus[new Random().nextInt(2)];
         BaiduMultipleResponseData baiduMultipleResponseData = (BaiduMultipleResponseData) callManager.execute(
                 baiduCoordinateService.getCoordinateByParameter(parameter, city, pageSize, page, true, "json",
-                        ak));
+                        getAK(baiduAK)));
         logger.info("获取到百度返回的地址信息：" + baiduMultipleResponseData);
         List<BaiduMultipleResponseBean> baiduMultipleResponseBeans = baiduMultipleResponseData.getResults();
         //302访问过多

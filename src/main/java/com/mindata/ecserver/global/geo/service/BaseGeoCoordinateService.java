@@ -6,6 +6,8 @@ import com.mindata.ecserver.global.http.response.GaodeResponseData;
 import com.mindata.ecserver.global.http.response.base.CoordinateResultData;
 import com.mindata.ecserver.global.http.response.base.ResponseValue;
 
+import java.util.Random;
+
 import static com.mindata.ecserver.global.GeoConstant.*;
 
 /**
@@ -67,5 +69,10 @@ public class BaseGeoCoordinateService  {
         resultData.setLevel(null);
         resultData.setQueryConditionValue(parameter);
         return resultData;
+    }
+
+    protected String getAK(String ak) {
+        String[] aks = ak.split(",");
+        return aks[new Random().nextInt(aks.length)];
     }
 }

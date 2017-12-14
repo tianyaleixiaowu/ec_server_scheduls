@@ -57,7 +57,7 @@ public class GeoGaodeCoordinateServiceImpl extends BaseGeoCoordinateService impl
         RequestProperty requestProperty = new MapGaodeRquestProperty(gaodeUrl);
         GaodeCoordinateService gaodeCoordinateService = retrofitServiceBuilder.getGaodeCoordinateService(requestProperty);
         GaodeResponseData gaodeResponseData = (GaodeResponseData) callManager.execute(
-                gaodeCoordinateService.getCoordinateByAddress(address, "json", gaodeAK));
+                gaodeCoordinateService.getCoordinateByAddress(address, "json", getAK(gaodeAK)));
 
         logger.info("获取到高德返回的地址信息：" + gaodeResponseData);
         return singleCoordinate(gaodeResponseData, address);
@@ -77,7 +77,7 @@ public class GeoGaodeCoordinateServiceImpl extends BaseGeoCoordinateService impl
         GaodeCoordinateService gaodeCoordinateService = retrofitServiceBuilder.getGaodeCoordinateService(requestProperty);
         GaodeMultipleResponseData gaodeMultipleResponseData = (GaodeMultipleResponseData) callManager.execute(
                 gaodeCoordinateService.getCoordinateByParameter(parameter, city, pageSize, page + 1, true, "json",
-                        gaodeAK));
+                        getAK(gaodeAK)));
 
         logger.info("获取到高德返回的地址信息：" + gaodeMultipleResponseData);
         return getMultipleGaodeCoordinate(gaodeMultipleResponseData.getPois(), parameter);
