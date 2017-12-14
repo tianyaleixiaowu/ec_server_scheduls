@@ -53,9 +53,9 @@ public class EsCompanyCoordinateManager {
             if (queries.size() > 0) {
                 elasticsearchTemplate.bulkIndex(queries);
             }
-            System.out.println("bulkIndex completed.");
+            logger.info("bulkIndex completed.");
         } catch (Exception e) {
-            System.out.println("IndexerService.bulkIndex e;" + e.getMessage());
+            logger.info("IndexerService.bulkIndex e;" + e.getMessage());
             throw e;
         }
     }
@@ -69,7 +69,7 @@ public class EsCompanyCoordinateManager {
         DeleteQuery deleteQuery = new DeleteQuery();
         deleteQuery.setQuery(termQuery("contactId", contactId));
         elasticsearchTemplate.delete(deleteQuery, EsCompanyCoordinate.class);
-        System.out.println("删除contactId是" + contactId + "的经纬度数据");
+        logger.info("删除contactId是" + contactId + "的经纬度数据");
     }
 
     /**

@@ -42,7 +42,7 @@ public class GeoCoordinateService {
         //如果是用Address查询，只返回一条数据，判断地址里是否包含 层、号、幢、楼、厦 如果包含认为是准确地址
         if (StrUtil.isNotEmpty(address) || address.contains("层") || address.contains("楼") || address.contains("号") ||
                 address.contains("幢") || address.contains("厦")) {
-            logger.info("开始拿Address字段进行查询，Address为" + address + ",城市为" + city);
+            logger.info("开始拿Address字段进行查询，Address为" + address + "，城市为" + city);
             for (IGeoCoordinateService geoCoordinateService : geoCoordinates) {
                 List<CoordinateResultData> coordinateResultData = geoCoordinateService.getCoordinateByParameter
                         (address, city, PAGE_SIZE, PAGE);
@@ -52,7 +52,7 @@ public class GeoCoordinateService {
                 }
             }
         }
-        logger.info("开始拿公司名和城市字段进行查询，companyName为" + companyName + ",城市为" + city);
+        logger.info("开始拿公司名和城市字段进行查询，companyName为" + companyName + "，城市为" + city);
         for (IGeoCoordinateService geoCoordinateService : geoCoordinates) {
             List<CoordinateResultData> coordinateResultData = geoCoordinateService.getCoordinateByParameter
                     (companyName, city, PAGE_SIZE, PAGE);
