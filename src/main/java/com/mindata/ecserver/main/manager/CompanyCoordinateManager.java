@@ -45,7 +45,7 @@ public class CompanyCoordinateManager {
             //如果不是强制，就先查数据库判断该contactId是否已经存在
             if (!force) {
                 List<PtCompanyCoordinate> tempList = coordinateRepository.findByContactId(ecContactEntity.getId());
-                if (CollectionUtil.isNotEmpty(coordinateEntities)) {
+                if (CollectionUtil.isNotEmpty(tempList)) {
                     coordinateEntities.add(tempList.get(0));
                     continue;
                 }
