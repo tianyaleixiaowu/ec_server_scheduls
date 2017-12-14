@@ -8,6 +8,7 @@ import com.mindata.ecserver.main.manager.EsCompanyCoordinateManager;
 import com.mindata.ecserver.main.model.primary.EcContactEntity;
 import com.mindata.ecserver.main.model.secondary.CompanyCoordinateEntity;
 import com.xiaoleilu.hutool.date.DateUtil;
+import com.xiaoleilu.hutool.util.CollectionUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -123,34 +124,18 @@ public class CompanyCoordinateService {
     }
 
     /**
-     * 对外提供获取经纬度
-     *
-     * @param companyName 公司名称
-     * @param city        城市
-     * @return 结果
-     * @throws IOException 异常
-     */
-    public Object getOutLocationByCompany(String companyName, String city) throws IOException {
-        if (StrUtil.isEmpty(companyName) || StrUtil.isEmpty(city)) {
-            return ResultGenerator.genFailResult("城市和公司名不能为空");
-        }
-        List<String> coordinateEntities = geoCoordinateService.getOutLocationByParameter(companyName, city);
-        return ResultGenerator.genSuccessResult(coordinateEntities);
-    }
-
-    /**
      * 根据地址查经纬度
      *
      * @param address 地址
      * @return 结果
      * @throws IOException 异常
      */
-    public Object getOutLocationByAddress(String address, String city) throws IOException {
+    public Object getOutLocation(String address, String city) throws IOException {
         if (StrUtil.isEmpty(address) || StrUtil.isEmpty(city)) {
             return ResultGenerator.genFailResult("城市和地址不能为空");
         }
         List<String> coordinateEntities = geoCoordinateService.getOutLocationByParameter(address, city);
-        if (coordinateEntities.size() > 0) {
+        if (CollectionUtil.isNotEmpty(coordinateEntities)) {
             return ResultGenerator.genSuccessResult(coordinateEntities.get(0));
         }
         return ResultGenerator.genFailResult("没有查到该地址的经纬度");

@@ -19,28 +19,15 @@ public class CoordinateController {
     private CompanyCoordinateService companyCoordinateService;
 
     /**
-     * 根据地址获取坐标
+     * 根据地址获取坐标(可以传任何字符串，但必须包含城市)
      *
      * @param address 地址
      * @return 结果
      * @throws IOException 异常
      */
-    @GetMapping("/address")
-    public Object getCoordinateByAddress(String address, String city) throws IOException {
-        return companyCoordinateService.getOutLocationByAddress(address, city);
-    }
-
-    /**
-     * 根据公司获取坐标
-     *
-     * @param companyName 公司名称
-     * @param city        城市
-     * @return 结果
-     * @throws IOException 异常
-     */
-    @GetMapping("/company")
-    public Object getCoordinateByCompany(String companyName, String city) throws IOException {
-        return companyCoordinateService.getOutLocationByCompany(companyName, city);
+    @GetMapping("")
+    public Object getCoordinate(String address, String city) throws IOException {
+        return companyCoordinateService.getOutLocation(address, city);
     }
 
     /**

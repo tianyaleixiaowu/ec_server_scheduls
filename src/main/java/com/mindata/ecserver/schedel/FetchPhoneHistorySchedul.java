@@ -26,7 +26,7 @@ public class FetchPhoneHistorySchedul {
     /**
      * 注意分布式锁的问题
      */
-    @Scheduled(cron = "0 0/20 2 * * ?")
+    @Scheduled(cron = "0 0/20 6 * * ?")
     public void executeFetchPhoneHistoryTask() throws IOException {
         //检查分布式锁
         logger.info("定时任务开始");

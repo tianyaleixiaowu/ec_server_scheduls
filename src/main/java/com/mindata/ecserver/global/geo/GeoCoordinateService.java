@@ -9,11 +9,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.mindata.ecserver.global.GeoConstant.*;
 
 /**
  * @author hanliqiang wrote on 2017/11/27
@@ -50,6 +47,7 @@ public class GeoCoordinateService {
                 List<CoordinateResultData> coordinateResultData = geoCoordinateService.getCoordinateByParameter
                         (address, city, PAGE_SIZE, PAGE);
                 if (coordinateResultData.size() > 0) {
+                    logger.info("根据Address字段查询到的结果是" + coordinateResultData);
                     return coordinateResultData;
                 }
             }
@@ -59,10 +57,11 @@ public class GeoCoordinateService {
             List<CoordinateResultData> coordinateResultData = geoCoordinateService.getCoordinateByParameter
                     (companyName, city, PAGE_SIZE, PAGE);
             if (coordinateResultData.size() > 0) {
+                logger.info("根据公司名和城市字段查询到的结果是" + coordinateResultData);
                 return coordinateResultData;
             }
         }
-        return getNoneCoordinate(companyName);
+        return null;
     }
 
     /**
@@ -81,23 +80,4 @@ public class GeoCoordinateService {
         return coordinateResultData.stream().map(CoordinateResultData::getBaiduCoordinate).collect(Collectors.toList());
     }
 
-    /**
-     * 没有查到经纬度
-     *
-     * @param companyName
-     *         公司名称
-     * @return 结果
-     */
-    private List<CoordinateResultData> getNoneCoordinate(String companyName) {
-        List<CoordinateResultData> coordinateEntities = new ArrayList<>();
-        CoordinateResultData resultData = new CoordinateResultData();
-        resultData.setQueryCondition(QUERY_COMPANYNAME);
-        resultData.setQueryConditionValue(companyName);
-        resultData.setSource(GAODE_SOURCE);
-        resultData.setStatus(NONE_ADDRESS);
-        resultData.setAccuracy(NORELIABLE_ACCURAY);
-        resultData.setLevel(null);
-        coordinateEntities.add(resultData);
-        return coordinateEntities;
-    }
 }
