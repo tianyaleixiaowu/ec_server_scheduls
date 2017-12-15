@@ -1,6 +1,5 @@
 package com.mindata.ecserver.main.manager;
 
-import com.mindata.ecserver.global.async.AsyncTask;
 import com.mindata.ecserver.main.model.es.EsCompanyCoordinate;
 import com.mindata.ecserver.main.model.secondary.PtCompanyCoordinate;
 import org.slf4j.Logger;
@@ -25,7 +24,6 @@ import java.util.stream.Collectors;
 import static com.mindata.ecserver.global.Constant.ES_COORDINATE_TYPE_NAME;
 import static com.mindata.ecserver.global.Constant.ES_GEO_INDEX_NAME;
 import static com.mindata.ecserver.global.GeoConstant.PAGE_SIZE;
-import static com.mindata.ecserver.global.GeoConstant.PER_THREAD_DEAL_COUNT;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 
 /**
@@ -36,28 +34,24 @@ public class EsCompanyCoordinateManager {
     @Resource
     private ElasticsearchTemplate elasticsearchTemplate;
     @Resource
-    private AsyncTask asyncTask;
-    @Resource
     private CompanyCoordinateManager companyCoordinateManager;
+    @Resource
+    private ContactManager contactManager;
 
     private Logger logger = LoggerFactory.getLogger(getClass());
+
 
     /**
      * 根据contactId的范围，插入ES中相应的经纬度数据
      */
     public void bulkIndexCompany(Long beginId, Long endId, Long count, Boolean force) {
-        Long size = count / PER_THREAD_DEAL_COUNT + 1;
-
-        //一个线程处理5千条
-        for (int i = 0; i < size; i++) {
-            Long tempBeginId = beginId + PER_THREAD_DEAL_COUNT * i;
-            Long tempEndId = tempBeginId + PER_THREAD_DEAL_COUNT - 1;
-            if (tempEndId > endId) {
-                tempEndId = endId;
-            }
-            Long finalTempEndId = tempEndId;
-            asyncTask.doTask(s -> dealPartInsertES(tempBeginId, finalTempEndId, force));
+        if (count == null) {
+            count = contactManager.countIdBetween(beginId, endId);
         }
+        if (force == null) {
+            force = false;
+        }
+        dealPartInsertES(beginId, endId, count, force);
     }
 
     /**
@@ -69,9 +63,9 @@ public class EsCompanyCoordinateManager {
      * @param force
      * force
      */
-    private void dealPartInsertES(Long beginId, Long endId, Boolean force) {
+    private void dealPartInsertES(Long beginId, Long endId, Long count, Boolean force) {
         logger.info("线程id为" + Thread.currentThread().getId() + "开始处理ES插入的事");
-        for (int i = 0; i < (endId - beginId) / PAGE_SIZE + 1; i++) {
+        for (int i = 0; i < count / PAGE_SIZE + 1; i++) {
             Pageable pageable = new PageRequest(i, PAGE_SIZE, Sort.Direction.ASC, "id");
             List<PtCompanyCoordinate> companyCoordinates = companyCoordinateManager.findByContactIdBetween(beginId, endId,
                     pageable);

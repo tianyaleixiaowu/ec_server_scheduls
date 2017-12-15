@@ -46,6 +46,15 @@ public interface CompanyCoordinateRepository extends JpaRepository<PtCompanyCoor
     List<PtCompanyCoordinate> findByContactId(Long contactId);
 
     /**
+     * 根据contactId倒序查询
+     * @param pageable
+     * 分页
+     * @return
+     * 集合
+     */
+    List<PtCompanyCoordinate> findByOrderByContactIdDesc(Pageable pageable);
+
+    /**
      * 查询contactId在某个范围内的经纬度数据
      * @param contactBeginId
      * contactBeginId

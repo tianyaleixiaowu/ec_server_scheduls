@@ -1,5 +1,6 @@
 package com.mindata.ecserver.main.controller;
 
+import com.mindata.ecserver.main.manager.EsCompanyCoordinateManager;
 import com.mindata.ecserver.main.service.CompanyCoordinateService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -17,6 +18,8 @@ import java.io.IOException;
 public class CoordinateController {
     @Resource
     private CompanyCoordinateService companyCoordinateService;
+    @Resource
+    private EsCompanyCoordinateManager esCompanyCoordinateManager;
 
     /**
      * 根据地址获取坐标(可以传任何字符串，但必须包含城市)
@@ -41,6 +44,23 @@ public class CoordinateController {
     @PutMapping("/idBetween")
     public Object updateIdBetweenCoordinate(Long beginId, Long endId, Boolean force) throws IOException {
         companyCoordinateService.partInsertIdBetween(beginId, endId, force);
+        return "更新完毕";
+    }
+
+    /**
+     * 更新elasticsearch库contactId范围内的数据，只更新ES
+     *
+     * @param beginId
+     *         开始id
+     * @param endId
+     *         结束id
+     * @return 结果
+     * @throws IOException
+     *         异常
+     */
+    @PutMapping("/es/idBetween")
+    public Object updateOnlyEsIdBetweenCoordinate(Long beginId, Long endId, Boolean force) throws IOException {
+        esCompanyCoordinateManager.bulkIndexCompany(beginId, endId, null, force);
         return "更新完毕";
     }
 

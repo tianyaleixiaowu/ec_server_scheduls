@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,12 +65,29 @@ public class CompanyCoordinateManager {
 
     /**
      * 查询contactId在某个范围内的数据
-     * @param contactBeginId    contactBeginId
-     * @param contactEndId     contactEndId
+     *
+     * @param contactBeginId
+     *         contactBeginId
+     * @param contactEndId
+     *         contactEndId
      * @return PtCompanyCoordinate
      */
     public List<PtCompanyCoordinate> findByContactIdBetween(Long contactBeginId, Long contactEndId, Pageable pageable) {
         return coordinateRepository.findByContactIdBetween(contactBeginId, contactEndId, pageable);
+    }
+
+    /**
+     * 寻找contactId最大的那条数据
+     *
+     * @return contactId最大的
+     */
+    public Long findLastContactIdByContactId() {
+        List<PtCompanyCoordinate> companyCoordinates = coordinateRepository.findByOrderByContactIdDesc(new PageRequest
+                (0, 1));
+        if (companyCoordinates.size() == 0) {
+            return 0L;
+        }
+        return companyCoordinates.get(0).getContactId();
     }
 
     /**

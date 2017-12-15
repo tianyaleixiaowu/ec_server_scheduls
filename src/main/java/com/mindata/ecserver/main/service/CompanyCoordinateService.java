@@ -3,6 +3,7 @@ package com.mindata.ecserver.main.service;
 import com.mindata.ecserver.global.async.AsyncTask;
 import com.mindata.ecserver.global.bean.ResultGenerator;
 import com.mindata.ecserver.global.geo.GeoCoordinateService;
+import com.mindata.ecserver.global.util.CommonUtil;
 import com.mindata.ecserver.main.manager.CompanyCoordinateManager;
 import com.mindata.ecserver.main.manager.ContactManager;
 import com.mindata.ecserver.main.manager.EsCompanyCoordinateManager;
@@ -40,7 +41,7 @@ public class CompanyCoordinateService {
     @Resource
     private ContactManager contactManager;
     @Resource
-    private CompanyCoordinateManager coordinateManager;
+    private CompanyCoordinateManager companyCoordinateManager;
     @Resource
     private EsCompanyCoordinateManager esCompanyCoordinateManager;
     @Resource
@@ -61,6 +62,25 @@ public class CompanyCoordinateService {
     public void completeAllCompanyCoordinate(Boolean force) throws IOException {
         Long beginId = contactManager.findFirstOne().getId();
         Long endId = contactManager.findLastOne().getId();
+        partInsertIdBetween(beginId, endId, force);
+    }
+
+    /**
+     * 导入CompanyCoordinate中尚没有的contact数据，增量导入
+     * @param force
+     * force
+     */
+    public void completeRemainCompanyCoordinate(Boolean force) throws IOException {
+        //当前数据库里contactId最大的
+        Long beginId = companyCoordinateManager.findLastContactIdByContactId();
+        //昨天12点前，contactId最大的
+        Date beginOfDay = DateUtil.beginOfDay(CommonUtil.getNow());
+        Page<EcContactEntity> page = contactManager.findByIdGreaterThanAndCreateTimeLessThan(beginId, beginOfDay, new
+                PageRequest(0, 1, Sort.Direction.ASC, "id"));
+        if (page.getContent().size() == 0) {
+            return;
+        }
+        Long endId = page.getContent().get(0).getId();
         partInsertIdBetween(beginId, endId, force);
     }
 
@@ -138,7 +158,7 @@ public class CompanyCoordinateService {
             }
             try {
                 //插入DB
-                coordinateManager.saveByContacts(contactEntities, force);
+                companyCoordinateManager.saveByContacts(contactEntities, force);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -192,17 +212,17 @@ public class CompanyCoordinateService {
     public void timingUpdateCoordinate() throws IOException {
         Sort sort = new Sort(Sort.Direction.ASC, "id");
         Pageable pageable = new PageRequest(0, 1, sort);
-        Page<PtCompanyCoordinate> page = coordinateManager.findByStatusOrAccuracy(pageable);
+        Page<PtCompanyCoordinate> page = companyCoordinateManager.findByStatusOrAccuracy(pageable);
         List<EcContactEntity> contactEntities = new ArrayList<>();
         for (int i = 0; i < page.getTotalElements() / PAGE_SIZE + 1; i++) {
             pageable = new PageRequest(i, PAGE_SIZE, sort);
-            List<PtCompanyCoordinate> coordinateEntities = coordinateManager.findByStatusOrAccuracy(pageable)
+            List<PtCompanyCoordinate> coordinateEntities = companyCoordinateManager.findByStatusOrAccuracy(pageable)
                     .getContent();
             for (PtCompanyCoordinate ptCompanyCoordinate : coordinateEntities) {
                 EcContactEntity ecContactEntity = contactManager.findOne(ptCompanyCoordinate.getContactId());
                 contactEntities.add(ecContactEntity);
             }
-            List<PtCompanyCoordinate> entityList = coordinateManager.saveByContacts(contactEntities, null);
+            List<PtCompanyCoordinate> entityList = companyCoordinateManager.saveByContacts(contactEntities, null);
             esCompanyCoordinateManager.bulkIndexCompany(entityList, null);
         }
     }
