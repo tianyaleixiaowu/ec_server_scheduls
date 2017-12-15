@@ -1,8 +1,6 @@
 package com.mindata.ecserver.global.http;
 
 import com.mindata.ecserver.global.http.request.base.RequestProperty;
-import com.mindata.ecserver.global.http.service.BaiduCoordinateService;
-import com.mindata.ecserver.global.http.service.GaodeCoordinateService;
 import com.mindata.ecserver.global.http.service.FetchPhoneHistoryService;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -27,12 +25,8 @@ public class RetrofitServiceBuilder {
         return generateRetrofit(requestProperty).create(FetchPhoneHistoryService.class);
     }
 
-    public BaiduCoordinateService getBaiduCoordinateService(RequestProperty requestProperty) {
-        return generateRetrofit(requestProperty).create(BaiduCoordinateService.class);
-    }
-
-    public GaodeCoordinateService getGaodeCoordinateService(RequestProperty requestProperty) {
-        return generateRetrofit(requestProperty).create(GaodeCoordinateService.class);
+    public Retrofit getRetrofit(RequestProperty requestProperty) {
+        return generateRetrofit(requestProperty);
     }
 
     /**
@@ -58,7 +52,9 @@ public class RetrofitServiceBuilder {
                             .newBuilder()
                             .addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
                             //.addHeader("Accept-Encoding", "gzip, deflate")
-                            .addHeader("Connection", "keep-alive")
+                            //设置connection为一次即关闭，
+                            .addHeader("Connection", "close")
+                            //.addHeader("Connection", "keep-alive")
                             .addHeader("Accept", "*/*")
                             .addHeader("Cookie", "add cookies here");
                     if (requestProperty.headers() != null) {
@@ -70,6 +66,9 @@ public class RetrofitServiceBuilder {
                     return chain.proceed(builder.build());
                 }).connectTimeout(5, TimeUnit.MINUTES)
                 .readTimeout(5, TimeUnit.MINUTES)
-                .writeTimeout(5, TimeUnit.MINUTES).build();
+                .writeTimeout(5, TimeUnit.MINUTES)
+                //设置okhttp的连接池保活时间为1秒，它默认是5分钟，如果在5分钟内创建超过2000个连接就报内存溢出
+                //.connectionPool(new ConnectionPool(5, 1, TimeUnit.SECONDS))
+                .build();
     }
 }

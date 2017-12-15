@@ -1,4 +1,4 @@
-package com.mindata.ecserver.async;
+package com.mindata.ecserver.global.async;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

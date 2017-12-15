@@ -4,7 +4,11 @@ package com.mindata.ecserver.global;
  * @author wuweifeng wrote on 2017/12/12.
  */
 public interface GeoConstant extends Constant {
-
+    /**
+     * 每条线程处理的数据量
+     */
+    int PER_THREAD_DEAL_COUNT = 5000;
+    int PAGE_SIZE = 50;
     /**
      * 1 查询条件是地址
      */

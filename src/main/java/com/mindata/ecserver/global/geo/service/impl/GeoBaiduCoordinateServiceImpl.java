@@ -44,7 +44,15 @@ public class GeoBaiduCoordinateServiceImpl extends BaseGeoCoordinateService impl
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
+    private BaiduCoordinateService baiduCoordinateService;
 
+    private BaiduCoordinateService getBaiduCoordinateService(RequestProperty requestProperty) {
+         if (baiduCoordinateService == null) {
+             baiduCoordinateService = retrofitServiceBuilder.getRetrofit(requestProperty).create
+                     (BaiduCoordinateService.class);
+         }
+         return baiduCoordinateService;
+    }
 
     /**
      * 根据地址去百度地图获取经纬度
@@ -56,8 +64,7 @@ public class GeoBaiduCoordinateServiceImpl extends BaseGeoCoordinateService impl
     @Override
     public CoordinateResultData getCoordinateByAddress(String address) throws IOException {
         RequestProperty requestProperty = new MapBaiduRequestProperty(baiduUrl);
-        BaiduCoordinateService baiduCoordinateService = retrofitServiceBuilder.getBaiduCoordinateService
-                (requestProperty);
+        BaiduCoordinateService baiduCoordinateService = getBaiduCoordinateService(requestProperty);
         //两个ak随机取一个
         BaiduResponseData baiduResponseData = (BaiduResponseData) callManager.execute(
                 baiduCoordinateService.getCoordinateByAddress(address, "json", getAK(baiduAK)));
@@ -81,8 +88,7 @@ public class GeoBaiduCoordinateServiceImpl extends BaseGeoCoordinateService impl
     public List<CoordinateResultData> getCoordinateByParameter(String parameter, String city, Integer pageSize,
                                                                Integer page) throws IOException {
         RequestProperty requestProperty = new MapBaiduRequestProperty(baiduUrl);
-        BaiduCoordinateService baiduCoordinateService = retrofitServiceBuilder.getBaiduCoordinateService
-                (requestProperty);
+        BaiduCoordinateService baiduCoordinateService = getBaiduCoordinateService(requestProperty);
 
         BaiduMultipleResponseData baiduMultipleResponseData = (BaiduMultipleResponseData) callManager.execute(
                 baiduCoordinateService.getCoordinateByParameter(parameter, city, pageSize, page, true, "json",

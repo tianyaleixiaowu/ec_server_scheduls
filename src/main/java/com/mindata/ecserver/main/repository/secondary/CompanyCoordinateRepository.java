@@ -44,4 +44,16 @@ public interface CompanyCoordinateRepository extends JpaRepository<PtCompanyCoor
      * @return 结果
      */
     List<PtCompanyCoordinate> findByContactId(Long contactId);
+
+    /**
+     * 查询contactId在某个范围内的经纬度数据
+     * @param contactBeginId
+     * contactBeginId
+     * @param contactEndId
+     * contactEndId
+     * @param pageable
+     * pageable
+     * @return 经纬度数据
+     */
+    List<PtCompanyCoordinate> findByContactIdBetween(Long contactBeginId, Long contactEndId, Pageable pageable);
 }

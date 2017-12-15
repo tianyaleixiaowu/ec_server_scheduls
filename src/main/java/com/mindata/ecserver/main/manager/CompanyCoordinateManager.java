@@ -63,6 +63,16 @@ public class CompanyCoordinateManager {
     }
 
     /**
+     * 查询contactId在某个范围内的数据
+     * @param contactBeginId    contactBeginId
+     * @param contactEndId     contactEndId
+     * @return PtCompanyCoordinate
+     */
+    public List<PtCompanyCoordinate> findByContactIdBetween(Long contactBeginId, Long contactEndId, Pageable pageable) {
+        return coordinateRepository.findByContactIdBetween(contactBeginId, contactEndId, pageable);
+    }
+
+    /**
      * 插入一个contactId的经纬度
      *
      * @param contactId

@@ -1,10 +1,14 @@
 package com.mindata.ecserver.main.manager;
 
+import com.mindata.ecserver.global.async.AsyncTask;
 import com.mindata.ecserver.main.model.es.EsCompanyCoordinate;
 import com.mindata.ecserver.main.model.secondary.PtCompanyCoordinate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.DeleteQuery;
 import org.springframework.data.elasticsearch.core.query.IndexQuery;
@@ -20,6 +24,8 @@ import java.util.stream.Collectors;
 
 import static com.mindata.ecserver.global.Constant.ES_COORDINATE_TYPE_NAME;
 import static com.mindata.ecserver.global.Constant.ES_GEO_INDEX_NAME;
+import static com.mindata.ecserver.global.GeoConstant.PAGE_SIZE;
+import static com.mindata.ecserver.global.GeoConstant.PER_THREAD_DEAL_COUNT;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 
 /**
@@ -29,8 +35,52 @@ import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 public class EsCompanyCoordinateManager {
     @Resource
     private ElasticsearchTemplate elasticsearchTemplate;
+    @Resource
+    private AsyncTask asyncTask;
+    @Resource
+    private CompanyCoordinateManager companyCoordinateManager;
 
     private Logger logger = LoggerFactory.getLogger(getClass());
+
+    /**
+     * 根据contactId的范围，插入ES中相应的经纬度数据
+     */
+    public void bulkIndexCompany(Long beginId, Long endId, Long count, Boolean force) {
+        Long size = count / PER_THREAD_DEAL_COUNT + 1;
+
+        //一个线程处理5千条
+        for (int i = 0; i < size; i++) {
+            Long tempBeginId = beginId + PER_THREAD_DEAL_COUNT * i;
+            Long tempEndId = tempBeginId + PER_THREAD_DEAL_COUNT - 1;
+            if (tempEndId > endId) {
+                tempEndId = endId;
+            }
+            Long finalTempEndId = tempEndId;
+            asyncTask.doTask(s -> dealPartInsertES(tempBeginId, finalTempEndId, force));
+        }
+    }
+
+    /**
+     * 每条线程处理的往ES插入数据的事
+     * @param beginId
+     * contactBeginId
+     * @param endId
+     * contactEndId
+     * @param force
+     * force
+     */
+    private void dealPartInsertES(Long beginId, Long endId, Boolean force) {
+        logger.info("线程id为" + Thread.currentThread().getId() + "开始处理ES插入的事");
+        for (int i = 0; i < (endId - beginId) / PAGE_SIZE + 1; i++) {
+            Pageable pageable = new PageRequest(i, PAGE_SIZE, Sort.Direction.ASC, "id");
+            List<PtCompanyCoordinate> companyCoordinates = companyCoordinateManager.findByContactIdBetween(beginId, endId,
+                    pageable);
+            if (companyCoordinates.size() == 0) {
+                continue;
+            }
+            bulkIndex(companyCoordinates.stream().map(this::convert).collect(Collectors.toList()), force);
+        }
+    }
 
     public void bulkIndexCompany(List<PtCompanyCoordinate> companyCoordinates, Boolean force) {
         bulkIndex(companyCoordinates.stream().map(this::convert).collect(Collectors.toList()), force);

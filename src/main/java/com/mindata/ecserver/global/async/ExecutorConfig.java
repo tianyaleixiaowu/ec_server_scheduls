@@ -1,4 +1,4 @@
-package com.mindata.ecserver.async;
+package com.mindata.ecserver.global.async;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,6 +1,6 @@
 package com.mindata.ecserver.main.service;
 
-import com.mindata.ecserver.async.AsyncTask;
+import com.mindata.ecserver.global.async.AsyncTask;
 import com.mindata.ecserver.global.bean.ResultGenerator;
 import com.mindata.ecserver.global.geo.GeoCoordinateService;
 import com.mindata.ecserver.main.manager.CompanyCoordinateManager;
@@ -24,6 +24,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+
+import static com.mindata.ecserver.global.GeoConstant.PAGE_SIZE;
+import static com.mindata.ecserver.global.GeoConstant.PER_THREAD_DEAL_COUNT;
 
 
 /**
@@ -31,7 +35,6 @@ import java.util.List;
  */
 @Service
 public class CompanyCoordinateService {
-    private static final int PAGE_SIZE = 500;
     @Resource
     private GeoCoordinateService geoCoordinateService;
     @Resource
@@ -42,6 +45,10 @@ public class CompanyCoordinateService {
     private EsCompanyCoordinateManager esCompanyCoordinateManager;
     @Resource
     private AsyncTask asyncTask;
+    /**
+     * 并发计数器
+     */
+    private CountDownLatch countDownLatch;
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -79,18 +86,34 @@ public class CompanyCoordinateService {
         }
 
         Long count = contactManager.countIdBetween(beginId, endId);
-        Long size = count / 3000 + 1;
+        Long size = count / PER_THREAD_DEAL_COUNT + 1;
 
-        //一个线程处理3千条
+        //判断多少个线程
+        countDownLatch = new CountDownLatch(size.intValue());
+
+        logger.info("开始插入id范围" + beginId + "到" + endId + "之间的所有经纬度数据");
+        logger.info("共有" + size + "个线程");
+
+        //一个线程处理5千条
         for (int i = 0; i < size; i++) {
-            Long tempBeginId = beginId + 3000 * i;
-            Long tempEndId = tempBeginId + 2999;
+            Long tempBeginId = beginId + PER_THREAD_DEAL_COUNT * i;
+            Long tempEndId = tempBeginId + PER_THREAD_DEAL_COUNT - 1;
             if (tempEndId > endId) {
                 tempEndId = endId;
             }
             Long finalTempEndId = tempEndId;
             Boolean finalForce = force;
             asyncTask.doTask(s -> dealPartInsert(tempBeginId, finalTempEndId, finalForce));
+        }
+
+        try {
+            //开启线程等待
+            countDownLatch.await();
+            //开始往ES插值
+            logger.info("---------------------------开始往ES插值----------------------");
+            esCompanyCoordinateManager.bulkIndexCompany(beginId, endId, count, force);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -105,22 +128,24 @@ public class CompanyCoordinateService {
      *         是否强制更新
      */
     private void dealPartInsert(Long beginId, Long endId, Boolean force) {
+        logger.info("线程id为" + Thread.currentThread().getId() + "开始处理DB插入的事");
         for (int i = 0; i < (endId - beginId) / PAGE_SIZE + 1; i++) {
             Pageable pageable = new PageRequest(i, PAGE_SIZE, Sort.Direction.ASC, "id");
             List<EcContactEntity> contactEntities = contactManager.findByIdBetween(beginId, endId, pageable)
                     .getContent();
             if (contactEntities.size() == 0) {
-                 continue;
+                continue;
             }
-            List<PtCompanyCoordinate> coordinateEntities;
             try {
-                coordinateEntities = coordinateManager.saveByContacts(contactEntities, force);
-                esCompanyCoordinateManager.bulkIndexCompany(coordinateEntities, force);
-            } catch (IOException e) {
+                //插入DB
+                coordinateManager.saveByContacts(contactEntities, force);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
+        //计数器减一
+        countDownLatch.countDown();
+        logger.info("计数器减一");
     }
 
 

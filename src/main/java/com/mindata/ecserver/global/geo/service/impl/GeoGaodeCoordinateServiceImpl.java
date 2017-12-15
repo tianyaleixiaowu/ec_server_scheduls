@@ -45,6 +45,16 @@ public class GeoGaodeCoordinateServiceImpl extends BaseGeoCoordinateService impl
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
+    private GaodeCoordinateService gaodeCoordinateService;
+
+    private GaodeCoordinateService getGaodeCoordinateService(RequestProperty requestProperty) {
+        if (gaodeCoordinateService == null) {
+            gaodeCoordinateService = retrofitServiceBuilder.getRetrofit(requestProperty).create
+                    (GaodeCoordinateService.class);
+        }
+        return gaodeCoordinateService;
+    }
+
     /**
      * 根据地址获取高德地图的经纬度
      *
@@ -55,7 +65,7 @@ public class GeoGaodeCoordinateServiceImpl extends BaseGeoCoordinateService impl
     @Override
     public CoordinateResultData getCoordinateByAddress(String address) throws IOException {
         RequestProperty requestProperty = new MapGaodeRquestProperty(gaodeUrl);
-        GaodeCoordinateService gaodeCoordinateService = retrofitServiceBuilder.getGaodeCoordinateService(requestProperty);
+        GaodeCoordinateService gaodeCoordinateService = getGaodeCoordinateService(requestProperty);
         GaodeResponseData gaodeResponseData = (GaodeResponseData) callManager.execute(
                 gaodeCoordinateService.getCoordinateByAddress(address, "json", getAK(gaodeAK)));
 
@@ -74,7 +84,7 @@ public class GeoGaodeCoordinateServiceImpl extends BaseGeoCoordinateService impl
     @Override
     public List<CoordinateResultData> getCoordinateByParameter(String parameter, String city, Integer pageSize, Integer page) throws IOException {
         RequestProperty requestProperty = new MapGaodeRquestProperty(gaodeUrl);
-        GaodeCoordinateService gaodeCoordinateService = retrofitServiceBuilder.getGaodeCoordinateService(requestProperty);
+        GaodeCoordinateService gaodeCoordinateService = getGaodeCoordinateService(requestProperty);
         GaodeMultipleResponseData gaodeMultipleResponseData = (GaodeMultipleResponseData) callManager.execute(
                 gaodeCoordinateService.getCoordinateByParameter(parameter, city, pageSize, page + 1, true, "json",
                         getAK(gaodeAK)));
