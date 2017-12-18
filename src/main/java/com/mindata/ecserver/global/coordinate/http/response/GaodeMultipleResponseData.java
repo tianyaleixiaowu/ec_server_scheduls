@@ -1,13 +1,11 @@
-package com.mindata.ecserver.global.http.response;
-
-import com.mindata.ecserver.global.coordinate.http.response.base.ResponseValue;
+package com.mindata.ecserver.global.coordinate.http.response;
 
 import java.util.List;
 
 /**
  * @author hanliqiang wrote on 2017/12/6
  */
-public class GaodeMultipleResponseData implements ResponseValue {
+public class GaodeMultipleResponseData {
     /**
      * 成功是"1"
      */

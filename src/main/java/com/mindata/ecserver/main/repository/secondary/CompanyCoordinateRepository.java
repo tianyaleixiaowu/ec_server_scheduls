@@ -43,5 +43,5 @@ public interface CompanyCoordinateRepository extends JpaRepository<CompanyCoordi
      *         公司Id
      * @return 结果
      */
-    List<CompanyCoordinateEntity> findByContactId(Long contactId);
+    CompanyCoordinateEntity findByContactId(Long contactId);
 }

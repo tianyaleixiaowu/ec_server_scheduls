@@ -1,4 +1,4 @@
-package com.mindata.ecserver.global.geo.util;
+package com.mindata.ecserver.global.coordinate.http.util;
 
 /**
  * @author hanliqiang wrote on 2017/11/29

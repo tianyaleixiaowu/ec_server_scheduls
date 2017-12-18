@@ -1,12 +1,11 @@
 package com.mindata.ecserver.main.manager;
 
-import com.mindata.ecserver.global.geo.GeoCoordinateService;
-import com.mindata.ecserver.global.http.response.base.CoordinateResultData;
+import com.mindata.ecserver.global.coordinate.http.response.base.CoordinateResultData;
+import com.mindata.ecserver.global.coordinate.service.CoordinateService;
 import com.mindata.ecserver.global.util.CommonUtil;
 import com.mindata.ecserver.main.model.primary.EcContactEntity;
 import com.mindata.ecserver.main.model.secondary.CompanyCoordinateEntity;
 import com.mindata.ecserver.main.repository.secondary.CompanyCoordinateRepository;
-import com.xiaoleilu.hutool.util.CollectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -19,7 +18,6 @@ import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.mindata.ecserver.global.GeoConstant.NONE_ADDRESS;
 import static com.mindata.ecserver.global.GeoConstant.NORELIABLE_ACCURAY;
@@ -34,22 +32,20 @@ public class CompanyCoordinateManager {
     @Resource
     private EcCodeAreaManager ecCodeAreaManager;
     @Resource
-    private GeoCoordinateService geoCoordinateService;
+    private CoordinateService geoCoordinateService;
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Transactional(rollbackFor = Exception.class)
-    public List<CompanyCoordinateEntity> saveByContacts(List<EcContactEntity> contactEntities, Boolean force) throws
-            IOException {
+    public List<CompanyCoordinateEntity> saveByContacts(List<EcContactEntity> contactEntities, Boolean force) throws IllegalAccessException, ClassNotFoundException, InstantiationException {
         if (force == null) {
             force = false;
         }
         List<CompanyCoordinateEntity> coordinateEntities = new ArrayList<>();
         for (EcContactEntity ecContactEntity : contactEntities) {
             String city = ecCodeAreaManager.findNameById(ecContactEntity.getCity(), ecContactEntity.getProvince());
-            List<CoordinateResultData> temp = geoCoordinateService.getLocation(ecContactEntity.getAddress(),
-                    ecContactEntity.getCompany(), city);
-            coordinateEntities.addAll(save(temp, ecContactEntity.getId(), force));
+            CoordinateResultData temp = geoCoordinateService.getLocation(ecContactEntity.getAddress(), ecContactEntity.getCompany(), city);
+            coordinateEntities.add(save(temp, ecContactEntity.getId(), force));
         }
         return coordinateEntities;
     }
@@ -57,31 +53,28 @@ public class CompanyCoordinateManager {
     /**
      * 插入一个contactId的经纬度
      *
-     * @param contactId
-     *         未推送表的Id
+     * @param contactId 未推送表的Id
      */
-    private List<CompanyCoordinateEntity> save(List<CoordinateResultData> resultDatas, Long contactId, Boolean force) {
+    private CompanyCoordinateEntity save(CoordinateResultData resultData, Long contactId, Boolean force) {
         logger.info("开始插入contactId为" + contactId + "的经纬度数据");
-        List<CompanyCoordinateEntity> coordinateEntities = coordinateRepository.findByContactId(contactId);
-        if (CollectionUtil.isNotEmpty(coordinateEntities) && !force) {
-            return coordinateEntities;
+        CompanyCoordinateEntity coordinateEntity = coordinateRepository.findByContactId(contactId);
+        if (coordinateEntity != null && !force) {
+            return coordinateEntity;
         }
         logger.info("删除contactId为" + contactId + "的经纬度数据");
-        coordinateRepository.deleteByContactId(contactId);
-        List<CompanyCoordinateEntity> companyCoordinateEntities = coordinateRepository.save(resultDatas.stream().map
-                (resultData -> convert
-                        (resultData, contactId)).collect
-                (Collectors.toList
-                        ()));
+        if (force) {
+            coordinateRepository.deleteByContactId(contactId);
+        }
+        coordinateEntity = coordinateRepository.save(convert(resultData, contactId));
         logger.info("contactId为" + contactId + "的经纬度数据，已经插入成功");
-        return companyCoordinateEntities;
+        return coordinateEntity;
     }
+
 
     /**
      * 转换为数据库实体
      *
-     * @param resultData
-     *         参数
+     * @param resultData 参数
      * @return 结果
      */
     private CompanyCoordinateEntity convert(CoordinateResultData resultData, Long contactId) {
@@ -95,12 +88,10 @@ public class CompanyCoordinateManager {
     /**
      * 查询不太靠谱或者没有坐标的数据
      *
-     * @param pageable
-     *         分页
+     * @param pageable 分页
      * @return 结果
      */
     public Page<CompanyCoordinateEntity> findByStatusOrAccuracy(Pageable pageable) {
         return coordinateRepository.findByStatusOrAccuracy(NONE_ADDRESS, NORELIABLE_ACCURAY, pageable);
     }
-
 }

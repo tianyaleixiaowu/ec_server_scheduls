@@ -1,14 +1,13 @@
 package com.mindata.ecserver.main.service;
 
 import com.mindata.ecserver.global.bean.ResultGenerator;
-import com.mindata.ecserver.global.geo.GeoCoordinateService;
+import com.mindata.ecserver.global.coordinate.service.CoordinateService;
 import com.mindata.ecserver.main.manager.CompanyCoordinateManager;
 import com.mindata.ecserver.main.manager.ContactManager;
 import com.mindata.ecserver.main.manager.EsCompanyCoordinateManager;
 import com.mindata.ecserver.main.model.primary.EcContactEntity;
 import com.mindata.ecserver.main.model.secondary.CompanyCoordinateEntity;
 import com.xiaoleilu.hutool.date.DateUtil;
-import com.xiaoleilu.hutool.util.CollectionUtil;
 import com.xiaoleilu.hutool.util.StrUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,20 +29,20 @@ import java.util.List;
 public class CompanyCoordinateService {
     private static final int PAGE_SIZE = 500;
     @Resource
-    private GeoCoordinateService geoCoordinateService;
-    @Resource
     private ContactManager contactManager;
     @Resource
     private CompanyCoordinateManager coordinateManager;
     @Resource
     private EsCompanyCoordinateManager esCompanyCoordinateManager;
+    @Resource
+    private CoordinateService coordinateService;
 
     /**
      * 补充所有的公司经纬度信息
      *
      * @throws IOException 异常
      */
-    public void completeAllCompanyCoordinate(Boolean force) throws IOException {
+    public void completeAllCompanyCoordinate(Boolean force) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
         Pageable pageable = new PageRequest(0, 1, Sort.Direction.ASC, "id");
         Page<EcContactEntity> page = contactManager.findAll(pageable);
         for (int i = 0; i < page.getTotalElements() / PAGE_SIZE + 1; i++) {
@@ -63,7 +62,7 @@ public class CompanyCoordinateService {
      * @param endId   结束id
      * @throws IOException 异常
      */
-    public void partInsertIdBetween(Long beginId, Long endId, Boolean force) throws IOException {
+    public void partInsertIdBetween(Long beginId, Long endId, Boolean force) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
         if (endId == null) {
             endId = contactManager.findLastOne().getId();
         }
@@ -87,7 +86,7 @@ public class CompanyCoordinateService {
      * @param end   结束时间
      * @throws IOException 异常
      */
-    public void partInsertDateBetween(String begin, String end, Boolean force) throws IOException {
+    public void partInsertDateBetween(String begin, String end, Boolean force) throws  IllegalAccessException, InstantiationException, ClassNotFoundException {
         Date beginTime = DateUtil.beginOfDay(DateUtil.parseDate(begin));
         Date endTime = DateUtil.endOfDay(DateUtil.parseDate(end));
         Sort sort = new Sort(Sort.Direction.ASC, "id");
@@ -106,7 +105,7 @@ public class CompanyCoordinateService {
      *
      * @throws IOException 异常
      */
-    public void timingUpdateCoordinate() throws IOException {
+    public void timingUpdateCoordinate() throws IOException, IllegalAccessException, InstantiationException, ClassNotFoundException {
         Sort sort = new Sort(Sort.Direction.ASC, "id");
         Pageable pageable = new PageRequest(0, 1, sort);
         Page<CompanyCoordinateEntity> page = coordinateManager.findByStatusOrAccuracy(pageable);
@@ -124,19 +123,28 @@ public class CompanyCoordinateService {
     }
 
     /**
-     * 根据地址查经纬度
-     *
-     * @param address 地址
-     * @return 结果
-     * @throws IOException 异常
+     * 公司获取经纬度
      */
-    public Object getOutLocation(String address, String city) throws IOException {
+    public Object getOutLocationByCompany(String company, String city) throws IllegalAccessException, ClassNotFoundException, InstantiationException {
+        if (StrUtil.isEmpty(company) || StrUtil.isEmpty(city)) {
+            return ResultGenerator.genFailResult("城市和公司不能为空");
+        }
+        String coordinate = coordinateService.getOutLocationByCompany(company, city);
+        if (StrUtil.isNotEmpty(coordinate)) {
+            return ResultGenerator.genSuccessResult(coordinate);
+        }
+        return ResultGenerator.genFailResult("没有查到该公司的经纬度");
+    }
+    /**
+     * 地址获取经纬度
+     */
+    public Object getOutLocationByAddress(String address, String city) throws IllegalAccessException, ClassNotFoundException, InstantiationException {
         if (StrUtil.isEmpty(address) || StrUtil.isEmpty(city)) {
             return ResultGenerator.genFailResult("城市和地址不能为空");
         }
-        List<String> coordinateEntities = geoCoordinateService.getOutLocationByParameter(address, city);
-        if (CollectionUtil.isNotEmpty(coordinateEntities)) {
-            return ResultGenerator.genSuccessResult(coordinateEntities.get(0));
+        String coordinate = coordinateService.getOutLocationByAddress(address, city);
+        if (StrUtil.isNotEmpty(coordinate)) {
+            return ResultGenerator.genSuccessResult(coordinate);
         }
         return ResultGenerator.genFailResult("没有查到该地址的经纬度");
     }

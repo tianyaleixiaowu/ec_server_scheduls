@@ -1,35 +1,17 @@
-package com.mindata.ecserver.main.model.es;
-
-import com.mindata.ecserver.global.Constant;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.*;
-
-import java.util.Date;
-
-import static com.mindata.ecserver.global.Constant.ES_GEO_INDEX_NAME;
+package com.mindata.ecserver.global.coordinate.http.response.base;
 
 /**
- * @author hanliqiang wrote on 2017/11/28
+ * @author hanliqiang wrote on 2017/12/7
  */
-@Document(indexName = ES_GEO_INDEX_NAME, type = Constant.ES_COORDINATE_TYPE_NAME, indexStoreType = "fs", shards = 5, replicas = 1,
-        refreshInterval = "-1")
-public class EsCompanyCoordinate {
-    @Id
-    private Long id;
+public class CoordinateResultData{
     /**
-     * 未推送表的id
+     * 百度地图坐标 (经度在前，维度在后)
      */
-    private Long contactId;
-    /**
-     * 百度地图坐标 (纬度在前，经度在后)
-     */
-    @GeoPointField
     private String baiduCoordinate;
 
     /**
-     * 高德地图坐标 (纬度在前，经度在后)
+     * 高德地图坐标 (经度在前，维度在后)
      */
-    @GeoPointField
     private String gaodeCoordinate;
     /**
      * 状态
@@ -53,28 +35,10 @@ public class EsCompanyCoordinate {
      * 查询条件值
      */
     private String queryConditionValue;
-
-    private String level;
     /**
-     * 插入es日期
+     * 地点描述
      */
-    private Date createTime;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getContactId() {
-        return contactId;
-    }
-
-    public void setContactId(Long contactId) {
-        this.contactId = contactId;
-    }
+    private String level;
 
     public String getBaiduCoordinate() {
         return baiduCoordinate;
@@ -140,11 +104,17 @@ public class EsCompanyCoordinate {
         this.level = level;
     }
 
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    @Override
+    public String toString() {
+        return "CoordinateResultData{" +
+                "baiduCoordinate='" + baiduCoordinate + '\'' +
+                ", gaodeCoordinate='" + gaodeCoordinate + '\'' +
+                ", status=" + status +
+                ", source=" + source +
+                ", accuracy=" + accuracy +
+                ", queryCondition=" + queryCondition +
+                ", queryConditionValue='" + queryConditionValue + '\'' +
+                ", level='" + level + '\'' +
+                '}';
     }
 }

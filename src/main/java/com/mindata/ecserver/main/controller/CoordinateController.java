@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.io.IOException;
 
 /**
  * @author hanliqiang wrote on 2017/11/27
@@ -18,17 +17,6 @@ public class CoordinateController {
     @Resource
     private CompanyCoordinateService companyCoordinateService;
 
-    /**
-     * 根据地址获取坐标(可以传任何字符串，但必须包含城市)
-     *
-     * @param address 地址
-     * @return 结果
-     * @throws IOException 异常
-     */
-    @GetMapping("")
-    public Object getCoordinate(String address, String city) throws IOException {
-        return companyCoordinateService.getOutLocation(address, city);
-    }
 
     /**
      * 更新id范围内的数据
@@ -36,10 +24,9 @@ public class CoordinateController {
      * @param beginId 开始id
      * @param endId   结束id
      * @return 结果
-     * @throws IOException 异常
      */
     @PutMapping("/idBetween")
-    public Object updateIdBetweenCoordinate(Long beginId, Long endId, Boolean force) throws IOException {
+    public Object updateIdBetweenCoordinate(Long beginId, Long endId, Boolean force) throws IllegalAccessException, ClassNotFoundException, InstantiationException {
         companyCoordinateService.partInsertIdBetween(beginId, endId, force);
         return "更新完毕";
     }
@@ -50,11 +37,34 @@ public class CoordinateController {
      * @param begin 开始时间
      * @param end   结束时间
      * @return 结果
-     * @throws IOException 异常
      */
     @PutMapping("/dateBetween")
-    public Object updateDateBetweenCoordinate(String begin, String end, Boolean force) throws IOException {
+    public Object updateDateBetweenCoordinate(String begin, String end, Boolean force) throws IllegalAccessException, ClassNotFoundException, InstantiationException {
         companyCoordinateService.partInsertDateBetween(begin, end, force);
         return "更新完毕";
+    }
+
+    /**
+     * 地址去查经纬度
+     *
+     * @param address 地址
+     * @param city    城市
+     * @return 结果
+     */
+    @GetMapping("/address")
+    public Object getOutCoordinateByAddress(String address, String city) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
+        return companyCoordinateService.getOutLocationByAddress(address, city);
+    }
+
+    /**
+     * 公司去查经纬度
+     *
+     * @param company 公司
+     * @param city    城市
+     * @return 结果
+     */
+    @GetMapping("/company")
+    public Object getOutCoordinateByCompany(String company, String city) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
+        return companyCoordinateService.getOutLocationByCompany(company, city);
     }
 }
