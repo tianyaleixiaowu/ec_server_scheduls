@@ -50,4 +50,15 @@ public interface GeoConstant extends Constant {
      */
     int NORELIABLE_ACCURAY = 2;
 
+    String ADDRESS_ARRANGEMENT = "层";
+
+    String ADDRESS_FLOOR = "楼";
+
+    String ADDRESS_NUMBER = "号";
+
+    String ADDRESS_BUILDING = "幢";
+
+    String ADDRESS_MANSION = "厦";
+
+    String OCTOTHORPE = "#";
 }

@@ -1,6 +1,6 @@
 package com.mindata.ecserver.global.http.response;
 
-import com.mindata.ecserver.global.http.response.base.ResponseValue;
+import com.mindata.ecserver.global.coordinate.http.response.base.ResponseValue;
 
 import java.util.List;
 

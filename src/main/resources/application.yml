@@ -28,5 +28,5 @@ main:
 geo:
   baidu-url: http://api.map.baidu.com/
   gaode-url: http://restapi.amap.com/
-  baidu-ak: ${BAIDU_AK:uDWUhXo4WDUecxSGD97bE1ztHtZKn2sW,jXsp88t9lR4uesiY7wUmk3MztLyqhbox}
+  baidu-ak: ${BAIDU_AK:uDWUhXo4WDUecxSGD97bE1ztHtZKn2sW}
   gaode-ak: ${GAODE_AK:30a02f8c411cc8a6b828a1c4581e68d6}

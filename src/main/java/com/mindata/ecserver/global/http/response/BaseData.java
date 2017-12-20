@@ -1,7 +1,7 @@
 package com.mindata.ecserver.global.http.response;
 
 import com.mindata.ecserver.global.bean.ResultCode;
-import com.mindata.ecserver.global.http.response.base.ResponseValue;
+import com.mindata.ecserver.global.coordinate.http.response.base.ResponseValue;
 
 /**
  * @author wuweifeng wrote on 2017/11/7.
