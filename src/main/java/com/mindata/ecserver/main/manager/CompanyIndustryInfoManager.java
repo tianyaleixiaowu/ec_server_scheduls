@@ -96,10 +96,10 @@ public class CompanyIndustryInfoManager {
                 comintro.append(companyIndustryInfoZl.getComintro()).append(DOUHAO);
             }
         }
-        for (CompanyQichacha companyQichcacha : companyQichachas) {
-            if (StrUtil.isNotEmpty(companyQichcacha.getCompanyDesc()) && !comintro.toString().contains
-                    (companyQichcacha.getCompanyDesc())) {
-                comintro.append(companyQichcacha.getCompanyDesc()).append(DOUHAO);
+        for (CompanyQichacha companyQichacha : companyQichachas) {
+            if (StrUtil.isNotEmpty(companyQichacha.getCompanyDesc()) && !comintro.toString().contains
+                    (companyQichacha.getCompanyDesc())) {
+                comintro.append(companyQichacha.getCompanyDesc()).append(DOUHAO);
             }
         }
         return Arrays.asList(industry.toString(), comintro.toString());
