@@ -38,7 +38,7 @@ public class CompanyIndustryInfoManager {
     /**
      * 不包含3158表的行业名称
      */
-    public List<String> getIndustryInfoForDb(Long compId,String companyName) {
+    public List<String> getIndustryInfoForDb(Long compId, String companyName) {
         StringBuilder industry = new StringBuilder();
         StringBuilder comintro = new StringBuilder();
 
@@ -57,31 +57,38 @@ public class CompanyIndustryInfoManager {
             }
         }
         for (CompanyIndustryInfo88 companyIndustryInfo88 : industryInfo88s) {
-            if (StrUtil.isNotEmpty(companyIndustryInfo88.getIndustry()) && !industry.toString().contains(companyIndustryInfo88.getIndustry()) ) {
+            if (StrUtil.isNotEmpty(companyIndustryInfo88.getIndustry()) && !industry.toString().contains
+                    (companyIndustryInfo88.getIndustry())) {
                 industry.append(companyIndustryInfo88.getIndustry()).append(DOUHAO);
             }
-            if (StrUtil.isNotEmpty(companyIndustryInfo88.getComintro()) && !comintro.toString().contains(companyIndustryInfo88.getComintro())) {
+            if (StrUtil.isNotEmpty(companyIndustryInfo88.getComintro()) && !comintro.toString().contains
+                    (companyIndustryInfo88.getComintro())) {
                 comintro.append(companyIndustryInfo88.getComintro()).append(DOUHAO);
             }
         }
         for (CompanyIndustryInfoGanji companyIndustryInfoGanji : industryInfoGanjis) {
-            if (StrUtil.isNotEmpty(companyIndustryInfoGanji.getIndustry()) && !industry.toString().contains(companyIndustryInfoGanji.getIndustry()) ) {
+            if (StrUtil.isNotEmpty(companyIndustryInfoGanji.getIndustry()) && !industry.toString().contains
+                    (companyIndustryInfoGanji.getIndustry())) {
                 industry.append(companyIndustryInfoGanji.getIndustry()).append(DOUHAO);
             }
-            if (StrUtil.isNotEmpty(companyIndustryInfoGanji.getComintro()) && !comintro.toString().contains(companyIndustryInfoGanji.getComintro())) {
+            if (StrUtil.isNotEmpty(companyIndustryInfoGanji.getComintro()) && !comintro.toString().contains
+                    (companyIndustryInfoGanji.getComintro())) {
                 comintro.append(companyIndustryInfoGanji.getComintro()).append(DOUHAO);
             }
         }
         for (CompanyIndustryInfo companyIndustryInfo : industryInfos) {
-            if (StrUtil.isNotEmpty(companyIndustryInfo.getIndustry()) && !industry.toString().contains(companyIndustryInfo.getIndustry()) ) {
+            if (StrUtil.isNotEmpty(companyIndustryInfo.getIndustry()) && !industry.toString().contains
+                    (companyIndustryInfo.getIndustry())) {
                 industry.append(companyIndustryInfo.getIndustry()).append(DOUHAO);
             }
-            if (StrUtil.isNotEmpty(companyIndustryInfo.getComintro()) && !comintro.toString().contains(companyIndustryInfo.getComintro())) {
+            if (StrUtil.isNotEmpty(companyIndustryInfo.getComintro()) && !comintro.toString().contains
+                    (companyIndustryInfo.getComintro())) {
                 comintro.append(companyIndustryInfo.getComintro()).append(DOUHAO);
             }
         }
         for (CompanyIndustryInfoZl companyIndustryInfoZl : industryInfoZls) {
-            if (StrUtil.isNotEmpty(companyIndustryInfoZl.getIndustry()) && !industry.toString().contains(companyIndustryInfoZl.getIndustry()) ) {
+            if (StrUtil.isNotEmpty(companyIndustryInfoZl.getIndustry()) && !industry.toString().contains
+                    (companyIndustryInfoZl.getIndustry())) {
                 industry.append(companyIndustryInfoZl.getIndustry()).append(DOUHAO);
             }
             if (StrUtil.isNotEmpty(companyIndustryInfoZl.getComintro()) && !comintro.toString().contains
@@ -90,7 +97,8 @@ public class CompanyIndustryInfoManager {
             }
         }
         for (CompanyQichacha companyQichcacha : companyQichachas) {
-            if (StrUtil.isNotEmpty(companyQichcacha.getCompanyDesc()) && !comintro.toString().contains(companyQichcacha.getCompanyDesc()) ) {
+            if (StrUtil.isNotEmpty(companyQichcacha.getCompanyDesc()) && !comintro.toString().contains
+                    (companyQichcacha.getCompanyDesc())) {
                 comintro.append(companyQichcacha.getCompanyDesc()).append(DOUHAO);
             }
         }
@@ -114,12 +122,12 @@ public class CompanyIndustryInfoManager {
     /**
      * 查所有表的行业和公司简介
      */
-    public List<String> getIndustryAndComintroInfoForEs(Long compId,String companyName) {
+    public List<String> getIndustryAndComintroInfoForEs(Long compId, String companyName) {
         StringBuilder industry = new StringBuilder();
-        List<String> list = getIndustryInfoForDb(compId,companyName);
+        List<String> list = getIndustryInfoForDb(compId, companyName);
         industry.append(list.get(0));
         String vocationName = get3158IndustryInfo(compId);
-        if (StrUtil.isNotEmpty(vocationName) && !list.contains(vocationName) ) {
+        if (StrUtil.isNotEmpty(vocationName) && !list.contains(vocationName)) {
             industry.append(list.get(0));
         }
         return Arrays.asList(industry.toString(), list.get(1));

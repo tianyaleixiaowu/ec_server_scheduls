@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author hanliqiang wrote on 2017/12/20
  */
-public interface CompanyQichachaRepository extends JpaRepository<CompanyQichacha, Integer> {
+public interface CompanyQichachaRepository extends JpaRepository<CompanyQichacha, Long> {
 
     /**
      * 根据公司名称查找行业描述

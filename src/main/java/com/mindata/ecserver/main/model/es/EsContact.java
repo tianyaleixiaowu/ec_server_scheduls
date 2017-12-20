@@ -321,5 +321,36 @@ public class EsContact {
     public void setCompanyScore(Double companyScore) {
         this.companyScore = companyScore;
     }
+
+    @Override
+    public String toString() {
+        return "EsContact{" +
+                "id=" + id +
+                ", compId=" + compId +
+                ", name='" + name + '\'' +
+                ", company='" + company + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", phone='" + phone + '\'' +
+                ", address='" + address + '\'' +
+                ", memo='" + memo + '\'' +
+                ", ipcFlag='" + ipcFlag + '\'' +
+                ", state=" + state +
+                ", mainJob='" + mainJob + '\'' +
+                ", jobName='" + jobName + '\'' +
+                ", welfare='" + welfare + '\'' +
+                ", posDes='" + posDes + '\'' +
+                ", comintro='" + comintro + '\'' +
+                ", province=" + province +
+                ", city=" + city +
+                ", websiteId=" + websiteId +
+                ", memberSizeTag=" + memberSizeTag +
+                ", vocation=" + vocation +
+                ", industry='" + industry + '\'' +
+                ", needSale=" + needSale +
+                ", createTime=" + createTime +
+                ", insertTime=" + insertTime +
+                ", companyScore=" + companyScore +
+                '}';
+    }
 }
 

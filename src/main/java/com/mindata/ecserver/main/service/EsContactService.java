@@ -40,8 +40,9 @@ public class EsContactService {
 
     /**
      * 将EcContact信息导入ES
+     *
      * @param limitTime
-     * 是否显示只导入昨天的
+     *         是否显示只导入昨天的
      */
     public void dbToEs(boolean limitTime) {
         EsContact esContact = esContactManager.findTheLastEsContact();
@@ -84,8 +85,9 @@ public class EsContactService {
 
     /**
      * 导入id比当前ES的大的所有数据
+     *
      * @param id
-     * ES最新的id
+     *         ES最新的id
      */
     private void partInsertAfter(Long id) {
         Sort sort = new Sort(Sort.Direction.ASC, "id");
@@ -107,8 +109,9 @@ public class EsContactService {
 
     /**
      * 删除某些ids
+     *
      * @param ids
-     * ids
+     *         ids
      */
     public void deleteByIds(String ids) {
         if (ids.endsWith(",")) {
@@ -124,10 +127,11 @@ public class EsContactService {
 
     /**
      * 更新一部分id的值到ES
+     *
      * @param beginId
-     * 开始id
+     *         开始id
      * @param endId
-     * 结束id
+     *         结束id
      */
     public void partInsertBetween(Long beginId, Long endId) {
         Sort sort = new Sort(Sort.Direction.ASC, "id");
@@ -149,8 +153,9 @@ public class EsContactService {
 
     /**
      * 导入id比当前id大，且时间为昨天的数据
+     *
      * @param id
-     * ES中的id
+     *         ES中的id
      */
     private void partInsertIdAfterAndTimeBefore(Long id) {
         Sort sort = new Sort(Sort.Direction.ASC, "id");
@@ -190,7 +195,8 @@ public class EsContactService {
         for (int i = 0; i < page.getTotalElements() / PAGE_SIZE + 1; i++) {
             pageable = new PageRequest(i, PAGE_SIZE, sort);
             List<EcContactEntity> contactEntities = contactManager.findAll(pageable).getContent();
-            esContactManager.bulkIndex(contactEntities.stream().map(this::convertOneColumn).collect(Collectors.toList()));
+            esContactManager.bulkIndex(contactEntities.stream().map(this::convertOneColumn).collect(Collectors.toList
+                    ()));
         }
 
     }
@@ -240,7 +246,8 @@ public class EsContactService {
         esContact.setWelfare(extraInfo.get(1));
         esContact.setPosDes(extraInfo.get(2));
         //将行业名称添加到es
-        List<String> industryList = industryInfoManager.getIndustryAndComintroInfoForEs(ecContactEntity.getCompId(),ecContactEntity.getCompany());
+        List<String> industryList = industryInfoManager.getIndustryAndComintroInfoForEs(ecContactEntity.getCompId(),
+                ecContactEntity.getCompany());
         esContact.setIndustry(industryList.get(0));
         esContact.setComintro(industryList.get(1));
 
