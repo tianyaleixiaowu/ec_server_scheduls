@@ -22,7 +22,7 @@ public class CallManager {
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     public <T extends ResponseValue> ResponseValue execute(Call<T> call) throws IOException {
-        retrofit2.Response response = call.execute();
+        Response response = call.execute();
         //返回值
         int code = response.code();
 
