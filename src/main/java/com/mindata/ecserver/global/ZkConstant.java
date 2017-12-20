@@ -5,7 +5,7 @@ package com.mindata.ecserver.global;
  * @author wuweifeng wrote on 2017/12/20.
  */
 public interface ZkConstant {
-    String PATH_FETCH_COORDINATE = "fetch_coordinate";
-    String PATH_FETCH_PHONEHISTORY = "fetch_phone_history";
-    String PATH_CONTACT_TO_ES = "push_contact_to_es";
+    String PATH_FETCH_COORDINATE = "/fetch_coordinate";
+    String PATH_FETCH_PHONEHISTORY = "/fetch_phone_history";
+    String PATH_CONTACT_TO_ES = "/push_contact_to_es";
 }
