@@ -1,6 +1,8 @@
 package com.mindata.ecserver.main.manager;
 
+import com.mindata.ecserver.main.model.primary.CompanyQichcacha;
 import com.mindata.ecserver.main.model.thirdly.*;
+import com.mindata.ecserver.main.repository.primary.CompanyQichachaRepository;
 import com.mindata.ecserver.main.repository.thirdly.*;
 import com.xiaoleilu.hutool.util.StrUtil;
 import org.springframework.stereotype.Service;
@@ -30,11 +32,13 @@ public class CompanyIndustryInfoManager {
     private CompanyIndustryInfoRepository companyIndustryInfoRepository;
     @Resource
     private CompanyIndustryInfoZlRepository companyIndustryInfoZlRepository;
+    @Resource
+    private CompanyQichachaRepository companyQichachaRepository;
 
     /**
      * 不包含3158表的行业名称
      */
-    public List<String> getIndustryInfoForDb(Long compId) {
+    public List<String> getIndustryInfoForDb(Long compId,String companyName) {
         StringBuilder industry = new StringBuilder();
         StringBuilder comintro = new StringBuilder();
 
@@ -43,7 +47,7 @@ public class CompanyIndustryInfoManager {
         List<CompanyIndustryInfoGanji> industryInfoGanjis = companyIndustryInfoGanjiRepository.findByCompId(compId);
         List<CompanyIndustryInfo> industryInfos = companyIndustryInfoRepository.findByCompId(compId);
         List<CompanyIndustryInfoZl> industryInfoZls = companyIndustryInfoZlRepository.findByCompId(compId);
-
+        List<CompanyQichcacha> companyQichcachas = companyQichachaRepository.findBycompanyName(companyName);
         for (CompanyIndustryInfo51 companyIndustryInfo51 : industryInfo51s) {
             if (StrUtil.isNotEmpty(companyIndustryInfo51.getIndustry())) {
                 industry.append(companyIndustryInfo51.getIndustry()).append(DOUHAO);
@@ -85,7 +89,11 @@ public class CompanyIndustryInfoManager {
                 comintro.append(companyIndustryInfoZl.getComintro()).append(DOUHAO);
             }
         }
-
+        for (CompanyQichcacha companyQichcacha : companyQichcachas) {
+            if (StrUtil.isNotEmpty(companyQichcacha.getCompanyDesc()) && !comintro.toString().contains(companyQichcacha.getCompanyDesc()) ) {
+                comintro.append(companyQichcacha.getCompanyDesc()).append(DOUHAO);
+            }
+        }
         return Arrays.asList(industry.toString(), comintro.toString());
     }
 
@@ -106,9 +114,9 @@ public class CompanyIndustryInfoManager {
     /**
      * 查所有表的行业和公司简介
      */
-    public List<String> getIndustryAndComintroInfoForEs(Long compId) {
+    public List<String> getIndustryAndComintroInfoForEs(Long compId,String companyName) {
         StringBuilder industry = new StringBuilder();
-        List<String> list = getIndustryInfoForDb(compId);
+        List<String> list = getIndustryInfoForDb(compId,companyName);
         industry.append(list.get(0));
         String vocationName = get3158IndustryInfo(compId);
         if (StrUtil.isNotEmpty(vocationName) && !list.contains(vocationName) ) {
