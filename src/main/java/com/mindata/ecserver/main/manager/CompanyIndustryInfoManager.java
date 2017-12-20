@@ -47,7 +47,7 @@ public class CompanyIndustryInfoManager {
         List<CompanyIndustryInfoGanji> industryInfoGanjis = companyIndustryInfoGanjiRepository.findByCompId(compId);
         List<CompanyIndustryInfo> industryInfos = companyIndustryInfoRepository.findByCompId(compId);
         List<CompanyIndustryInfoZl> industryInfoZls = companyIndustryInfoZlRepository.findByCompId(compId);
-        List<CompanyQichacha> companyQichcachas = companyQichachaRepository.findByCompanyName(companyName);
+        List<CompanyQichacha> companyQichachas = companyQichachaRepository.findByCompanyName(companyName);
         for (CompanyIndustryInfo51 companyIndustryInfo51 : industryInfo51s) {
             if (StrUtil.isNotEmpty(companyIndustryInfo51.getIndustry())) {
                 industry.append(companyIndustryInfo51.getIndustry()).append(DOUHAO);
@@ -89,7 +89,7 @@ public class CompanyIndustryInfoManager {
                 comintro.append(companyIndustryInfoZl.getComintro()).append(DOUHAO);
             }
         }
-        for (CompanyQichacha companyQichcacha : companyQichcachas) {
+        for (CompanyQichacha companyQichcacha : companyQichachas) {
             if (StrUtil.isNotEmpty(companyQichcacha.getCompanyDesc()) && !comintro.toString().contains(companyQichcacha.getCompanyDesc()) ) {
                 comintro.append(companyQichcacha.getCompanyDesc()).append(DOUHAO);
             }
