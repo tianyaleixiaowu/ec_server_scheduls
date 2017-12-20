@@ -38,7 +38,7 @@ public interface IGeoCoordinateService<T extends ResponseValue> {
      *         异常
      */
     List<T> getCoordinateByParameter(String parameter, String city,
-                                                               Integer  pageSize,
-                                                               Integer page) throws IOException;
+                                     Integer pageSize,
+                                     Integer page) throws IOException;
 
 }

@@ -167,8 +167,8 @@ public class ContactManager {
      *
      * @param compId 公司Id
      */
-    private void updateVocationCode(Long compId,String companyName) {
-        List<String> industryList = companyIndustryInfoManager.getIndustryInfoForDb(compId,companyName);
+    private void updateVocationCode(Long compId) {
+        List<String> industryList = companyIndustryInfoManager.getIndustryInfoForDb(compId);
         HashMap<String, Integer> map = esVocationCodeManager.findByVocationName(industryList.get(0));
         Integer vocationCode = map.get("vocationCode");
         Integer num = ecContactRepository.updateCodeByVocationName(vocationCode, compId);

@@ -1,7 +1,5 @@
 package com.mindata.ecserver.main.controller;
 
-import com.mindata.ecserver.global.coordinate.service.CoordinateService;
-import com.mindata.ecserver.global.coordinate.service.impl.BaiduMapServiceImpl;
 import com.mindata.ecserver.global.http.response.BaseData;
 import com.mindata.ecserver.main.service.CompanyCoordinateService;
 import com.mindata.ecserver.main.service.EsContactService;
@@ -22,9 +20,7 @@ public class TestController {
     @Resource
     private EsContactService esContactService;
     @Resource
-    private CoordinateService coordinateService;
-    @Resource
-    private CompanyCoordinateService companyCoordinateService;
+    private CompanyCoordinateService coordinateService;
 
     @GetMapping("/fetch")
     public BaseData fetchCompanyHistory() throws IOException {
@@ -50,13 +46,8 @@ public class TestController {
     }
 
     @GetMapping("/baidu")
-    public String baidu(Boolean force) throws IOException, IllegalAccessException, ClassNotFoundException, InstantiationException {
-        companyCoordinateService.completeAllCompanyCoordinate(force);
+    public String baidu(Boolean force) throws IOException {
+        coordinateService.completeAllCompanyCoordinate(force);
         return "baidu";
-    }
-    @GetMapping("/baidu2")
-    public String baidu2() throws IOException, IllegalAccessException, ClassNotFoundException, InstantiationException {
-        coordinateService.getLocation("北京市丰台区南四环西路188号十八区15号楼1至3层101(园区)","asd","北京");
-        return "baidu2";
     }
 }
