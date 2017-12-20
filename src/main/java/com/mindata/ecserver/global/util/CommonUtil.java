@@ -2,6 +2,8 @@ package com.mindata.ecserver.global.util;
 
 import com.xiaoleilu.hutool.date.DateUtil;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Date;
 import java.util.UUID;
 
@@ -41,4 +43,10 @@ public class CommonUtil {
         return totalCount % pageSize == 0 ? totalCount / pageSize : (totalCount / pageSize) + 1;
     }
 
+    /**
+     * 获取本机计算机名称
+     */
+    public static String getHostName() throws UnknownHostException {
+        return InetAddress.getLocalHost().getHostName();
+    }
 }
