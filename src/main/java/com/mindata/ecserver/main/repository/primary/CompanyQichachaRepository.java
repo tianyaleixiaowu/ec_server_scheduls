@@ -1,6 +1,6 @@
 package com.mindata.ecserver.main.repository.primary;
 
-import com.mindata.ecserver.main.model.primary.CompanyQichcacha;
+import com.mindata.ecserver.main.model.primary.CompanyQichacha;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author hanliqiang wrote on 2017/12/20
  */
-public interface CompanyQichachaRepository extends JpaRepository<CompanyQichcacha, Integer> {
+public interface CompanyQichachaRepository extends JpaRepository<CompanyQichacha, Integer> {
 
     /**
      * 根据公司名称查找行业描述
@@ -16,5 +16,5 @@ public interface CompanyQichachaRepository extends JpaRepository<CompanyQichcach
      * @param companyName 公司名称
      * @return 结果
      */
-    List<CompanyQichcacha> findBycompanyName(String companyName);
+    List<CompanyQichacha> findByCompanyName(String companyName);
 }

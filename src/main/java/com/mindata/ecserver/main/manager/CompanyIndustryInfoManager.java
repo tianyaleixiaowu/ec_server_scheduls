@@ -1,6 +1,6 @@
 package com.mindata.ecserver.main.manager;
 
-import com.mindata.ecserver.main.model.primary.CompanyQichcacha;
+import com.mindata.ecserver.main.model.primary.CompanyQichacha;
 import com.mindata.ecserver.main.model.thirdly.*;
 import com.mindata.ecserver.main.repository.primary.CompanyQichachaRepository;
 import com.mindata.ecserver.main.repository.thirdly.*;
@@ -47,7 +47,7 @@ public class CompanyIndustryInfoManager {
         List<CompanyIndustryInfoGanji> industryInfoGanjis = companyIndustryInfoGanjiRepository.findByCompId(compId);
         List<CompanyIndustryInfo> industryInfos = companyIndustryInfoRepository.findByCompId(compId);
         List<CompanyIndustryInfoZl> industryInfoZls = companyIndustryInfoZlRepository.findByCompId(compId);
-        List<CompanyQichcacha> companyQichcachas = companyQichachaRepository.findBycompanyName(companyName);
+        List<CompanyQichacha> companyQichcachas = companyQichachaRepository.findByCompanyName(companyName);
         for (CompanyIndustryInfo51 companyIndustryInfo51 : industryInfo51s) {
             if (StrUtil.isNotEmpty(companyIndustryInfo51.getIndustry())) {
                 industry.append(companyIndustryInfo51.getIndustry()).append(DOUHAO);
@@ -89,7 +89,7 @@ public class CompanyIndustryInfoManager {
                 comintro.append(companyIndustryInfoZl.getComintro()).append(DOUHAO);
             }
         }
-        for (CompanyQichcacha companyQichcacha : companyQichcachas) {
+        for (CompanyQichacha companyQichcacha : companyQichcachas) {
             if (StrUtil.isNotEmpty(companyQichcacha.getCompanyDesc()) && !comintro.toString().contains(companyQichcacha.getCompanyDesc()) ) {
                 comintro.append(companyQichcacha.getCompanyDesc()).append(DOUHAO);
             }
