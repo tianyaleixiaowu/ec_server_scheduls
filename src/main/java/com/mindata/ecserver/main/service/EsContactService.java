@@ -240,7 +240,7 @@ public class EsContactService {
         esContact.setWelfare(extraInfo.get(1));
         esContact.setPosDes(extraInfo.get(2));
         //将行业名称添加到es
-        List<String> industryList = industryInfoManager.getIndustryAndComintroInfoForEs(ecContactEntity.getCompId());
+        List<String> industryList = industryInfoManager.getIndustryAndComintroInfoForEs(ecContactEntity.getCompId(),ecContactEntity.getCompany());
         esContact.setIndustry(industryList.get(0));
         esContact.setComintro(industryList.get(1));
 
