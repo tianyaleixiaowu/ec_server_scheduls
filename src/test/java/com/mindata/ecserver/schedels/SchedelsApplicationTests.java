@@ -33,7 +33,6 @@ public class SchedelsApplicationTests {
 		//}
 		//System.out.println(fetchCompanyPhoneHistoryService.fetch());
 		//esContactService.dbToEs();
-		fetchCoordinateSchedule.executePushDbToEsTask();
 	}
 
 }
