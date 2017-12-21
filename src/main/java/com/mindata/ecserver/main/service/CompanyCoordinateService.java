@@ -149,9 +149,10 @@ public class CompanyCoordinateService {
      */
     private void dealPartInsert(Long beginId, Long endId, Boolean force) {
         logger.info("线程id为" + Thread.currentThread().getId() + "开始处理DB插入的事");
+        List<EcContactEntity> contactEntities;
         for (int i = 0; i < (endId - beginId) / PAGE_SIZE + 1; i++) {
             Pageable pageable = new PageRequest(i, PAGE_SIZE, Sort.Direction.ASC, "id");
-            List<EcContactEntity> contactEntities = contactManager.findByIdBetween(beginId, endId, pageable)
+            contactEntities = contactManager.findByIdBetween(beginId, endId, pageable)
                     .getContent();
             if (contactEntities.size() == 0) {
                 continue;
