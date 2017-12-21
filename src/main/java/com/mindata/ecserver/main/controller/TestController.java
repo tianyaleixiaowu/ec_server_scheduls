@@ -4,6 +4,7 @@ import com.mindata.ecserver.global.http.response.BaseData;
 import com.mindata.ecserver.main.service.CompanyCoordinateService;
 import com.mindata.ecserver.main.service.EsContactService;
 import com.mindata.ecserver.main.service.FetchCompanyPhoneHistoryService;
+import com.mindata.ecserver.schedel.FetchPhoneHistorySchedule;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,10 +22,18 @@ public class TestController {
     private EsContactService esContactService;
     @Resource
     private CompanyCoordinateService coordinateService;
+    @Resource
+    private FetchPhoneHistorySchedule fetchPhoneHistorySchedule;
 
     @GetMapping("/fetch")
     public BaseData fetchCompanyHistory() throws IOException {
         return fetchCompanyPhoneHistoryService.fetch();
+    }
+
+    @GetMapping("test_zookeeper")
+    public BaseData testZookeeper() throws Exception {
+        fetchPhoneHistorySchedule.executeFetchPhoneHistoryTask();
+        return null;
     }
 
     @GetMapping("/push")
