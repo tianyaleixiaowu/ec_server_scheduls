@@ -76,7 +76,7 @@ public class CompanyCoordinateService {
         //昨天12点前，contactId最大的
         Date beginOfDay = DateUtil.beginOfDay(CommonUtil.getNow());
         Page<EcContactEntity> page = contactManager.findByIdGreaterThanAndCreateTimeLessThan(beginId, beginOfDay, new
-                PageRequest(0, 1, Sort.Direction.ASC, "id"));
+                PageRequest(0, 1, Sort.Direction.DESC, "id"));
         if (page.getContent().size() == 0) {
             return;
         }

@@ -20,3 +20,6 @@ ES_IP_PORT        =  elasticsearch-ik:9300
 logstashIp        =  elk-logstash
 EUREKA_SERVER     =  eureka1:8080
 COLLECTOR_IP      =  collector
+zookeeper.server  =  zookeeper1:2181
+BAIDU_AK          =  uDWUhXo4WDUecxSGD97bE1ztHtZKn2sW, jXsp88t9lR4uesiY7wUmk3MztLyqhbox
+GAODE_AK          =  30a02f8c411cc8a6b828a1c4581e68d6, a38b670f0031f030712eea05c6ed6e21
