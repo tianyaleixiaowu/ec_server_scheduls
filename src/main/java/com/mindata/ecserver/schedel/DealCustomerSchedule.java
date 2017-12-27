@@ -2,7 +2,7 @@ package com.mindata.ecserver.schedel;
 
 import com.mindata.ecserver.global.ZkConstant;
 import com.mindata.ecserver.global.util.CommonUtil;
-import com.mindata.ecserver.main.service.EsContactService;
+import com.mindata.ecserver.main.service.PtCustomerStateService;
 import com.xiaoleilu.hutool.date.DateUtil;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.recipes.locks.InterProcessMutex;
@@ -18,32 +18,33 @@ import java.util.concurrent.TimeUnit;
 import static com.xiaoleilu.hutool.date.DatePattern.NORM_DATETIME_FORMAT;
 
 /**
- * 每天晚上3点读取db数据导入到ES
+ * 每天8点处理customer表数据
  * @author wuweifeng wrote on 2017/11/5.
  */
 @Component
-public class PushContactToEsSchedule {
+public class DealCustomerSchedule {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Resource
-    private EsContactService esContactService;
+    private PtCustomerStateService ptCustomerStateService;
     @Resource
     private CuratorFramework client;
 
     /**
      * 注意分布式锁的问题
      */
-    @Scheduled(cron = "0 0/20 3 * * ?")
+    @Scheduled(cron = "0 0/20 8 * * ?")
     public void executePushDbToEsTask() throws Exception {
-        InterProcessMutex interProcessMutex = new InterProcessMutex(client, ZkConstant.PATH_CONTACT_TO_ES);
+        //检查分布式锁
+        InterProcessMutex interProcessMutex = new InterProcessMutex(client, ZkConstant.PATH_DEAL_CUSTOMER);
         //只等1毫秒，目的是不管多少docker，只要有一个执行了就OK了，其他的不需要执行
         if (!interProcessMutex.acquire(1L, TimeUnit.MILLISECONDS)) {
-            logger.info("主机名为" + CommonUtil.getHostName() + "没取到锁");
-            return;
+             logger.info("主机名为" + CommonUtil.getHostName() + "没取到锁");
+             return;
         }
-        logger.info("主机名为" + CommonUtil.getHostName() + "取到锁，开始读取db数据导入到ES");
+        logger.info("主机名为" + CommonUtil.getHostName() + "取到锁，开始获取经纬度数据");
         logger.info("现在时间：" + DateUtil.format(new Date(), NORM_DATETIME_FORMAT));
-        logger.info("开始去获取线索信息导入到elasticsearch");
-        esContactService.dbToEs(true);
+        logger.info("开始去处理customer数据");
+        ptCustomerStateService.dealCustomerState();
         interProcessMutex.release();
     }
 }

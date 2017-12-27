@@ -34,7 +34,7 @@ public class FetchPhoneHistorySchedule {
      */
     @Scheduled(cron = "0 0/20 6 * * ?")
     public void executeFetchPhoneHistoryTask() throws Exception {
-        InterProcessMutex interProcessMutex = new InterProcessMutex(client, ZkConstant.PATH_FETCH_COORDINATE);
+        InterProcessMutex interProcessMutex = new InterProcessMutex(client, ZkConstant.PATH_FETCH_PHONEHISTORY);
         //只等1毫秒，目的是不管多少docker，只要有一个执行了就OK了，其他的不需要执行
         if (!interProcessMutex.acquire(1L, TimeUnit.MILLISECONDS)) {
             logger.info("主机名为" + CommonUtil.getHostName() + "没取到锁");
