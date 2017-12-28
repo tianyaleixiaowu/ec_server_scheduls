@@ -8,9 +8,7 @@ import com.xiaoleilu.hutool.util.StrUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -31,8 +29,6 @@ public class PtCustomerStateManager {
     private PtPushResultManager ptPushResultManager;
     @Resource
     private EcCustomerManager ecCustomerManager;
-    @Resource
-    private PtPhoneHistoryManager ptPhoneHistoryManager;
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -53,13 +49,10 @@ public class PtCustomerStateManager {
      * @return id
      */
     public Long findLastOperationId() {
-        Sort sort = new Sort(Sort.Direction.DESC, "customerOperationId");
-        Pageable pageable = new PageRequest(0, 1, sort);
-        Page<PtCustomerState> page = find(pageable);
-        //要查询的起始Operation的id
+        PtCustomerState ptCustomerState = ptCustomerStateRepository.findFirstByOrderByCustomerOperationIdDesc();
         Long customerStateId = 0L;
-        if (page.getTotalElements() > 0L) {
-            customerStateId = page.getContent().get(0).getCustomerOperationId();
+        if (ptCustomerState != null) {
+            customerStateId = ptCustomerState.getCustomerOperationId();
         }
         return customerStateId;
     }
