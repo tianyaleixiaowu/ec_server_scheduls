@@ -31,6 +31,9 @@ public class PtCustomerStateManager {
     private PtPushResultManager ptPushResultManager;
     @Resource
     private EcCustomerManager ecCustomerManager;
+    @Resource
+    private PtPhoneHistoryManager ptPhoneHistoryManager;
+
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
@@ -102,7 +105,17 @@ public class PtCustomerStateManager {
             ptCustomerState.setSourceFrom(3);
         }
         if (StrUtil.containsIgnoreCase(content, "初步意向")
-                || StrUtil.containsIgnoreCase(content, "意向客户")) {
+                || StrUtil.containsIgnoreCase(content, "意向客户")
+                || StrUtil.containsIgnoreCase(content, "L2")
+                || StrUtil.containsIgnoreCase(content, "L3")
+                || StrUtil.containsIgnoreCase(content, "L4")
+                || StrUtil.containsIgnoreCase(content, "L5")
+                || StrUtil.containsIgnoreCase(content, "L6")
+                || (!StrUtil.containsIgnoreCase(content, "客户分组") && StrUtil.containsIgnoreCase(ecCustomerOperation
+                .getOperateType(), "更新客户资料"))
+                || StrUtil.containsIgnoreCase(ecCustomerOperation.getOperateType(), "拜访客户")
+                || (StrUtil.containsIgnoreCase(content, "意向") && StrUtil.containsIgnoreCase(content, "客户分组"))
+                ) {
             ptCustomerState.setSaleState(1);
         } else if(StrUtil.containsIgnoreCase(content, "合作成交")
                 && StrUtil.containsIgnoreCase(ecCustomerOperation.getOperateType(), "更新客户阶段")) {
