@@ -41,7 +41,7 @@ public class DealCustomerSchedule {
              logger.info("主机名为" + CommonUtil.getHostName() + "没取到锁");
              return;
         }
-        logger.info("主机名为" + CommonUtil.getHostName() + "取到锁，开始获取经纬度数据");
+        logger.info("主机名为" + CommonUtil.getHostName() + "取到锁，开始处理customer表数据");
         logger.info("现在时间：" + DateUtil.format(new Date(), NORM_DATETIME_FORMAT));
         logger.info("开始去处理customer数据");
         ptCustomerStateService.dealCustomerState();
