@@ -5,6 +5,7 @@ import com.mindata.ecserver.main.service.CompanyCoordinateService;
 import com.mindata.ecserver.main.service.EsContactService;
 import com.mindata.ecserver.main.service.FetchCompanyPhoneHistoryService;
 import com.mindata.ecserver.main.service.PtCustomerStateService;
+import com.mindata.ecserver.schedel.DealCustomerSchedule;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,6 +25,8 @@ public class TestController {
     private CompanyCoordinateService coordinateService;
     @Resource
     private PtCustomerStateService ptCustomerStateService;
+    @Resource
+    private DealCustomerSchedule dealCustomerSchedule;
 
     @GetMapping("/fetch")
     public BaseData fetchCompanyHistory() throws IOException {
@@ -55,8 +58,8 @@ public class TestController {
     }
 
     @GetMapping("/customer")
-    public String customer(Boolean force) {
-        ptCustomerStateService.dealCustomerState();
+    public String customer() {
+        dealCustomerSchedule.executeDealCustomerOperationTask();
         return "customer";
     }
 }
