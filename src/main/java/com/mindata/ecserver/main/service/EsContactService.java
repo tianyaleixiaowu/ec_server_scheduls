@@ -203,7 +203,7 @@ public class EsContactService {
 
     private EsContact convertOneColumn(EcContactEntity ecContactEntity) {
         EsContact esContact = esContactManager.findById(ecContactEntity.getId());
-        esContact.setCompanyScore(ecContactEntity.getCompanyScore());
+        esContact.setCompanyScore(CommonUtil.cutDouble2(ecContactEntity.getCompanyScore()));
         return esContact;
     }
 
@@ -239,7 +239,7 @@ public class EsContactService {
         esContact.setState(ecContactEntity.getState());
         esContact.setMainJob(ecContactEntity.getMainJob());
         esContact.setCreateTime(ecContactEntity.getCreateTime());
-        esContact.setCompanyScore(ecContactEntity.getCompanyScore());
+        esContact.setCompanyScore(CommonUtil.cutDouble2(ecContactEntity.getCompanyScore()));
         //下面的都是别的表聚合来的数据
         List<String> extraInfo = companyJobInfoManager.getExtraInfo(ecContactEntity.getCompId());
         esContact.setJobName(extraInfo.get(0));

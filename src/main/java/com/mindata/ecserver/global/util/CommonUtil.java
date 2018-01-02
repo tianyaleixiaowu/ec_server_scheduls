@@ -4,6 +4,7 @@ import com.xiaoleilu.hutool.date.DateUtil;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.UUID;
 
@@ -41,6 +42,21 @@ public class CommonUtil {
      */
     public static Integer getTotalPages(Integer totalCount, Integer pageSize) {
         return totalCount % pageSize == 0 ? totalCount / pageSize : (totalCount / pageSize) + 1;
+    }
+
+    /**
+     * 截取double2位
+     *
+     * @param d
+     *         d
+     * @return 截取后结果
+     */
+    public static Double cutDouble2(Double d) {
+        if (d == null) {
+            return 0.00;
+        }
+        DecimalFormat df = new DecimalFormat("######0.000");
+        return Double.parseDouble(df.format(d));
     }
 
     /**
