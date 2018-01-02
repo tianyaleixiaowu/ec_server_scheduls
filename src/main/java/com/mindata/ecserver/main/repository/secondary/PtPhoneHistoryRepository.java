@@ -16,6 +16,6 @@ public interface PtPhoneHistoryRepository extends JpaRepository<PtPhoneHistory, 
      *         客户id
      * @return 数量>1算有意向
      */
-    @Query("select count(id) from PtPhoneHistory where crmId = ?1 and callTime >= 60")
+    @Query("select count(id) from PtPhoneHistory where crmId = ?1 and callTime >= 120")
     Integer findIntentedCountByCrmId(Long crmId);
 }
