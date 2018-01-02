@@ -55,7 +55,7 @@ public class CommonUtil {
         if (d == null) {
             return 0.00;
         }
-        DecimalFormat df = new DecimalFormat("######0.000");
+        DecimalFormat df = new DecimalFormat("######0.00");
         return Double.parseDouble(df.format(d));
     }
 
