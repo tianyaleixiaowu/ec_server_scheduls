@@ -4,7 +4,6 @@ import com.mindata.ecserver.main.repository.secondary.PtPhoneHistoryRepository;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.Date;
 
 /**
  * @author wuweifeng wrote on 2017/12/28.
@@ -14,15 +13,15 @@ public class PtPhoneHistoryManager {
     @Resource
     private PtPhoneHistoryRepository ptPhoneHistoryRepository;
 
-    public Integer totalContactTimeBetween(Long crmId, Date begin, Date end) {
-        return ptPhoneHistoryRepository.findTotalContactTimeByCrmId(crmId, begin, end);
+    public Integer intentCountByCrmId(Long crmId) {
+        return ptPhoneHistoryRepository.findIntentedCountByCrmId(crmId);
     }
 
-    public boolean isIntented(Long crmId, Date begin, Date end) {
-        Integer integer = totalContactTimeBetween(crmId, begin, end);
+    public boolean isIntent(Long crmId) {
+        Integer integer = intentCountByCrmId(crmId);
         if (integer == null) {
             return false;
         }
-        return integer >= 60;
+        return integer >= 1;
     }
 }
