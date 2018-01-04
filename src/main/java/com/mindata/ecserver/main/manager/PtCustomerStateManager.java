@@ -81,6 +81,7 @@ public class PtCustomerStateManager {
      */
     public void dealOperationData(Long ecCustomerOperationId, boolean force) {
         dealOperationData(ecCustomerOperationManager.findOne(ecCustomerOperationId), force);
+        logger.info("处理完毕一条id为" + ecCustomerOperationId);
     }
 
     private void dealOperationData(EcCustomerOperation ecCustomerOperation, boolean force) {

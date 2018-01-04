@@ -2,6 +2,7 @@ package com.mindata.ecserver.global.kafka;
 
 import com.mindata.ecserver.main.manager.PtCustomerStateManager;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +14,7 @@ import static com.mindata.ecserver.global.KafkaConstant.CUSTOMER_TOPIC;
  * @author wuweifeng wrote on 2018/1/4.
  */
 @Component
+@ConditionalOnProperty(value = "open.eureka")
 public class MessageListener {
     @Resource
     private PtCustomerStateManager ptCustomerStateManager;
