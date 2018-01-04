@@ -4,6 +4,8 @@ import com.mindata.ecserver.main.model.secondary.PtPhoneHistory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Date;
+
 /**
  * @author wuweifeng wrote on 2017/10/26.
  */
@@ -16,6 +18,7 @@ public interface PtPhoneHistoryRepository extends JpaRepository<PtPhoneHistory, 
      *         客户id
      * @return 数量>1算有意向
      */
-    @Query("select count(id) from PtPhoneHistory where crmId = ?1 and callTime >= 120")
-    Integer findIntentedCountByCrmId(Long crmId);
+    @Query("select count(id) from PtPhoneHistory where crmId = ?1 and callTime >= 120 and createTime > ?1 and " +
+            "createTime < ?2")
+    Integer findIntentedCountByCrmId(Long crmId, Date begin, Date end);
 }
