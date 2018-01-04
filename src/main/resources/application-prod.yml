@@ -27,7 +27,7 @@ spring:
   kafka:
     listener:
       concurrency: ${KAFKA_THREAD_NUM:10}
-    bootstrap-servers: kafka:9092
+    bootstrap-servers: ${KAFKA}:9092
     consumer:
       group-id: test
       auto-offset-reset: earliest

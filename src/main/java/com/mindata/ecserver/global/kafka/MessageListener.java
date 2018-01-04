@@ -24,7 +24,6 @@ public class MessageListener {
         //value就是ec_customer_operation的主键id
         String value = (String) cr.value();
         //值是这样的：23411,1或者4343,0 逗号后面的1代表强制，0代表不强制
-        ptCustomerStateManager.dealOperationData(Long.valueOf(value.split(",")[0]), Integer.valueOf(value.split("," +
-                "")[1]) == 1);
+        ptCustomerStateManager.dealOperationData(Long.valueOf(value.split(",")[0]), Integer.valueOf(value.split(",")[1]) == 1);
     }
 }
