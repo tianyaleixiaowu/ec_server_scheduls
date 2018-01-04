@@ -1,6 +1,5 @@
 package com.mindata.ecserver.main.manager;
 
-import com.mindata.ecserver.global.util.CommonUtil;
 import com.mindata.ecserver.main.repository.secondary.PtPhoneHistoryRepository;
 import com.xiaoleilu.hutool.date.DateUtil;
 import org.springframework.stereotype.Component;
@@ -21,9 +20,9 @@ public class PtPhoneHistoryManager {
     }
 
     public boolean isIntent(Long crmId, Date operateTime) {
-        String date = DateUtil.formatDate(operateTime);
-        Date begin = CommonUtil.beginOfDay(date);
-        Date end = CommonUtil.endOfDay(date);
+        //String date = DateUtil.formatDate(operateTime);
+        Date begin = DateUtil.beginOfMonth(operateTime);
+        Date end = DateUtil.endOfMonth(operateTime);
 
         Integer integer = intentCountByCrmId(crmId, begin, end);
         if (integer == null) {
