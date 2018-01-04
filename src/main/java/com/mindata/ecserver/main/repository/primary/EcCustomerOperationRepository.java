@@ -23,4 +23,8 @@ public interface EcCustomerOperationRepository extends JpaRepository<EcCustomerO
     Page<EcCustomerOperation> findByIdBetween(Long begin, Long end, Pageable pageable);
 
     Integer countByIdBetween(Long begin, Long end);
+
+    EcCustomerOperation findFirstByOrderByIdAsc();
+
+    EcCustomerOperation findFirstByOrderByIdDesc();
 }

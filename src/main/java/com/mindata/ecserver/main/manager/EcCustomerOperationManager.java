@@ -3,9 +3,7 @@ package com.mindata.ecserver.main.manager;
 import com.mindata.ecserver.main.model.primary.EcCustomerOperation;
 import com.mindata.ecserver.main.repository.primary.EcCustomerOperationRepository;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -26,21 +24,25 @@ public class EcCustomerOperationManager {
         return ecCustomerOperationRepository.findByIdBetween(beginId, endId, pageable);
     }
 
+    public EcCustomerOperation findOne(Long id) {
+        return ecCustomerOperationRepository.findOne(id);
+    }
+
     /**
      * 查询最新的一条数据的Id
      *
      * @return id
      */
     public Long findLastOperationId() {
-        Sort sort = new Sort(Sort.Direction.DESC, "id");
-        Pageable pageable = new PageRequest(0, 1, sort);
-        Page<EcCustomerOperation> page = find(pageable);
         //要查询的起始Operation的id
-        Long id = 0L;
-        if (page.getTotalElements() > 0L) {
-            id = page.getContent().get(0).getId();
-        }
-        return id;
+        EcCustomerOperation ecCustomerOperation = ecCustomerOperationRepository.findFirstByOrderByIdDesc();
+        return ecCustomerOperation.getId();
+    }
+
+    public Long findFirstOperationId() {
+        //要查询的起始Operation的id
+        EcCustomerOperation ecCustomerOperation = ecCustomerOperationRepository.findFirstByOrderByIdDesc();
+        return ecCustomerOperation.getId();
     }
 
     /**

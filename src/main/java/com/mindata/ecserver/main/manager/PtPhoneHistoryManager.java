@@ -20,14 +20,10 @@ public class PtPhoneHistoryManager {
     }
 
     public boolean isIntent(Long crmId, Date operateTime) {
-        //String date = DateUtil.formatDate(operateTime);
         Date begin = DateUtil.beginOfMonth(operateTime);
         Date end = DateUtil.endOfMonth(operateTime);
 
         Integer integer = intentCountByCrmId(crmId, begin, end);
-        if (integer == null) {
-            return false;
-        }
-        return integer >= 1;
+        return integer != null && integer >= 1;
     }
 }

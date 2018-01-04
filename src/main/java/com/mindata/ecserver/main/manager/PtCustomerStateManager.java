@@ -31,6 +31,8 @@ public class PtCustomerStateManager {
     private EcCustomerManager ecCustomerManager;
     @Resource
     private PtPhoneHistoryManager ptPhoneHistoryManager;
+    @Resource
+    private EcCustomerOperationManager ecCustomerOperationManager;
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -67,38 +69,54 @@ public class PtCustomerStateManager {
      */
     public void parseOperationData(List<EcCustomerOperation> customerOperationList) {
         for (EcCustomerOperation ecCustomerOperation : customerOperationList) {
-            PtCustomerState ptCustomerState = ptCustomerStateRepository.findByCustomerOperationId(ecCustomerOperation
-                    .getId());
-            if (ptCustomerState != null) {
-                continue;
-            }
-            dealOperationData(ecCustomerOperation);
+            dealOperationData(ecCustomerOperation, false);
         }
         logger.info("线程id为" + Thread.currentThread().getId() + "处理完毕了一页，50条");
     }
 
-    private void dealOperationData(EcCustomerOperation ecCustomerOperation) {
-        PtCustomerState ptCustomerState = new PtCustomerState();
-        ptCustomerState.setCreateTime(CommonUtil.getNow());
-        ptCustomerState.setUpdateTime(CommonUtil.getNow());
-        ptCustomerState.setCrmId(ecCustomerOperation.getCrmId());
-        ptCustomerState.setCustomerOperationId(ecCustomerOperation.getId());
-        ptCustomerState.setFollowUser(ecCustomerOperation.getOperateUser());
-        ptCustomerState.setOperateTime(ecCustomerOperation.getOperateTime());
-        ptCustomerState.setOperateType(ecCustomerOperation.getOperateType());
-        ptCustomerState.setOldData(ecBjmdOldDataManager.existCrmId(ecCustomerOperation.getCrmId()));
-        String content = ecCustomerOperation.getContent();
-        if (StrUtil.containsIgnoreCase(content, "百度技术")
-                || StrUtil.containsIgnoreCase(content, "网站咨询")
-                || StrUtil.containsIgnoreCase(content, "400")) {
-            ptCustomerState.setSourceFrom(2);
-        } else if (ptPushResultManager.existCrmId(ecCustomerOperation.getCrmId())) {
-            //麦达
-            ptCustomerState.setSourceFrom(1);
-        } else {
-            //其他
-            ptCustomerState.setSourceFrom(3);
+    /**
+     * 每次处理1条，给kafka队列用的
+     * @param ecCustomerOperationId
+     *  ecCustomerOperationId
+     */
+    public void dealOperationData(Long ecCustomerOperationId, boolean force) {
+        dealOperationData(ecCustomerOperationManager.findOne(ecCustomerOperationId), force);
+    }
+
+    private void dealOperationData(EcCustomerOperation ecCustomerOperation, boolean force) {
+        if (ecCustomerOperation == null) {
+            return;
         }
+        PtCustomerState ptCustomerState = ptCustomerStateRepository.findByCustomerOperationId(ecCustomerOperation
+                .getId());
+        if (ptCustomerState != null && !force) {
+            return;
+        }
+        String content = ecCustomerOperation.getContent();
+        if (ptCustomerState == null) {
+            ptCustomerState = new PtCustomerState();
+            ptCustomerState.setCreateTime(CommonUtil.getNow());
+            ptCustomerState.setCrmId(ecCustomerOperation.getCrmId());
+            ptCustomerState.setCustomerOperationId(ecCustomerOperation.getId());
+            ptCustomerState.setFollowUser(ecCustomerOperation.getOperateUser());
+            ptCustomerState.setOperateTime(ecCustomerOperation.getOperateTime());
+            ptCustomerState.setOperateType(ecCustomerOperation.getOperateType());
+            ptCustomerState.setOldData(ecBjmdOldDataManager.existCrmId(ecCustomerOperation.getCrmId()));
+            ptCustomerState.setStatusCode(ecCustomerManager.statusCode(ecCustomerOperation.getCrmId()));
+            if (StrUtil.containsIgnoreCase(content, "百度技术")
+                    || StrUtil.containsIgnoreCase(content, "网站咨询")
+                    || StrUtil.containsIgnoreCase(content, "400")) {
+                ptCustomerState.setSourceFrom(2);
+            } else if (ptPushResultManager.existCrmId(ecCustomerOperation.getCrmId())) {
+                //麦达
+                ptCustomerState.setSourceFrom(1);
+            } else {
+                //其他
+                ptCustomerState.setSourceFrom(3);
+            }
+        }
+        ptCustomerState.setUpdateTime(CommonUtil.getNow());
+
         if (StrUtil.containsIgnoreCase(content, "初步意向")
                 || StrUtil.containsIgnoreCase(content, "意向客户")
                 || StrUtil.containsIgnoreCase(content, "L2")
@@ -118,7 +136,7 @@ public class PtCustomerStateManager {
         } else {
             ptCustomerState.setSaleState(0);
         }
-        ptCustomerState.setStatusCode(ecCustomerManager.statusCode(ecCustomerOperation.getCrmId()));
+
         ptCustomerStateRepository.save(ptCustomerState);
     }
 }
