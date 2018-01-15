@@ -2,6 +2,7 @@ package com.mindata.ecserver.main.manager;
 
 import com.mindata.ecserver.global.cache.UserTokenCache;
 import com.mindata.ecserver.global.util.CommonUtil;
+import com.mindata.ecserver.main.model.secondary.PtUser;
 import com.mindata.ecserver.main.repository.secondary.PtUserRepository;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,10 @@ public class PtUserManager {
             userTokenCache.setBothTokenByUserId(token, userId);
         }
         return token;
+    }
+
+    public PtUser findFirstByCompanyId(Long companyId) {
+        return ptUserRepository.findFirstByCompanyId(companyId);
     }
 
     public Long findCompanyIdByUserId(Long userId) {

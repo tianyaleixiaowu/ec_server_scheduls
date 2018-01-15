@@ -2,6 +2,7 @@ package com.mindata.ecserver.global.http;
 
 import com.mindata.ecserver.global.http.request.base.RequestProperty;
 import com.mindata.ecserver.global.http.service.FetchPhoneHistoryService;
+import com.mindata.ecserver.global.http.service.FetchSaleStateService;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import org.slf4j.Logger;
@@ -23,6 +24,10 @@ public class RetrofitServiceBuilder {
 
     public FetchPhoneHistoryService getFetchPhoneHistoryService(RequestProperty requestProperty) {
         return generateRetrofit(requestProperty).create(FetchPhoneHistoryService.class);
+    }
+
+    public FetchSaleStateService getFetchSaleStateService(RequestProperty requestProperty) {
+        return generateRetrofit(requestProperty).create(FetchSaleStateService.class);
     }
 
     public Retrofit getRetrofit(RequestProperty requestProperty) {
