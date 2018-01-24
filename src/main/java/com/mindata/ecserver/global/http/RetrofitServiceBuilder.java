@@ -1,6 +1,7 @@
 package com.mindata.ecserver.global.http;
 
 import com.mindata.ecserver.global.http.request.base.RequestProperty;
+import com.mindata.ecserver.global.http.service.CompanyStateRefreshService;
 import com.mindata.ecserver.global.http.service.FetchPhoneHistoryService;
 import com.mindata.ecserver.global.http.service.FetchSaleStateService;
 import okhttp3.OkHttpClient;
@@ -28,6 +29,10 @@ public class RetrofitServiceBuilder {
 
     public FetchSaleStateService getFetchSaleStateService(RequestProperty requestProperty) {
         return generateRetrofit(requestProperty).create(FetchSaleStateService.class);
+    }
+
+    public CompanyStateRefreshService getCompanyStateRefreshService(RequestProperty requestProperty) {
+        return generateRetrofit(requestProperty).create(CompanyStateRefreshService.class);
     }
 
     public Retrofit getRetrofit(RequestProperty requestProperty) {
