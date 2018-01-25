@@ -22,7 +22,7 @@ public class CompanyStateRefreshSchedule {
      */
     @Scheduled(cron = "0 0/20 0 * * ?")
     @EnableZookeeperLockAnnotation(nodeName = ZkConstant.PATH_COMPANY_STATE)
-    public void executeFetchPhoneHistoryTask() throws Exception {
+    public void companyStateRefreshTask() throws Exception {
         companyStateRefreshService.refresh();
     }
 }
