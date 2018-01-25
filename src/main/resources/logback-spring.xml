@@ -5,6 +5,7 @@
     <!--取yml里配置的logstash ip port-->
     <springProperty scope="context" name="logstash_port" source="logstash.port" />
     <springProperty scope="context" name="logstash_ip" source="logstash.ip"/>
+    <springProperty scope="context" name="kafka" source="spring.kafka.bootstrap-servers"/>
 
     <!-- 本地日志文件 -->
     <appender name="MY_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -36,15 +37,46 @@
         </encoder>
     </appender>
 
-    <appender name="KAFKA" class="com.mindata.ecserver.global.kafka.KafkaAppender">
+    <appender name="kafkaAppender" class="com.github.danielwegener.logback.kafka.KafkaAppender">
+        <encoder class="com.github.danielwegener.logback.kafka.encoding.LayoutKafkaMessageEncoder">
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            </layout>
+        </encoder>
+        <topic>topic_ec_server_scheduls</topic>
+        <keyingStrategy class="com.github.danielwegener.logback.kafka.keying.RoundRobinKeyingStrategy"/>
+        <deliveryStrategy class="com.github.danielwegener.logback.kafka.delivery.AsynchronousDeliveryStrategy"/>
+
+        <!-- Optional parameter to include log timestamps into the kafka message -->
+        <!-- <appendTimestamp>true</appendTimestamp> -->
+
+        <!-- each <producerConfig> translates to regular kafka-client config (format: key=value) -->
+        <!-- producer configs are documented here: https://kafka.apache.org/documentation.html#newproducerconfigs -->
+        <!-- bootstrap.servers is the only mandatory producerConfig -->
+        <producerConfig>bootstrap.servers=${kafka}:9092</producerConfig>
+
+        <!-- this is the fallback appender if kafka is not available. -->
+        <appender-ref ref="CONSOLE"/>
     </appender>
 
-    <root level="INFO">
+<!--    <root level="INFO">
         <appender-ref ref="LOGSTASH"/>
         <appender-ref ref="CONSOLE"/>
-        <appender-ref ref="KAFKA"/>
         <appender-ref ref="MY_FILE"/>
-    </root>
-
+    </root>-->
+    <springProfile name="dev,local">
+        <logger name="org.springframework.web" level="INFO">
+            <appender-ref ref="LOGSTASH"/>
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="MY_FILE"/>
+        </logger>
+    </springProfile>
+    <springProfile name="prod">
+        <logger name="org.springframework.web" level="INFO">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="kafkaAppender"/>
+            <appender-ref ref="MY_FILE"/>
+        </logger>
+    </springProfile>
 
 </configuration>
