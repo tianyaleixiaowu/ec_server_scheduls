@@ -36,9 +36,13 @@
         </encoder>
     </appender>
 
+    <appender name="KAFKA" class="com.mindata.ecserver.global.kafka.KafkaAppender">
+    </appender>
+
     <root level="INFO">
         <appender-ref ref="LOGSTASH"/>
         <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="KAFKA"/>
         <appender-ref ref="MY_FILE"/>
     </root>
 
