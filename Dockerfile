@@ -4,16 +4,10 @@ ENV PINPOINT_VERSION=1.6.2
 
 ADD configure.sh /usr/local/bin/
 
-ADD pom.xml /tmp/build/
+ADD schedels-0.0.1-SNAPSHOT.jar /app.jar
 
-ADD src /tmp/build/src
-        #构建应用
-RUN cd /tmp/build && mvn clean package \
-        #拷贝编译结果到指定目录
-        && mv target/*.jar /app.jar \
-        #清理编译痕迹
-        && cd / && rm -rf /tmp/build \
-        && chmod a+x /usr/local/bin/configure.sh \
+RUN
+        chmod a+x /usr/local/bin/configure.sh \
         && mkdir -p /assets/pinpoint-agent \
         && curl -SL https://raw.githubusercontent.com/naver/pinpoint/$PINPOINT_VERSION/agent/src/main/resources-release/pinpoint.config -o /assets/pinpoint.config \
         && curl -SL https://github.com/naver/pinpoint/releases/download/$PINPOINT_VERSION/pinpoint-agent-$PINPOINT_VERSION.tar.gz -o pinpoint-agent-$PINPOINT_VERSION.tar.gz \

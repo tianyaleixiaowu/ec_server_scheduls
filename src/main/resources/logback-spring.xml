@@ -56,7 +56,7 @@
         <producerConfig>bootstrap.servers=${kafka}</producerConfig>
 
         <!-- this is the fallback appender if kafka is not available. -->
-        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="MY_FILE"/>
     </appender>
 
 <!--    <root level="INFO">
@@ -64,18 +64,10 @@
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="MY_FILE"/>
     </root>-->
-    <springProfile name="dev,local">
-        <logger name="org.springframework.web" level="INFO">
-            <appender-ref ref="LOGSTASH"/>
-            <appender-ref ref="CONSOLE"/>
-            <appender-ref ref="MY_FILE"/>
-        </logger>
-    </springProfile>
     <springProfile name="prod">
-        <logger name="org.springframework.web" level="INFO">
+        <logger name="com.mindata.ecserver" level="INFO">
             <appender-ref ref="CONSOLE"/>
             <appender-ref ref="kafkaAppender"/>
-            <appender-ref ref="MY_FILE"/>
         </logger>
     </springProfile>
 
