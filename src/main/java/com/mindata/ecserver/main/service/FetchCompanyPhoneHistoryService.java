@@ -1,15 +1,16 @@
 package com.mindata.ecserver.main.service;
 
+import com.mindata.ecserver.global.http.CallManager;
+import com.mindata.ecserver.global.http.RetrofitServiceBuilder;
 import com.mindata.ecserver.global.http.request.EcServerRequestProperty;
 import com.mindata.ecserver.global.http.request.base.RequestProperty;
-import com.mindata.ecserver.global.http.RetrofitServiceBuilder;
 import com.mindata.ecserver.global.http.response.BaseData;
+import com.mindata.ecserver.main.manager.PtCompanyManager;
 import com.mindata.ecserver.main.manager.PtUserManager;
 import com.mindata.ecserver.main.manager.PtUserRoleManager;
+import com.mindata.ecserver.main.model.secondary.PtCompany;
 import com.mindata.ecserver.main.model.secondary.PtPhoneHistoryCompany;
-import com.mindata.ecserver.main.model.secondary.PtUserRole;
 import com.mindata.ecserver.main.repository.secondary.PtPhoneHistoryCompanyRepository;
-import com.mindata.ecserver.global.http.CallManager;
 import com.xiaoleilu.hutool.date.DateUtil;
 import com.xiaoleilu.hutool.util.CollectionUtil;
 import org.slf4j.Logger;
@@ -36,6 +37,8 @@ public class FetchCompanyPhoneHistoryService {
     @Resource
     private PtUserManager ptUserManager;
     @Resource
+    private PtCompanyManager ptCompanyManager;
+    @Resource
     private PtPhoneHistoryCompanyRepository ptPhoneHistoryCompanyRepository;
 
     @Value("${main.server-url}")
@@ -47,14 +50,14 @@ public class FetchCompanyPhoneHistoryService {
 
     public BaseData fetch() throws IOException {
         //先去redis校验该公司的manager缓存在不在，如果不在则去生成一个，完毕后清除掉
-        List<PtUserRole> userRoles = ptUserRoleManager.findByRoleId(2L);
+        List<PtCompany> ptCompanies = ptCompanyManager.findAllNormal();
 
         //查最新的一条
         Pageable pageable = new PageRequest(0, 1);
         //有多个公司，就去访问多次
-        for (PtUserRole userRole : userRoles) {
+        for (PtCompany company : ptCompanies) {
             //获取管理员的userId
-            Long userId = userRole.getUserId();
+            Long userId = ptUserManager.findManagerIdByCompanyId(company.getId());
             String token = ptUserManager.findTokenByUserId(userId);
             Long companyId = ptUserManager.findCompanyIdByUserId(userId);
 

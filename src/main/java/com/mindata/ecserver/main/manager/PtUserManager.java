@@ -38,6 +38,10 @@ public class PtUserManager {
         return ptUserRepository.findFirstByCompanyId(companyId);
     }
 
+    public Long findManagerIdByCompanyId(Long companyId) {
+        return findFirstByCompanyId(companyId).getId();
+    }
+
     public Long findCompanyIdByUserId(Long userId) {
          return ptUserRepository.findOne(userId).getCompanyId();
     }
