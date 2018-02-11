@@ -22,7 +22,7 @@ public class PushContactToEsSchedule {
      */
     @Scheduled(cron = "0 0/20 3 * * ?")
     @EnableZookeeperLockAnnotation(nodeName = ZkConstant.PATH_CONTACT_TO_ES)
-    public void executePushDbToEsTask() throws Exception {
+    public void executePushDbToEsTask() {
         esContactService.dbToEs(true);
     }
 }

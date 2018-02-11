@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 
 /**
- * 每天晚上2点获取昨天的通话历史
+ * 每天晚上6点获取昨天的通话历史
  * @author wuweifeng wrote on 2017/11/5.
  */
 @Component
