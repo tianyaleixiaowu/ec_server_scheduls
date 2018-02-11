@@ -20,7 +20,7 @@ public class FetchPhoneHistorySchedule {
     /**
      * 注意分布式锁的问题
      */
-    @Scheduled(cron = "0 0/20 6 * * ?")
+    @Scheduled(cron = "0 0/20 10 * * ?")
     @EnableZookeeperLockAnnotation(nodeName = ZkConstant.PATH_FETCH_PHONEHISTORY)
     public void executeFetchPhoneHistoryTask() throws Exception {
         fetchCompanyPhoneHistoryService.fetch();

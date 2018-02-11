@@ -39,7 +39,7 @@ public class EnableZookeeperLockAspect {
         //检查分布式锁
         InterProcessMutex interProcessMutex = new InterProcessMutex(client, enableZookeeperLockAnnotation.nodeName());
         //只等1毫秒，目的是不管多少docker，只要有一个执行了就OK了，其他的不需要执行
-        if (!interProcessMutex.acquire(1L, TimeUnit.MILLISECONDS)) {
+        if (!interProcessMutex.acquire(500L, TimeUnit.MILLISECONDS)) {
             logger.info("主机名为" + CommonUtil.getHostName() + "没取到锁");
             return null;
         }
@@ -47,6 +47,8 @@ public class EnableZookeeperLockAspect {
         logger.info("现在时间：" + DateUtil.format(new Date(), NORM_DATETIME_FORMAT));
         logger.info("开始执行 : " + pjp.getSignature().getDeclaringTypeName() + "." + pjp.getSignature().getName());
         Object object = pjp.proceed();
+        //线程等待1秒，让锁持有的时间长一些
+        Thread.sleep(1000);
         //释放锁
         interProcessMutex.release();
         return object;
