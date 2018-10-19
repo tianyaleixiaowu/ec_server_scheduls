@@ -10,16 +10,16 @@ spring:
   datasource:
     primary:
       url: jdbc:mysql://${MYSQL_URL:172.26.249.246:3306}/company?autoReconnect=true&useUnicode=true
-      username: md
-      password: maida6868
+      username: ${MYSQL_USER:md}
+      password: ${MYSQL_PASS:maida6868}
     secondary:
       url: jdbc:mysql://${MYSQL_URL:172.26.249.246:3306}/ec_server?autoReconnect=true&useUnicode=true
-      username: md
-      password: maida6868
+      username: ${MYSQL_USER:md}
+      password: ${MYSQL_PASS:maida6868}
     thirdly:
       url: jdbc:mysql://${MYSQL_URL:172.26.249.246:3306}/scrapy?autoReconnect=true&useUnicode=true
-      username: md
-      password: maida6868
+      username: ${MYSQL_USER:md}
+      password: ${MYSQL_PASS:maida6868}
   redis:
     host: ${REDIS_HOST}
     port: ${REDIS_PORT}
